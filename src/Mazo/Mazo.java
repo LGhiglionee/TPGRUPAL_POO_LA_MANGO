@@ -1,33 +1,38 @@
 package Mazo;
 
 public class Mazo {
-    Espada[] espadas;
-    Oro[] oros;
-    Basto[] bastos;
-    Copa[] copas;
+    private Carta[] cartas;
+    private String[] palos;
+    private int[] numeros;
+    private int cantCartas;
+
 
     public Mazo() {}
 
-    public Mazo(Espada[] espadas, Oro[] oros, Basto[] bastos, Copa[] copas) {
-        this.espadas = espadas;
-        this.oros = oros;
-        this.bastos = bastos;
-        this.copas = copas;
+    public Carta[] getCartas() {
+        return cartas;
     }
 
-    public Espada[] getEspadas() {
-        return espadas;
+    public void setCartas(Carta[] cartas) {
+        this.cartas = cartas;
     }
 
-    public Oro[] getOros() {
-        return oros;
-    }
+    public Mazo(String[] palos, int[] numeros) {
+        this.palos = palos;
+        this.numeros = numeros;
+        this.cantCartas = palos.length*numeros.length;
 
-    public Basto[] getBastos() {
-        return bastos;
-    }
+        cartas = new Carta[cantCartas];
 
-    public Copa[] getCopas() {
-        return copas;
+        int index = 0;
+        for (String palo : palos) {
+            for (int numero : numeros) {
+                cartas[index] = new Carta(palo, numero);
+                index++;
+            }
+        }
+
+
+
     }
 }

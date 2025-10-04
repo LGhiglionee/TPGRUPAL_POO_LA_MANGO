@@ -2,9 +2,22 @@ import Mazo.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+//
+
 public class Main {
     public static void main(String[] args) {
-        int MAX_CARTAS = 52;
+
+        String[] palos = {"Espada", "Oro", "Basto", "Copa"};
+        int[] numeros = {1,2,3,4,5,6,7,10,11,12};
+
+        Mazo mazo = new Mazo(palos, numeros);
+
+        for (Carta carta : mazo.getCartas()) {
+            System.out.println(carta.getNumero() + " de " + carta.getPalo());
+        }
+
+
+/*        int MAX_CARTAS = 52;
 
         Espada[] espada = new Espada[MAX_CARTAS/4];
         Oro[] oro = new Oro[MAX_CARTAS/4];
@@ -22,5 +35,6 @@ public class Main {
 
 
         System.out.println("Habilidad de Cada una: " + mazo.getEspadas()[0].getHabilidad());
+ */
     }
 }
