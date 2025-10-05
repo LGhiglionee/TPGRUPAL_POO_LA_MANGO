@@ -1,38 +1,36 @@
 package Mazo;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Mazo {
-    private Carta[] cartas;
-    private String[] palos;
-    private int[] numeros;
-    private int cantCartas;
+    private ArrayList<Carta> cartas;
 
+    public Mazo() {
+        cartas = new ArrayList<Carta>();
+        String[] palos = {"Espada", "Oro", "Basto", "Copa"};
+        int[] numeros = {1,2,3,4,5,6,7,10,11,12};
 
-    public Mazo() {}
+        for (int i = 0; i < 4; i++) {
+            for  (int j = 0; j < 10; j++) {
+                this.cartas.add(new Carta(palos[i], numeros[j]));
+            }
+        }
+    }
 
-    public Carta[] getCartas() {
+    public Carta getCarta() {
+        Carta cartaAleatoria = cartas.getFirst();
+        cartas.remove(0);
+        return cartaAleatoria;
+    }
+
+    public ArrayList<Carta> mezclarMazo() {
+        Collections.shuffle(cartas);
         return cartas;
     }
 
-    public void setCartas(Carta[] cartas) {
-        this.cartas = cartas;
+    public boolean mazoVacio() {
+        return cartas.isEmpty();
     }
 
-    public Mazo(String[] palos, int[] numeros) {
-        this.palos = palos;
-        this.numeros = numeros;
-        this.cantCartas = palos.length*numeros.length;
-
-        cartas = new Carta[cantCartas];
-
-        int index = 0;
-        for (String palo : palos) {
-            for (int numero : numeros) {
-                cartas[index] = new Carta(palo, numero);
-                index++;
-            }
-        }
-
-
-
-    }
 }

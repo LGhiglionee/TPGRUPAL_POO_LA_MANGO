@@ -1,20 +1,31 @@
 import Mazo.*;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-//
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
-        String[] palos = {"Espada", "Oro", "Basto", "Copa"};
-        int[] numeros = {1,2,3,4,5,6,7,10,11,12};
+        Mazo mazo = new Mazo();
+        mazo.mezclarMazo();
+        Jugador jugador1 = new Jugador();
+        Jugador jugador2 = new Jugador();
+        List<Carta> mano1 = new ArrayList<>();
+        List<Carta> mano2 = new ArrayList<>();
 
-        Mazo mazo = new Mazo(palos, numeros);
+        while (jugador1.getSalud() > 0 && jugador2.getSalud() > 0 && !mazo.mazoVacio()) {
+            for  (int i = 0; i < 3; i++) {
+                mano1.add(mazo.getCarta());
+                mano2.add(mazo.getCarta());
+            }
 
-        for (Carta carta : mazo.getCartas()) {
-            System.out.println(carta.getNumero() + " de " + carta.getPalo());
+            /*System.out.println(mano1.getFirst().getNumero() + mano1.getFirst().getPalo());
+            System.out.println(mano2.getFirst().getNumero() + mano2.getFirst().getPalo());*/
+
+            jugador1.reducirSalud(100);
         }
+
+
 
 
 /*        int MAX_CARTAS = 52;
