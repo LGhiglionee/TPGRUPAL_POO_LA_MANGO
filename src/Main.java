@@ -25,4 +25,3 @@ public class Main {
         turnos.resultado(jugador1, jugador2, mazo);
         }
     }
-}
