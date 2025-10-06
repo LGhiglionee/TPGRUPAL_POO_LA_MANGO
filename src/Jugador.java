@@ -15,11 +15,7 @@ public class Jugador {
         return salud;
     }
 
-    public void reducirSalud(int danio) {
-        this.salud -= danio;
-    }
-
-    public void agregarSalud(int curacion) {
+    public void actualizarSalud(int curacion) {
         this.salud += curacion;
     }
 
@@ -29,5 +25,9 @@ public class Jugador {
 
     public void agregarMana(int mana) {
         this.mana += mana;
+    }
+
+    public int getMana() {
+        return mana;
     }
 }

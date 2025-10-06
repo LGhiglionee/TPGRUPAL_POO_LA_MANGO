@@ -17,7 +17,8 @@ public class Carta {
     }
 
     public String getPalo() {
-        return palo;
+
+        return this.palo;
     }
 
     public int getNumero() {
@@ -26,7 +27,19 @@ public class Carta {
 
     public Carta() {}
 
-    public int realizarHabilidad() {
-        return 0;
+    public String getHabilidad(String palo, Carta carta) {
+        if (carta.getPalo().equals("Basto")){
+            return "Haces el doble de dano si ganas pero recibis el doble si perdes";
+        }
+        else if (carta.getPalo().equals("Espada")){
+            return "Recibis el doble del numero de la carta como escudo";
+        }
+        else if (carta.getPalo().equals("Copa")){
+            return "Regeneras la vida de la carta";
+        }
+        else if (carta.getPalo().equals("Oro")){}
+        return "Ganas mana";
+    }
+    public void realizarHabilidad() {
     }
 }
