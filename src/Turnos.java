@@ -63,6 +63,17 @@ public class Turnos {
             return "Gano jugador 2";
         }
     }
+
+    public void alternarTurno(Jugador jugador1, Jugador jugador2) {
+        if (jugador1.getMano()) {
+            jugador1.setMano(false);
+            jugador2.setMano(true);
+        }
+        else if (jugador2.getMano()) {
+            jugador2.setMano(false);
+            jugador1.setMano(true);
+        }
+    }
 }
 
 
