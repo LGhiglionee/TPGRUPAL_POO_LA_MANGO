@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import Mazo.*;
 
 public class Menu2 {
     public static void main(String[] args) {
@@ -91,12 +92,15 @@ class Lamina extends JPanel {
 }
 
 class Partida extends JFrame implements ActionListener {
-    JButton carta1;
-    JButton carta2;
-    JButton carta3;
+    JButton botoncarta1;
+    JButton botoncarta2;
+    JButton botoncarta3;
     Jugador jugador1;
     Jugador jugador2;
     Turnos turno;
+    Carta carta1;
+    Carta carta2;
+    Carta carta3;
 
     public Partida() {
         //Creacion del marco principal
@@ -112,29 +116,34 @@ class Partida extends JFrame implements ActionListener {
         setIconImage(fondo);
 
         //Inicializacion jugadores y turno
-        Jugador jugador1 = new Jugador();
-        Jugador jugador2 = new Jugador();
-        Turnos turno =  new Turnos();
+        jugador1 = new Jugador();
+        jugador2 = new Jugador();
+        turno =  new Turnos();
+        carta1 = new Carta();
+        carta2 = new Carta();
+        carta3 = new Carta();
 
         //Botones de cartas
         int anchoboton = anchura/12;
         int  altoboton = altura/6;
 
+        ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
+        botoncarta1 = new JButton(imgcarta1);
+        botoncarta1.setBounds(anchura/4 - anchoboton*2,altura/4,anchoboton,altoboton);
+        botoncarta1.addActionListener(this);
+        add(botoncarta1);
 
-        carta1 = new JButton("Carta 1");
-        carta1.setBounds(anchura/4 - anchoboton*2,altura/4,anchoboton,altoboton);
-        carta1.addActionListener(this);
-        add(carta1);
+        ImageIcon imgcarta2 = new ImageIcon(carta2.getImagen());
+        botoncarta2 = new JButton(imgcarta2);
+        botoncarta2.setBounds(anchura/4 - anchoboton/2,altura/4,anchoboton,altoboton);
+        botoncarta2.addActionListener(this);
+        add(botoncarta2);
 
-        carta2 = new JButton("Carta 2");
-        carta2.setBounds(anchura/4 - anchoboton/2,altura/4,anchoboton,altoboton);
-        carta2.addActionListener(this);
-        add(carta2);
-
-        carta3 = new JButton("Carta 3");
-        carta3.setBounds(anchura/4 + anchoboton,altura/4,anchoboton,altoboton);
-        carta3.addActionListener(this);
-        add(carta3);
+        ImageIcon imgcarta3 = new ImageIcon(carta3.getImagen());
+        botoncarta3 = new JButton(imgcarta3);
+        botoncarta3.setBounds(anchura/4 + anchoboton,altura/4,anchoboton,altoboton);
+        botoncarta3.addActionListener(this);
+        add(botoncarta3);
 
         //Lamina
         Juego juego = new Juego();
@@ -145,13 +154,13 @@ class Partida extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == carta1) {
+        if (e.getSource() == botoncarta1) {
             System.exit(0);
         }
-        else if (e.getSource() == carta2) {
+        else if (e.getSource() == botoncarta2) {
             System.exit(0);
         }
-        else if (e.getSource() == carta3) {
+        else if (e.getSource() == botoncarta3) {
             System.exit(0);
         }
     }
