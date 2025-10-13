@@ -1,8 +1,15 @@
 import Mazo.*;
 
-public class Turnos {
+import java.util.ArrayList;
 
-    public void turnos(){}
+public class Turnos {
+    Mazo mazo;
+    ArrayList<Carta> doscartas;
+
+    public Turnos(){
+        this.mazo = new Mazo();
+        mazo.mezclarMazo();
+        doscartas = new ArrayList<Carta>();    }
 
     public void jugarMano(Jugador jugador1, Jugador jugador2, Carta carta1, Carta carta2) {
         if (carta1.getPalo().equals("Copa") || carta2.getPalo().equals("Copa")) {
@@ -64,15 +71,31 @@ public class Turnos {
         }
     }
 
+    public Jugador getJugadorMano(Jugador jugador1, Jugador jugador2) {
+        if (jugador1.getMano()) {
+            return jugador1;
+        }
+        else {
+            return jugador2;
+        }
+    }
+
     public void alternarTurno(Jugador jugador1, Jugador jugador2) {
         if (jugador1.getMano()) {
             jugador1.setMano(false);
             jugador2.setMano(true);
         }
-        else if (jugador2.getMano()) {
+        else {
             jugador2.setMano(false);
             jugador1.setMano(true);
         }
+    }
+
+    public void llenarMano(ArrayList<Carta> cartas, Jugador jugador) {
+        while (cartas.size() != 3) {
+            cartas.add(mazo.getCarta());
+        }
+        jugador.setTresCartas(cartas);
     }
 }
 

@@ -20,7 +20,7 @@ public class Mazo {
 
     public Carta getCarta() {
         Carta cartaAleatoria = cartas.getFirst();
-        cartas.remove(0);
+        cartas.removeFirst();
         return cartaAleatoria;
     }
 

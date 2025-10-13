@@ -6,10 +6,12 @@ public class Jugador {
     private int salud;
     private int mana;
     private boolean mano;
+    private ArrayList<Carta> trescartas;
 
     public Jugador() {
         this.salud = 100;
         this.mana = 0;
+        this.trescartas = new ArrayList<>();
     }
 
     public int getSalud() {
@@ -32,5 +34,15 @@ public class Jugador {
 
     public boolean getMano() { return mano; }
 
-    public void setMano(boolean mano) { this.mano = mano; }
+    public void setMano(boolean mano) {
+        this.mano = mano;
+    }
+
+    public ArrayList<Carta> getTresCartas() {
+        return trescartas;
+    }
+
+    public  void setTresCartas(ArrayList<Carta> trescartas) {
+        this.trescartas = trescartas;
+    }
 }
