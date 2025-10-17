@@ -80,14 +80,16 @@ public class Turnos {
         }
     }
 
-    public void alternarTurno(Jugador jugador1, Jugador jugador2) {
+    public String alternarTurno(Jugador jugador1, Jugador jugador2) {
         if (jugador1.getMano()) {
             jugador1.setMano(false);
             jugador2.setMano(true);
+            return "Jugador 2";
         }
         else {
             jugador2.setMano(false);
             jugador1.setMano(true);
+            return "Jugador 1";
         }
     }
 

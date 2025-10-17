@@ -104,6 +104,7 @@ class Partida extends JFrame implements ActionListener {
     Jugador jugador1;
     Jugador jugador2;
     Turnos turno;
+    String turnoActual = "Jugador 1";
 
     public Partida() {
         //Creacion del marco principal
@@ -125,9 +126,35 @@ class Partida extends JFrame implements ActionListener {
         turno.llenarMano(jugador1.getTresCartas(), jugador1);
         turno.llenarMano(jugador2.getTresCartas(), jugador2);
 
-        //Botones de cartas
+        //Tamanio botones
         int anchoboton = anchura/12;
         int  altoboton = altura/6;
+
+        //Barra salud
+
+        JProgressBar j1salud = new JProgressBar(0,100);
+        j1salud.setBounds(anchura/4 - anchoboton*2, altura/50,115,20);
+        j1salud.setValue(jugador1.getSalud());
+        j1salud.setStringPainted(true);
+        j1salud.setForeground(Color.RED);
+        j1salud.setString("Vida: " + jugador1.getSalud());
+
+        JProgressBar j2salud = new JProgressBar(0,100);
+        j2salud.setBounds(anchura/4 + anchoboton,altura/50,115,20);
+        j2salud.setValue(jugador2.getSalud());
+        j2salud.setStringPainted(true);
+        j2salud.setForeground(Color.RED);
+        j2salud.setString("Vida: " + jugador2.getSalud());
+
+
+        //Etiquetas mana
+        JLabel j1mana = new JLabel("Mana Jugador 1: " + jugador1.getMana());
+        j1mana.setBounds(anchura/4 - anchoboton*2, altura/50,anchura/6,altura/10);
+
+        JLabel j2mana = new JLabel("Mana Jugador 2: " + jugador2.getMana());
+        j2mana.setBounds(anchura/4 + anchoboton,altura/50,anchura/6,altura/10);
+
+        //Botones de cartas
 
         Carta carta1 = new Carta();
         Carta carta2 = new Carta();
@@ -156,11 +183,25 @@ class Partida extends JFrame implements ActionListener {
         add(botoncarta3);
 
         //Lamina
-        Juego juego = new Juego();
-        add(juego);
 
+        Juego juego = new Juego();
+        juego.setBounds(0,0,anchura,altura);
+
+        JLayeredPane vista = new JLayeredPane();
+        vista.setBounds(0,0,getWidth(),getHeight());
+        vista.add(juego, JLayeredPane.DEFAULT_LAYER);
+        vista.add(j1salud,  JLayeredPane.PALETTE_LAYER);
+        vista.add(j2salud,  JLayeredPane.PALETTE_LAYER);
+        vista.add(j1mana,   JLayeredPane.PALETTE_LAYER);
+        vista.add(j2mana,   JLayeredPane.PALETTE_LAYER);
+        vista.add(botoncarta1,  JLayeredPane.PALETTE_LAYER);
+        vista.add(botoncarta2,  JLayeredPane.PALETTE_LAYER);
+        vista.add(botoncarta3,  JLayeredPane.PALETTE_LAYER);
+
+        add(vista);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -174,11 +215,20 @@ class Partida extends JFrame implements ActionListener {
         else if (e.getSource() == botoncarta3) {
             System.exit(0);
         }
+        turnoActual = turno.alternarTurno(jugador1, jugador2);
+        repaint();
     }
 }
 
 class Juego extends JPanel {
     private Image imagen;
+
+    private String turnoActual = "Jugador 1";
+
+    public void setTurnoActual(String turnoActual) {
+        this.turnoActual = turnoActual;
+        repaint();
+    }
 
     public void paintComponent(Graphics g) {
         //Cosas de la funcion
@@ -186,7 +236,7 @@ class Juego extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         //Imagen de fondo
-        File miimagen=new File("Imagenes/MesaJuego.jpg");
+        File miimagen=new File("Imagenes/CartasFondo.jpg");
         try {
             imagen = ImageIO.read(miimagen);
         }
@@ -205,6 +255,6 @@ class Juego extends JPanel {
         Font mifuente = new Font("Arial", Font.BOLD, 50);
         g2.setFont(mifuente);
         g2.setColor(Color.BLUE);
-        g2.drawString("Turno de ", anchura/9, altura/8);
+        g2.drawString("Turno de " + turnoActual, anchura/9, altura/5);
     }
 }
