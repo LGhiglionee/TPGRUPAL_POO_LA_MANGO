@@ -102,6 +102,7 @@ class Partida extends JFrame implements ActionListener {
     JButton botoncarta1;
     JButton botoncarta2;
     JButton botoncarta3;
+    JLabel jturno;
     Turnos turno;
     ArrayList<Carta> cartasjugadas;
 
@@ -153,17 +154,11 @@ class Partida extends JFrame implements ActionListener {
         j2mana.setBounds(anchura/4 + anchoboton,altura/50,anchura/6,altura/10);
 
         //Etiqueta turno
-        String sj = "";
-        if (turno.getJugadorMano() == turno.getJugador1()){
-            sj = "Jugador 1";
-        }
-        else {
-            sj = "Jugador 2";
-        }
-        JLabel jturno = new JLabel("Turno de " + sj);
-        jturno.setBounds(anchura/9, altura/5, anchura/2,altura/4);
-        Font mifuente = new Font("Arial", Font.BOLD, 25);
+        jturno = new JLabel("Turno de Jugador 1");
+        jturno.setBounds(anchura/9, altura/75, anchura/2,altura/4);
+        Font mifuente = new Font("Arial", Font.BOLD, 45);
         jturno.setFont(mifuente);
+        jturno.setForeground(Color.BLUE);
 
         //Botones de cartas
 
@@ -246,8 +241,12 @@ class Partida extends JFrame implements ActionListener {
             }
         }
         turno.alternarTurno();
-        new Partida();
-        dispose();
+        if (turno.getJugadorMano() == turno.getJugador1()) {
+            jturno.setText("Turno de Jugador 1");
+        } else {
+            jturno.setText("Turno de Jugador 2");
+        }
+        jturno.repaint();
     }
 }
 
