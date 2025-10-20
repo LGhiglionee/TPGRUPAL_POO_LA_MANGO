@@ -170,20 +170,21 @@ class Partida extends JFrame implements ActionListener {
         carta2 = turno.getJugadorMano().getTresCartas().get(1);
         carta3 = turno.getJugadorMano().getTresCartas().get(2);
 
-        //ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
-        botoncarta1 = new JButton("1");
+        ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
+        //Image imagencompleta1 = imgcarta1.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        botoncarta1 = new JButton(imgcarta1);
         botoncarta1.setBounds(anchura/4 - anchoboton*2,altura/4,anchoboton,altoboton);
         botoncarta1.addActionListener(this);
         add(botoncarta1);
 
-        //ImageIcon imgcarta2 = new ImageIcon(carta2.getImagen());
-        botoncarta2 = new JButton("2");
+        ImageIcon imgcarta2 = new ImageIcon(carta2.getImagen());
+        botoncarta2 = new JButton(imgcarta2);
         botoncarta2.setBounds(anchura/4 - anchoboton/2,altura/4,anchoboton,altoboton);
         botoncarta2.addActionListener(this);
         add(botoncarta2);
 
-        //ImageIcon imgcarta3 = new ImageIcon(carta3.getImagen());
-        botoncarta3 = new JButton("3");
+        ImageIcon imgcarta3 = new ImageIcon(carta3.getImagen());
+        botoncarta3 = new JButton(imgcarta3);
         botoncarta3.setBounds(anchura/4 + anchoboton,altura/4,anchoboton,altoboton);
         botoncarta3.addActionListener(this);
         add(botoncarta3);
