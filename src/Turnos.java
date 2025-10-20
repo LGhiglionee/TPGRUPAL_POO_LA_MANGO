@@ -17,43 +17,44 @@ public class Turnos {
     }
 
     public void jugarMano(Carta carta1, Carta carta2) {
-        if (carta1.getPalo().equals("Copa") || carta2.getPalo().equals("Copa")) {
-            if (carta1.getPalo().equals("Copa")) {
-                jugador1.actualizarSalud(carta1.getNumero());
-            } else {
-                jugador2.actualizarSalud(carta2.getNumero());
-            }
-        } else if (carta1.getPalo().equals("Oro") || carta2.getPalo().equals("Oro")) {
-            if (carta1.getPalo().equals("Oro")) {
-                jugador1.agregarMana(carta1.getNumero());
-            } else {
-                jugador2.agregarMana(carta2.getNumero());
-            }
-        } else {
+
+        if ((carta1.getPalo().equals("Copa") || carta1.getPalo().equals("Oro")) &&
+                (carta2.getPalo().equals("Copa") || carta2.getPalo().equals("Oro"))) {
+
+            if (carta1.getPalo().equals("Copa")) jugador1.actualizarSalud(carta1.getNumero());
+            if (carta1.getPalo().equals("Oro")) jugador1.agregarMana(carta1.getNumero());
+
+            if (carta2.getPalo().equals("Copa")) jugador2.actualizarSalud(carta2.getNumero());
+            if (carta2.getPalo().equals("Oro")) jugador2.agregarMana(carta2.getNumero());
+        }
+
+        else if ((carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) &&
+                (carta2.getPalo().equals("Espada") || carta2.getPalo().equals("Basto"))) {
+
             calcularDanio(carta1, carta2);
+        }
+
+        else {
+            if (carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) {
+                jugador2.actualizarSalud(-carta1.getNumero());
+
+                if (carta2.getPalo().equals("Copa")) jugador2.actualizarSalud(carta2.getNumero());
+                if (carta2.getPalo().equals("Oro")) jugador2.agregarMana(carta2.getNumero());
+            } else {
+                jugador1.actualizarSalud(-carta2.getNumero());
+
+                if (carta1.getPalo().equals("Copa")) jugador1.actualizarSalud(carta1.getNumero());
+                if (carta1.getPalo().equals("Oro")) jugador1.agregarMana(carta1.getNumero());
+            }
         }
     }
 
     public void calcularDanio(Carta carta1, Carta carta2) {
-
-        if (carta1.getPalo().equals("Basto") && carta2.getPalo().equals("Espada")) {
-            if (carta2.getNumero() > carta1.getNumero()) {
-                jugador1.actualizarSalud(carta2.getNumero() - carta1.getNumero());
-            }
-        }
-        if (carta1.getPalo().equals("Espada") && carta2.getPalo().equals("Basto")) {
-            if (carta2.getNumero() < carta1.getNumero()) {
-                jugador2.actualizarSalud(carta2.getNumero() - carta1.getNumero());
-
-            }
-
-        }
-        if (carta1.getPalo().equals("Basto") && carta2.getPalo().equals("Basto")) {
-            if (carta2.getNumero() < carta1.getNumero()) {
-                jugador2.actualizarSalud(-carta1.getNumero());
-            } else {
-                jugador1.actualizarSalud(-carta2.getNumero());
-
+        if ((carta1.getPalo().equals("Basto") || carta1.getPalo().equals("Espada")) && (carta2.getPalo().equals("Basto") || carta2.getPalo().equals("Espada"))) {
+           if (carta2.getNumero() > carta1.getNumero()) {
+                jugador1.actualizarSalud(-(carta2.getNumero() - carta1.getNumero()));
+            } if (carta1.getNumero() > carta2.getNumero()) {
+                jugador2.actualizarSalud(-(carta1.getNumero() - carta2.getNumero()));
             }
         }
     }
@@ -116,6 +117,10 @@ public class Turnos {
 
     public Jugador getJugador2() {
         return jugador2;
+    }
+
+    public Mazo getMazo(){
+        return mazo;
     }
 }
 

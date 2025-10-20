@@ -102,6 +102,10 @@ class Partida extends JFrame implements ActionListener {
     JButton botoncarta1;
     JButton botoncarta2;
     JButton botoncarta3;
+    JProgressBar j1salud;
+    JProgressBar j2salud;
+    JLabel j1mana;
+    JLabel j2mana;
     JLabel jturno;
     Turnos turno;
     ArrayList<Carta> cartasjugadas;
@@ -131,14 +135,14 @@ class Partida extends JFrame implements ActionListener {
 
         //Barra salud
 
-        JProgressBar j1salud = new JProgressBar(0,100);
+        j1salud = new JProgressBar(0,100);
         j1salud.setBounds(anchura/4 - anchoboton*2, altura/50,115,20);
         j1salud.setValue(turno.getJugador1().getSalud());
         j1salud.setStringPainted(true);
         j1salud.setForeground(Color.RED);
         j1salud.setString("Vida: " + turno.getJugador1().getSalud());
 
-        JProgressBar j2salud = new JProgressBar(0,100);
+        j2salud = new JProgressBar(0,100);
         j2salud.setBounds(anchura/4 + anchoboton,altura/50,115,20);
         j2salud.setValue(turno.getJugador2().getSalud());
         j2salud.setStringPainted(true);
@@ -147,10 +151,10 @@ class Partida extends JFrame implements ActionListener {
 
 
         //Etiquetas mana
-        JLabel j1mana = new JLabel("Mana Jugador 1: " + turno.getJugador1().getMana());
+        j1mana = new JLabel("Mana Jugador 1: " + turno.getJugador1().getMana());
         j1mana.setBounds(anchura/4 - anchoboton*2, altura/50,anchura/6,altura/10);
 
-        JLabel j2mana = new JLabel("Mana Jugador 2: " + turno.getJugador2().getMana());
+        j2mana = new JLabel("Mana Jugador 2: " + turno.getJugador2().getMana());
         j2mana.setBounds(anchura/4 + anchoboton,altura/50,anchura/6,altura/10);
 
         //Etiqueta turno
@@ -220,6 +224,7 @@ class Partida extends JFrame implements ActionListener {
             else {
                 cartasjugadas.add(turno.getJugadorMano().getTresCartas().getFirst());
             }
+            turno.getJugadorMano().setCarta(turno.getJugadorMano().getTresCartas(),0, turno.getMazo().getCarta());
         }
         else if (e.getSource() == botoncarta2) {
             if (!cartasjugadas.isEmpty()) {
@@ -230,6 +235,7 @@ class Partida extends JFrame implements ActionListener {
             else {
                 cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(1));
             }
+            turno.getJugadorMano().setCarta(turno.getJugadorMano().getTresCartas(),1, turno.getMazo().getCarta());
         }
         else if (e.getSource() == botoncarta3) {
             if (!cartasjugadas.isEmpty()) {
@@ -240,6 +246,7 @@ class Partida extends JFrame implements ActionListener {
             else {
                 cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(2));
             }
+            turno.getJugadorMano().setCarta(turno.getJugadorMano().getTresCartas(),2, turno.getMazo().getCarta());
         }
         turno.alternarTurno();
         if (turno.getJugadorMano() == turno.getJugador1()) {
@@ -247,6 +254,23 @@ class Partida extends JFrame implements ActionListener {
         } else {
             jturno.setText("Turno de Jugador 2");
         }
+
+        //Cambio de cartas en botones
+        botoncarta1.setIcon(new ImageIcon(turno.getJugadorMano().getTresCartas().get(0).getImagen()));
+        botoncarta2.setIcon(new ImageIcon(turno.getJugadorMano().getTresCartas().get(1).getImagen()));
+        botoncarta3.setIcon(new ImageIcon(turno.getJugadorMano().getTresCartas().get(2).getImagen()));
+
+        //Cambio de etiquetas
+
+        j1salud.setValue(turno.getJugador1().getSalud());
+        j1salud.setString("Vida: " + turno.getJugador1().getSalud());
+        j2salud.setValue(turno.getJugador2().getSalud());
+        j2salud.setString("Vida: " + turno.getJugador2().getSalud());
+
+        j1mana.setText("Mana Jugador 1: "+turno.getJugador1().getMana());
+        j2mana.setText("Mana Jugador 2: "+turno.getJugador2().getMana());
+
+
         jturno.repaint();
     }
 }

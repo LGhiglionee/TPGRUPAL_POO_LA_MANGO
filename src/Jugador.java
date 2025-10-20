@@ -19,7 +19,13 @@ public class Jugador {
         return salud;
     }
 
-    public void actualizarSalud(int curacion) { this.salud += curacion; }
+    public void actualizarSalud(int curacion) {
+        if (this.salud + curacion > 100){
+            this.salud = 100;
+        } else {
+            this.salud += curacion;
+        }
+    }
 
     public void reducirMana(int mana) {
         this.mana += mana;
@@ -46,4 +52,10 @@ public class Jugador {
     public  void setTresCartas(ArrayList<Carta> trescartas) {
         this.trescartas = trescartas;
     }
+
+    public void setCarta(ArrayList<Carta> trescartas, int indice, Carta carta) {
+        this.trescartas.set(indice, carta);
+    }
 }
+
+
