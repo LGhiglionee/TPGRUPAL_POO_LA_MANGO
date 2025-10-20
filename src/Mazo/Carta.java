@@ -17,6 +17,7 @@ public class Carta {
         this.habilidad = "";
         setImagen(palo, numero);
     }
+
     public Carta(String palo, int numero, String habilidad) {
         this.palo = palo;
         this.numero = numero;
@@ -27,7 +28,6 @@ public class Carta {
     public Carta() {}
 
     public String getPalo() {
-
         return this.palo;
     }
 
@@ -60,5 +60,14 @@ public class Carta {
         }
     }
 
-    public Image getImagen() { return imagen; }
+    public Image getImagen(){
+        File imagenCarta = new File("Imagenes/Cartas/"+ this.numero + this.palo + ".PNG");
+        try {
+            imagen = ImageIO.read(imagenCarta);
+        }
+        catch(IOException e) {
+            System.out.println("La imagen no se encuentra");
+        }
+        return imagen;
+    }
 }
