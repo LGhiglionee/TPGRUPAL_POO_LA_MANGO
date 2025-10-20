@@ -12,6 +12,7 @@ public class Jugador {
         this.salud = 100;
         this.mana = 0;
         this.trescartas = new ArrayList<>();
+        this.mano = true;
     }
 
     public int getSalud() {
