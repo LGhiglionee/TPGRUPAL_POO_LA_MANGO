@@ -89,12 +89,10 @@ public class Turnos {
         if (jugador1.getMano()) {
             jugador1.setMano(false);
             jugador2.setMano(true);
-            return "Jugador 2";
         }
         else {
             jugador2.setMano(false);
             jugador1.setMano(true);
-            return "Jugador 1";
         }
     }
 
