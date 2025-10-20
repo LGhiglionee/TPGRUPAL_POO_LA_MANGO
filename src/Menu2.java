@@ -152,6 +152,19 @@ class Partida extends JFrame implements ActionListener {
         JLabel j2mana = new JLabel("Mana Jugador 2: " + turno.getJugador2().getMana());
         j2mana.setBounds(anchura/4 + anchoboton,altura/50,anchura/6,altura/10);
 
+        //Etiqueta turno
+        String sj = "";
+        if (turno.getJugadorMano() == turno.getJugador1()){
+            sj = "Jugador 1";
+        }
+        else {
+            sj = "Jugador 2";
+        }
+        JLabel jturno = new JLabel("Turno de " + sj);
+        jturno.setBounds(anchura/9, altura/5, anchura/2,altura/4);
+        Font mifuente = new Font("Arial", Font.BOLD, 25);
+        jturno.setFont(mifuente);
+
         //Botones de cartas
 
         Carta carta1 = new Carta();
@@ -188,6 +201,7 @@ class Partida extends JFrame implements ActionListener {
         JLayeredPane vista = new JLayeredPane();
         vista.setBounds(0,0,getWidth(),getHeight());
         vista.add(juego, JLayeredPane.DEFAULT_LAYER);
+        vista.add(jturno, JLayeredPane.PALETTE_LAYER);
         vista.add(j1salud,  JLayeredPane.PALETTE_LAYER);
         vista.add(j2salud,  JLayeredPane.PALETTE_LAYER);
         vista.add(j1mana,   JLayeredPane.PALETTE_LAYER);
@@ -202,43 +216,39 @@ class Partida extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        Jugador jugadordelturno = turno.getJugadorMano();
         if (e.getSource() == botoncarta1) {
-            if (cartasjugadas.size() >= 2) {
+            if (!cartasjugadas.isEmpty()) {
+                cartasjugadas.add(turno.getJugadorMano().getTresCartas().getFirst());
                 turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
                 cartasjugadas.clear();
             }
             else {
                 cartasjugadas.add(turno.getJugadorMano().getTresCartas().getFirst());
             }
-
-            turno.alternarTurno();
         }
         else if (e.getSource() == botoncarta2) {
-            if (cartasjugadas.size() >= 2) {
+            if (!cartasjugadas.isEmpty()) {
+                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(1));
                 turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
                 cartasjugadas.clear();
             }
             else {
                 cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(1));
             }
-
-
-            turno.alternarTurno();
         }
         else if (e.getSource() == botoncarta3) {
-            if (cartasjugadas.size() >= 2) {
+            if (!cartasjugadas.isEmpty()) {
+                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(2));
                 turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
                 cartasjugadas.clear();
             }
             else {
                 cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(2));
             }
-
-
-            turno.alternarTurno();
         }
-        repaint();
+        turno.alternarTurno();
+        new Partida();
+        dispose();
     }
 }
 
@@ -249,7 +259,6 @@ class Juego extends JPanel {
 
     public void setTurnoActual(String turnoActual) {
         this.turnoActual = turnoActual;
-        repaint();
     }
 
     public void paintComponent(Graphics g) {
@@ -269,7 +278,7 @@ class Juego extends JPanel {
         g2.drawImage(imagencompleta,0,0,null);
 
         //Fuente de la letra del titulo
-        Toolkit mipantalla =  Toolkit.getDefaultToolkit();
+        /*Toolkit mipantalla =  Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
@@ -277,6 +286,6 @@ class Juego extends JPanel {
         Font mifuente = new Font("Arial", Font.BOLD, 50);
         g2.setFont(mifuente);
         g2.setColor(Color.BLUE);
-        g2.drawString("Turno de " + turnoActual, anchura/9, altura/5);
+        g2.drawString("Turno de " + turnoActual, anchura/9, altura/5);*/
     }
 }
