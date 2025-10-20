@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import Mazo.*;
 
 public class Menu2 {
@@ -101,9 +103,8 @@ class Partida extends JFrame implements ActionListener {
     JButton botoncarta1;
     JButton botoncarta2;
     JButton botoncarta3;
-    Jugador jugador1;
-    Jugador jugador2;
     Turnos turno;
+    ArrayList<Carta> cartasjugadas;
 
     public Partida() {
         //Creacion del marco principal
@@ -119,11 +120,10 @@ class Partida extends JFrame implements ActionListener {
         setIconImage(fondo);
 
         //Inicializacion jugadores y turno
-        jugador1 = new Jugador();
-        jugador2 = new Jugador();
         turno =  new Turnos();
-        turno.llenarMano(jugador1.getTresCartas(), jugador1);
-        turno.llenarMano(jugador2.getTresCartas(), jugador2);
+        turno.llenarMano(turno.getJugador1().getTresCartas(), turno.getJugador1());
+        turno.llenarMano(turno.getJugador2().getTresCartas(), turno.getJugador2());
+        cartasjugadas =  new ArrayList<Carta>();
 
         //Botones de cartas
         int anchoboton = anchura/12;
@@ -133,9 +133,9 @@ class Partida extends JFrame implements ActionListener {
         Carta carta2 = new Carta();
         Carta carta3 = new Carta();
 
-        carta1 = turno.getJugadorMano(jugador1, jugador2).getTresCartas().get(0);
-        carta2 = turno.getJugadorMano(jugador1, jugador2).getTresCartas().get(1);
-        carta3 = turno.getJugadorMano(jugador1, jugador2).getTresCartas().get(2);
+        carta1 = turno.getJugadorMano().getTresCartas().get(0);
+        carta2 = turno.getJugadorMano().getTresCartas().get(1);
+        carta3 = turno.getJugadorMano().getTresCartas().get(2);
 
         //ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
         botoncarta1 = new JButton("1");
@@ -164,15 +164,41 @@ class Partida extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        Jugador jugadordelturno = turno.getJugadorMano(jugador1, jugador2);
+        Jugador jugadordelturno = turno.getJugadorMano();
         if (e.getSource() == botoncarta1) {
-            System.exit(0);
+            if (cartasjugadas.size() >= 2) {
+                turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
+                cartasjugadas.clear();
+            }
+            else {
+                cartasjugadas.add(turno.getJugadorMano().getTresCartas().getFirst());
+            }
+
+            turno.alternarTurno();
         }
         else if (e.getSource() == botoncarta2) {
-            System.exit(0);
+            if (cartasjugadas.size() >= 2) {
+                turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
+                cartasjugadas.clear();
+            }
+            else {
+                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(1));
+            }
+
+
+            turno.alternarTurno();
         }
         else if (e.getSource() == botoncarta3) {
-            System.exit(0);
+            if (cartasjugadas.size() >= 2) {
+                turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
+                cartasjugadas.clear();
+            }
+            else {
+                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(2));
+            }
+
+
+            turno.alternarTurno();
         }
     }
 }

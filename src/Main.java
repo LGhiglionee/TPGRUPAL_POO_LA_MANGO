@@ -22,6 +22,6 @@ public class Main {
             /*System.out.println(mano1.getFirst().getNumero() + mano1.getFirst().getPalo());
             System.out.println(mano2.getFirst().getNumero() + mano2.getFirst().getPalo());*/
         }
-        turnos.resultado(jugador1, jugador2, mazo);
+        turnos.resultado(mazo);
         }
     }

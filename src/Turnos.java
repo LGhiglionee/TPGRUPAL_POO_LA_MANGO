@@ -5,13 +5,18 @@ import java.util.ArrayList;
 public class Turnos {
     Mazo mazo;
     ArrayList<Carta> doscartas;
+    Jugador jugador1;
+    Jugador jugador2;
 
     public Turnos(){
         this.mazo = new Mazo();
         mazo.mezclarMazo();
-        doscartas = new ArrayList<Carta>();    }
+        doscartas = new ArrayList<Carta>();
+        jugador1 = new Jugador();
+        jugador2 = new Jugador();
+    }
 
-    public void jugarMano(Jugador jugador1, Jugador jugador2, Carta carta1, Carta carta2) {
+    public void jugarMano(Carta carta1, Carta carta2) {
         if (carta1.getPalo().equals("Copa") || carta2.getPalo().equals("Copa")) {
             if (carta1.getPalo().equals("Copa")) {
                 jugador1.actualizarSalud(carta1.getNumero());
@@ -25,11 +30,11 @@ public class Turnos {
                 jugador2.agregarMana(carta2.getNumero());
             }
         } else {
-            calcularDanio(jugador1, jugador2, carta1, carta2);
+            calcularDanio(carta1, carta2);
         }
     }
 
-    public void calcularDanio(Jugador jugador1, Jugador jugador2, Carta carta1, Carta carta2) {
+    public void calcularDanio(Carta carta1, Carta carta2) {
 
         if (carta1.getPalo().equals("Basto") && carta2.getPalo().equals("Espada")) {
             if (carta2.getNumero() > carta1.getNumero()) {
@@ -53,7 +58,7 @@ public class Turnos {
         }
     }
 
-    public String resultado(Jugador jugador1, Jugador jugador2, Mazo mazo) {
+    public String resultado(Mazo mazo) {
         if (!mazo.mazoVacio()) {
             if (jugador1.getMana() > jugador2.getMana()) {
                 return "Gano jugador 1";
@@ -71,7 +76,7 @@ public class Turnos {
         }
     }
 
-    public Jugador getJugadorMano(Jugador jugador1, Jugador jugador2) {
+    public Jugador getJugadorMano() {
         if (jugador1.getMano()) {
             return jugador1;
         }
@@ -80,7 +85,7 @@ public class Turnos {
         }
     }
 
-    public void alternarTurno(Jugador jugador1, Jugador jugador2) {
+    public void alternarTurno() {
         if (jugador1.getMano()) {
             jugador1.setMano(false);
             jugador2.setMano(true);
@@ -96,6 +101,14 @@ public class Turnos {
             cartas.add(mazo.getCarta());
         }
         jugador.setTresCartas(cartas);
+    }
+
+    public Jugador getJugador1() {
+        return jugador1;
+    }
+
+    public Jugador getJugador2() {
+        return jugador2;
     }
 }
 
