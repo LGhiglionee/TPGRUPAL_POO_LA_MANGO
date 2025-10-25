@@ -3,7 +3,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import Mazo.*;
@@ -20,6 +22,7 @@ public class Menu2 {
 class Inicio extends JFrame implements ActionListener {
     JButton botonjugar;
     JButton botonsalir;
+    JButton botoninstrucciones;
     JLabel titulo;
     public Inicio() {
         setTitle("Truco a 2 Lucas");
@@ -58,6 +61,12 @@ class Inicio extends JFrame implements ActionListener {
         lamina.add(botonjugar,gbc);
 
         gbc.gridy = 2;
+        botoninstrucciones = new JButton("Instrucciones");
+        botoninstrucciones.addActionListener(this);
+        lamina.add(botoninstrucciones,gbc);
+
+
+        gbc.gridy = 3;
         botonsalir = new JButton("Salir");
         botonsalir.addActionListener(this);
         lamina.add(botonsalir,gbc);
@@ -68,11 +77,17 @@ class Inicio extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonsalir) {
-            System.exit(0);
+            int opcion = JOptionPane.showConfirmDialog (this, "¿Seguro que querés salir?", "Salir", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            };
         }
         else if (e.getSource() == botonjugar) {
             new Partida();
             dispose();
+        }
+        else if (e.getSource() == botoninstrucciones) {
+            new Instrucciones();
         }
     }
 }
@@ -193,7 +208,7 @@ class Partida extends JFrame implements ActionListener {
         jturno.setFont(mifuente);
         jturno.setForeground(Color.WHITE);
 
-        //Cratas
+        //Cartas
         ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
         Image img1 = imgcarta1.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
         botoncarta1 = new JButton(new ImageIcon(img1));
@@ -342,35 +357,69 @@ class Partida extends JFrame implements ActionListener {
     }
 }
 
-class Juego extends JPanel {
-    private Image imagen;
+class Instrucciones extends JFrame {
 
-    private String turnoActual = "Jugador 1";
+    public Instrucciones() {
 
-    public void setTurnoActual(String turnoActual) {
-        this.turnoActual = turnoActual;
-    }
-
-    public void paintComponent(Graphics g) {
-        //Cosas de la funcion
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
-        //Imagen de fondo
-        File miimagen=new File("Imagenes/FondoJuego.png");
-        try {
-            imagen = ImageIO.read(miimagen);
-        }
-        catch(IOException e) {
-            System.out.println("La imagen no se encuentra");
-        }
-        Image imagencompleta = imagen.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-        g2.drawImage(imagencompleta,0,0,null);
-
-        //Fuente de la letra del titulo
-        Toolkit mipantalla =  Toolkit.getDefaultToolkit();
+        Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
+        setBounds(anchura/4,altura/4,anchura/2,altura/2);
+
+        setTitle("Instrucciones del Juego");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JTextArea texto = new JTextArea();
+        texto.setEditable(false);
+
+        JScrollPane scroll = new JScrollPane(texto);
+        add(scroll, BorderLayout.CENTER);
+
+        String ruta = "Instrucciones/instrucciones.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            StringBuilder contenido = new StringBuilder();
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                contenido.append(linea).append("\n");
+            }
+            texto.setText(contenido.toString());
+        } catch (IOException ex) {
+            texto.setText("No se pudo cargar el archivo de instrucciones.");
+        }
+
+        setVisible(true);
     }
 }
+
+    class Juego extends JPanel {
+        private Image imagen;
+
+        private String turnoActual = "Jugador 1";
+
+        public void setTurnoActual(String turnoActual) {
+            this.turnoActual = turnoActual;
+        }
+
+        public void paintComponent(Graphics g) {
+            //Cosas de la funcion
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+
+            //Imagen de fondo
+            File miimagen = new File("Imagenes/FondoJuego.png");
+            try {
+                imagen = ImageIO.read(miimagen);
+            } catch (IOException e) {
+                System.out.println("La imagen no se encuentra");
+            }
+            Image imagencompleta = imagen.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+            g2.drawImage(imagencompleta, 0, 0, null);
+
+            //Fuente de la letra del titulo
+            Toolkit mipantalla = Toolkit.getDefaultToolkit();
+            Dimension tamanio = mipantalla.getScreenSize();
+            int altura = tamanio.height;
+            int anchura = tamanio.width;
+        }
+    }

@@ -1,0 +1,27 @@
+INSTRUCCIONES DEL JUEGO
+
+Cómo jugar:
+
+1. Cada jugador recibe 3 cartas españolas al inicio del turno.
+
+2. Las cartas se juegan simultáneamente.
+
+3. Se aplican las habilidades de las cartas según su palo y valor (ver abajo).
+
+4. Al final del turno, cada jugador recibe una carta nueva, manteniendo siempre 3 cartas en mano.
+
+5. Si ambos jugadores juegan cartas de ataque, la carta de mayor valor gana y genera daño igual a la diferencia entre ambas cartas.
+
+6. El juego termina cuando:
+    -La vida de un jugador llega a 0, o
+    -Se acaba el mazo; en este caso, el jugador con más mana acumulado será el ganador.
+
+Aclaracion: Si ambos tienen la misma cantidad de mana, será un empate y se jugará de nuevo.
+
+🔹 Oro → Mana
+
+🔹 Espada → Daño
+
+🔹 Basto → Daño
+
+🔹 Copa → Vida
