@@ -124,6 +124,8 @@ class Partida extends JFrame implements ActionListener {
     JButton botoncarta1;
     JButton botoncarta2;
     JButton botoncarta3;
+    JButton envido;
+    JButton truco;
 
     //Información de jugadores
     JProgressBar j1salud;
@@ -139,6 +141,9 @@ class Partida extends JFrame implements ActionListener {
     JPanel j2Info;
     JPanel manoCartas;
     JPanel infoTurno;
+    JPanel infoEnvido;
+    JPanel infoTruco;
+
 
     Turnos turno;
     ArrayList<Carta> cartasjugadas;
@@ -224,6 +229,15 @@ class Partida extends JFrame implements ActionListener {
         botoncarta3 = new JButton(new ImageIcon(img3));
         botoncarta3.addActionListener(this);
 
+        //Botones (Envido y Truco)
+        envido = new JButton("Envido");
+        envido.setPreferredSize(new Dimension(100, 30));
+        envido.addActionListener(this);
+
+        truco = new JButton("Truco");
+        truco.setPreferredSize(new Dimension(100, 30));
+        truco.addActionListener(this);
+
         //Panel Principal
         Juego juego = new Juego();
         juego.setLayout(new GridBagLayout());
@@ -239,6 +253,11 @@ class Partida extends JFrame implements ActionListener {
         infoTurno.setOpaque(false);
         manoCartas = new JPanel();
         manoCartas.setOpaque(false);
+        infoEnvido = new JPanel();
+        infoEnvido.setOpaque(false);
+        infoTruco = new JPanel();
+        infoTruco.setOpaque(false);
+
 
         //Borde de los sub-paneles
         j1Info.setBorder(BorderFactory.createTitledBorder("Jugador 1"));
@@ -257,9 +276,24 @@ class Partida extends JFrame implements ActionListener {
 
         infoTurno.add(jturno);
 
+        JPanel panelInferior = new JPanel();
+        panelInferior.setLayout(new GridLayout(1,3));
+        panelInferior.setOpaque(false);
+
+        manoCartas.setLayout(new GridLayout(1, 3)); // 1 fila, 3 columnas, 10px entre cartas
         manoCartas.add(botoncarta1);
         manoCartas.add(botoncarta2);
         manoCartas.add(botoncarta3);
+
+        infoEnvido.setLayout(new FlowLayout(FlowLayout.LEFT));
+        infoEnvido.add(envido);
+
+        infoTruco.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        infoTruco.add(truco);
+
+        panelInferior.add(infoEnvido);
+        panelInferior.add(manoCartas);
+        panelInferior.add(infoTruco);
 
         //Panel jugador 1 (Arriba - izquierda)
         gbc.gridx = 0;
@@ -282,14 +316,15 @@ class Partida extends JFrame implements ActionListener {
         gbc.anchor = GridBagConstraints.NORTHEAST;
         juego.add(j2Info, gbc);
 
-        //Panel mano (Abajo)
+        //Panel inferior
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 3;
+        gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.SOUTH;
-        juego.add(manoCartas, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        juego.add(panelInferior, gbc);
 
         add(juego);
         setVisible(true);
@@ -298,39 +333,36 @@ class Partida extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botoncarta1) {
-            if (!cartasjugadas.isEmpty()) {
-                cartasjugadas.add(turno.getJugadorMano().getTresCartas().getFirst());
-                turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
-                cartasjugadas.clear();
-            }
-            else {
-                cartasjugadas.add(turno.getJugadorMano().getTresCartas().getFirst());
-            }
-            turno.getJugadorMano().setCarta(turno.getJugadorMano().getTresCartas(),0, turno.getMazo().getCarta());
+            turno.jugarCarta(0, cartasjugadas);
         }
         else if (e.getSource() == botoncarta2) {
-            if (!cartasjugadas.isEmpty()) {
-                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(1));
-                turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
-                cartasjugadas.clear();
+            turno.jugarCarta(1,cartasjugadas);
             }
-            else {
-                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(1));
-            }
-            turno.getJugadorMano().setCarta(turno.getJugadorMano().getTresCartas(),1, turno.getMazo().getCarta());
-        }
         else if (e.getSource() == botoncarta3) {
-            if (!cartasjugadas.isEmpty()) {
-                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(2));
-                turno.jugarMano(cartasjugadas.get(0),  cartasjugadas.get(1));
-                cartasjugadas.clear();
-            }
-            else {
-                cartasjugadas.add(turno.getJugadorMano().getTresCartas().get(2));
-            }
-            turno.getJugadorMano().setCarta(turno.getJugadorMano().getTresCartas(),2, turno.getMazo().getCarta());
+            turno.jugarCarta(2, cartasjugadas);
         }
-        turno.alternarTurno();
+        else if (e.getSource() == envido) {
+            Jugador jugadorActual = turno.getJugadorMano();
+
+            if (jugadorActual.getMana() >= 5) {
+                jugadorActual.agregarMana(-5);
+
+                int envidoJ1 = turno.getJugador1().calcularEnvido();
+                int envidoJ2 = turno.getJugador2().calcularEnvido();
+                JOptionPane.showMessageDialog(this, turno.jugarEnvido (envidoJ1, envidoJ2), "Resultado del Envido", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else if (e.getSource() == truco) {
+            if (turno.getJugadorMano().getMana() >= 10){
+                //Agregar lo que haria cantar truco
+                turno.getJugadorMano().agregarMana(-10);
+            } else{
+                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso",  JOptionPane.WARNING_MESSAGE);
+            }
+        }
         if (turno.getJugadorMano() == turno.getJugador1()) {
             jturno.setText("Turno de Jugador 1");
         } else {
@@ -394,12 +426,6 @@ class Instrucciones extends JFrame {
 
     class Juego extends JPanel {
         private Image imagen;
-
-        private String turnoActual = "Jugador 1";
-
-        public void setTurnoActual(String turnoActual) {
-            this.turnoActual = turnoActual;
-        }
 
         public void paintComponent(Graphics g) {
             //Cosas de la funcion

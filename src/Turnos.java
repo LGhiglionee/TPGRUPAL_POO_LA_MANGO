@@ -1,5 +1,6 @@
 import Mazo.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Turnos {
@@ -8,7 +9,7 @@ public class Turnos {
     Jugador jugador1;
     Jugador jugador2;
 
-    public Turnos(){
+    public Turnos() {
         this.mazo = new Mazo();
         mazo.mezclarMazo();
         doscartas = new ArrayList<Carta>();
@@ -26,15 +27,11 @@ public class Turnos {
 
             if (carta2.getPalo().equals("Copa")) jugador2.actualizarSalud(carta2.getNumero());
             if (carta2.getPalo().equals("Oro")) jugador2.agregarMana(carta2.getNumero());
-        }
-
-        else if ((carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) &&
+        } else if ((carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) &&
                 (carta2.getPalo().equals("Espada") || carta2.getPalo().equals("Basto"))) {
 
             calcularDanio(carta1, carta2);
-        }
-
-        else {
+        } else {
             if (carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) {
                 jugador2.actualizarSalud(-carta1.getNumero());
 
@@ -51,9 +48,10 @@ public class Turnos {
 
     public void calcularDanio(Carta carta1, Carta carta2) {
         if ((carta1.getPalo().equals("Basto") || carta1.getPalo().equals("Espada")) && (carta2.getPalo().equals("Basto") || carta2.getPalo().equals("Espada"))) {
-           if (carta2.getNumero() > carta1.getNumero()) {
+            if (carta2.getNumero() > carta1.getNumero()) {
                 jugador1.actualizarSalud(-(carta2.getNumero() - carta1.getNumero()));
-            } if (carta1.getNumero() > carta2.getNumero()) {
+            }
+            if (carta1.getNumero() > carta2.getNumero()) {
                 jugador2.actualizarSalud(-(carta1.getNumero() - carta2.getNumero()));
             }
         }
@@ -68,11 +66,9 @@ public class Turnos {
             } else {
                 return "Gano jugador 2";
             }
-        }
-        else if (jugador2.getMana() == 0) {
+        } else if (jugador2.getMana() == 0) {
             return "Gano jugador 1";
-        }
-        else{
+        } else {
             return "Gano jugador 2";
         }
     }
@@ -80,8 +76,7 @@ public class Turnos {
     public Jugador getJugadorMano() {
         if (jugador1.getMano()) {
             return jugador1;
-        }
-        else {
+        } else {
             return jugador2;
         }
     }
@@ -89,16 +84,14 @@ public class Turnos {
     public String getStringJugadorMano() {
         if (jugador1.getMano()) {
             return "Jugador 1";
-        }
-        else return "Jugador 2";
+        } else return "Jugador 2";
     }
 
     public void alternarTurno() {
         if (jugador1.getMano()) {
             jugador1.setMano(false);
             jugador2.setMano(true);
-        }
-        else {
+        } else {
             jugador2.setMano(false);
             jugador1.setMano(true);
         }
@@ -119,8 +112,39 @@ public class Turnos {
         return jugador2;
     }
 
-    public Mazo getMazo(){
+    public Mazo getMazo() {
         return mazo;
+    }
+
+    public void jugarCarta(int i, ArrayList<Carta> cartasjugadas) {
+        Carta carta = getJugadorMano().getTresCartas().get(i);
+
+        if (!cartasjugadas.isEmpty()) {
+            cartasjugadas.add(carta);
+            jugarMano(cartasjugadas.get(0), cartasjugadas.get(1));
+            cartasjugadas.clear();
+        } else {
+            cartasjugadas.add(carta);
+        }
+        getJugadorMano().setCarta(getJugadorMano().getTresCartas(), i, getMazo().getCarta());
+
+        alternarTurno();
+    }
+
+    public String jugarEnvido(int envidoJ1, int envidoJ2) {
+        String mensaje = "Jugador 1: " + envidoJ1 + " puntos\n" +
+                "Jugador 2: " + envidoJ2 + " puntos\n";
+
+        if (envidoJ1 > envidoJ2) {
+            mensaje += "Gana el envido Jugador 1";
+            getJugador2().actualizarSalud(-envidoJ1 / 2);
+        } else if (envidoJ2 > envidoJ1) {
+            mensaje += "Gana el envido Jugador 2";
+            getJugador1().actualizarSalud(-envidoJ1 / 2);
+        } else {
+            mensaje += "Empate en el envido";
+        }
+        return mensaje;
     }
 }
 
