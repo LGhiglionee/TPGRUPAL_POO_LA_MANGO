@@ -287,13 +287,7 @@ class OpcionesJuego extends JFrame implements ActionListener {
         }
     }
 }
-class Partida extends JFrame implements ActionListener {
-    //Botones de cartas
-    JButton botoncarta1;
-    JButton botoncarta2;
-    JButton botoncarta3;
-    JButton envido;
-    JButton truco;
+
 class Partida extends JFrame implements ActionListener{
     // --- Botones de cartas ---
     JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
