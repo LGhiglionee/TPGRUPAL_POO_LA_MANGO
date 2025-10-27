@@ -27,10 +27,6 @@ public class Jugador {
         }
     }
 
-    public void reducirMana(int mana) {
-        this.mana += mana;
-    }
-
     public void agregarMana(int mana) {
         this.mana += mana;
     }
@@ -55,6 +51,41 @@ public class Jugador {
 
     public void setCarta(ArrayList<Carta> trescartas, int indice, Carta carta) {
         this.trescartas.set(indice, carta);
+    }
+
+    public int calcularEnvido(){
+        ArrayList<Carta> cartas = this.getTresCartas();
+        int maxEnvido = 0;
+
+        for (int i = 0; i < cartas.size(); i++) {
+            for (int j = i + 1; j < cartas.size(); j++) {
+                Carta c1 = cartas.get(i);
+                Carta c2 = cartas.get(j);
+
+                if (c1.getPalo().equals(c2.getPalo())) {
+                    int valor1 = valorEnvido(c1);
+                    int valor2 = valorEnvido(c2);
+                    int total = valor1 + valor2 + 20;
+                    if (total > maxEnvido) maxEnvido = total;
+                }
+            }
+        }
+        if (maxEnvido == 0) {
+            for (int i = 0; i < cartas.size(); i++) {
+                Carta c = cartas.get(i);
+                int valor = valorEnvido(c);
+                if (valor > maxEnvido) {
+                    maxEnvido = valor;
+                }
+            }
+        }
+        return maxEnvido;
+    }
+
+    private int valorEnvido(Carta c) {
+        int numero = c.getNumero();
+        if (numero >= 10) return 0;
+        return numero;
     }
 }
 
