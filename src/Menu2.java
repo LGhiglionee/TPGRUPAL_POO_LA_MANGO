@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import Mazo.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.Font;
 
 public class Menu2 {
     public static void main(String[] args) {
@@ -39,7 +38,6 @@ class Inicio extends JFrame implements ActionListener {
         Font fuenteTitulo = fuente.deriveFont(Font.BOLD,45f);
         Font funeteBoton = fuente.deriveFont(Font.BOLD,20f);
         //Tamaño de pnatalla
-        //setBounds(anchura / 4, altura / 4, anchura, altura);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         //Icono del programa
         Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
@@ -132,7 +130,7 @@ class Inicio extends JFrame implements ActionListener {
             };
         }
         else if (e.getSource() == botonjugar) {
-            new Partida();
+            new OpcionesJuego();
             dispose();
         }
         else if (e.getSource() == botoninstrucciones) {
@@ -161,6 +159,125 @@ class Lamina extends JPanel {
     }
 }
 
+class OpcionesJuego extends JFrame implements ActionListener {
+    JButton botonOpcionPvP;
+    JButton botonOpcionPvC;
+    JButton botonVolver;
+    JLabel titulo;
+    public OpcionesJuego() {
+        //Cosas del programa
+        setTitle("Truco a 2 Lucas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //Creacion del marco principal
+        Toolkit mipantalla =  Toolkit.getDefaultToolkit();
+        Dimension tamanio = mipantalla.getScreenSize();
+        int altura = tamanio.height;
+        int anchura = tamanio.width;
+
+        //Creacion de fuente
+        Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
+        Font fuenteTitulo = fuente.deriveFont(Font.BOLD,45f);
+        Font fuenteBoton = fuente.deriveFont(Font.BOLD,20f);
+
+        //Tamaño de pnatalla
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //Icono del programa
+        Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
+        setIconImage(fondo);
+
+        //Titulo
+        titulo = new JLabel("Truco a 2 Lucas");
+        titulo.setFont(fuenteTitulo);
+        titulo.setHorizontalTextPosition(SwingConstants.CENTER);
+        titulo.setVerticalTextPosition(SwingConstants.CENTER);
+        titulo.setOpaque(false);
+
+        //Botones
+        botonOpcionPvP = new JButton("Jugar PvP");
+        botonOpcionPvP.setFont(fuenteBoton);
+        botonOpcionPvP.addActionListener(this);
+
+        botonOpcionPvC = new JButton("Jugar PvC");
+        botonOpcionPvC.setFont(fuenteBoton);
+        botonOpcionPvC.addActionListener(this);
+
+        botonVolver = new JButton("Volver");
+        botonVolver.setFont(fuenteBoton);
+        botonVolver.addActionListener(this);
+
+        //--- IMAGENES LABELS ----
+        //Imagen titulo
+        ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("Imagenes/FondoTitulo.png",anchura/2,altura/4);
+        titulo.setHorizontalTextPosition(SwingConstants.CENTER);
+        titulo.setVerticalTextPosition(SwingConstants.CENTER);
+        titulo.setIcon(imagenTitulo);
+
+        //Imagenes botones
+        ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("imagenes/FondoBoton.png",anchura/5,altura/10);
+
+        botonOpcionPvP.setHorizontalTextPosition(SwingConstants.CENTER);
+        botonOpcionPvP.setVerticalTextPosition(SwingConstants.CENTER);
+        botonOpcionPvP.setIcon(imagenBotonnes);
+        botonOpcionPvP.setBorderPainted(false);
+        botonOpcionPvP.setContentAreaFilled(false);
+
+        botonOpcionPvC.setHorizontalTextPosition(SwingConstants.CENTER);
+        botonOpcionPvC.setVerticalTextPosition(SwingConstants.CENTER);
+        botonOpcionPvC.setIcon(imagenBotonnes);
+        botonOpcionPvC.setContentAreaFilled(false);
+        botonOpcionPvC.setBorderPainted(false);
+
+        botonVolver.setHorizontalTextPosition(SwingConstants.CENTER);
+        botonVolver.setVerticalTextPosition(SwingConstants.CENTER);
+        botonVolver.setIcon(imagenBotonnes);
+        botonVolver.setContentAreaFilled(false);
+        botonVolver.setBorderPainted(false);
+
+        //--- LAMINA Y PANELES---
+        Lamina lamina = new Lamina();
+        lamina.setLayout(new GridBagLayout());
+
+        // Panel Botones
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new GridLayout(3,1,0,10));
+        panelBotones.setOpaque(false);
+
+        // --- CONFIGURACION DE GBC --
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 20, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weighty = 0.4;
+
+        // Titulo
+        gbc.anchor = GridBagConstraints.CENTER;
+        lamina.add(titulo,gbc);
+
+        // PanelBotones
+        gbc.gridy = 1;
+        gbc.weighty = 0.6;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panelBotones.add(botonOpcionPvP);
+        panelBotones.add(botonOpcionPvC);
+        panelBotones.add(botonVolver);
+        lamina.add(panelBotones,gbc);
+        add(lamina);
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==botonOpcionPvP){
+            new Partida();
+            dispose();
+        }
+        else if(e.getSource()==botonOpcionPvC){}
+        else if(e.getSource()==botonVolver){
+            new Inicio();
+            dispose();
+        }
+    }
+}
 class Partida extends JFrame implements ActionListener {
     //Botones de cartas
     JButton botoncarta1;
@@ -451,10 +568,13 @@ class Instrucciones extends JFrame {
         int anchura = tamanio.width;
         setBounds(anchura/4,altura/4,anchura/2,altura/2);
 
+        Font fuente = GestorRecursos.cargarFuente("Fuente/ka1.ttf");
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD,10f);
         setTitle("Instrucciones del Juego");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JTextArea texto = new JTextArea();
+        texto.setFont(fuenteTexto);
         texto.setEditable(false);
 
         JScrollPane scroll = new JScrollPane(texto);
