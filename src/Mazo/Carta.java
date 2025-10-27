@@ -1,9 +1,12 @@
 package Mazo;
 
+import Excepciones.ImagenNoEncontradaException;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Carta {
     protected String palo;
@@ -51,12 +54,15 @@ public class Carta {
     }
 
     public void setImagen(String palo, int numero) {
-        File miimagen=new File(palo + numero + ".png");
+        String ruta = "Imagenes/Cartas/" + numero + palo + ".PNG";
         try {
-            this.imagen = ImageIO.read(miimagen);
-        }
-        catch(IOException e) {
-            System.out.println("La imagen no se encuentra");
+            File archivo = new File(ruta);
+            imagen = ImageIO.read(archivo);
+            if (imagen == null) {
+                throw new ImagenNoEncontradaException("No se pudo leer la imagen " + archivo.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            throw new ImagenNoEncontradaException("La imagen " + numero + palo + ".PNG no se encuentra.");
         }
     }
 
@@ -66,7 +72,7 @@ public class Carta {
             imagen = ImageIO.read(imagenCarta);
         }
         catch(IOException e) {
-            System.out.println("La imagen no se encuentra");
+            throw new ImagenNoEncontradaException("La imagen " + this.numero + this.palo + ".png no se encuentra.");
         }
         return imagen;
     }

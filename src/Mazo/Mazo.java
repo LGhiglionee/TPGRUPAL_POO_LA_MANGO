@@ -1,7 +1,8 @@
 package Mazo;
+import Excepciones.MazoVacioException;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Mazo {
     private ArrayList<Carta> cartas;
@@ -18,7 +19,10 @@ public class Mazo {
         }
     }
 
-    public Carta getCarta() {
+    public Carta getCarta() throws MazoVacioException {
+        if (cartas.isEmpty()) {
+            throw new MazoVacioException("No es posible obtener una carta. El mazo está vacío.");
+        }
         Carta cartaAleatoria = cartas.getFirst();
         cartas.removeFirst();
         return cartaAleatoria;
@@ -29,8 +33,8 @@ public class Mazo {
         return cartas;
     }
 
-    public boolean mazoVacio() {
-        return cartas.isEmpty();
+    public int cartasRestantes() {
+        return cartas.size();
     }
 
 }
