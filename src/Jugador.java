@@ -3,10 +3,10 @@ import Mazo.Carta;
 import java.util.ArrayList;
 
 public class Jugador {
-    private int salud;
-    private int mana;
-    private boolean mano;
-    private ArrayList<Carta> trescartas;
+    protected int salud;
+    protected int mana;
+    protected boolean mano;
+    protected ArrayList<Carta> trescartas;
 
     public Jugador() {
         this.salud = 100;
