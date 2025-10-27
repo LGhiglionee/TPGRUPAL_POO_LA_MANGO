@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import Excepciones.*;
 import Mazo.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,7 +19,6 @@ public class Menu2 {
         ventana1.setVisible(true);
         ventana1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
 }
 
 class Inicio extends JFrame implements ActionListener {
@@ -25,6 +26,7 @@ class Inicio extends JFrame implements ActionListener {
     JButton botonsalir;
     JButton botoninstrucciones;
     JLabel titulo;
+
     public Inicio() {
         setTitle("Truco a 2 Lucas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,98 +35,105 @@ class Inicio extends JFrame implements ActionListener {
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-        //Creacion de fuente
-        Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
-        Font fuenteTitulo = fuente.deriveFont(Font.BOLD,45f);
-        Font funeteBoton = fuente.deriveFont(Font.BOLD,20f);
-        //Tamaño de pnatalla
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //Icono del programa
-        Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
-        setIconImage(fondo);
 
-        //--- LABELS ---
-        //Titulo
-        titulo = new  JLabel("Truco a 2 lucas");
-        titulo.setFont(fuenteTitulo);
-        titulo.setForeground(Color.black);
+        try {
+            //Creacion de fuente
+            Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
+            Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
+            Font funeteBoton = fuente.deriveFont(Font.BOLD, 20f);
 
-        //Botones de jugar y salir
-        botonjugar = new JButton("Jugar");
-        botonjugar.setFont(funeteBoton);
-        botonjugar.addActionListener(this);
+            // --- ICONO E IMÁGENES ---
+            Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
+            setIconImage(fondo);
 
-        botoninstrucciones = new JButton("Instrucciones");
-        botoninstrucciones.setFont(funeteBoton);
-        botoninstrucciones.addActionListener(this);
+            // --- TÍTULO ---
+            titulo = new JLabel("Truco a 2 lucas");
+            titulo.setFont(fuenteTitulo);
+            titulo.setForeground(Color.black);
 
-        botonsalir = new JButton("Salir");
-        botonsalir.setFont(funeteBoton);
-        botonsalir.addActionListener(this);
+            //Botones de jugar y salir
+            botonjugar = new JButton("Jugar");
+            botonjugar.setFont(funeteBoton);
+            botonjugar.addActionListener(this);
 
-        //--- IMAGENES LABELS ----
-        //Imagen titulo
-        ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("Imagenes/FondoTitulo.png",anchura/2,altura/4);
-        titulo.setHorizontalTextPosition(SwingConstants.CENTER);
-        titulo.setVerticalTextPosition(SwingConstants.CENTER);
-        titulo.setIcon(imagenTitulo);
+            botoninstrucciones = new JButton("Instrucciones");
+            botoninstrucciones.setFont(funeteBoton);
+            botoninstrucciones.addActionListener(this);
 
-        //Imagenes botones
-        ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("imagenes/FondoBoton.png",anchura/5,altura/10);
+            botonsalir = new JButton("Salir");
+            botonsalir.setFont(funeteBoton);
+            botonsalir.addActionListener(this);
 
-        botonjugar.setHorizontalTextPosition(SwingConstants.CENTER);
-        botonjugar.setVerticalTextPosition(SwingConstants.CENTER);
-        botonjugar.setIcon(imagenBotonnes);
-        botonjugar.setBorderPainted(false);
-        botonjugar.setContentAreaFilled(false);
 
-        botoninstrucciones.setHorizontalTextPosition(SwingConstants.CENTER);
-        botoninstrucciones.setVerticalTextPosition(SwingConstants.CENTER);
-        botoninstrucciones.setIcon(imagenBotonnes);
-        botoninstrucciones.setBorderPainted(false);
-        botoninstrucciones.setContentAreaFilled(false);
+            //Tamaño de pantalla
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        botonsalir.setHorizontalTextPosition(SwingConstants.CENTER);
-        botonsalir.setVerticalTextPosition(SwingConstants.CENTER);
-        botonsalir.setIcon(imagenBotonnes);
-        botonsalir.setBorderPainted(false);
-        botonsalir.setContentAreaFilled(false);
+            //Imagen titulo
+            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("Imagenes/FondoTitulo.png", anchura / 2, altura / 4);
+            titulo.setHorizontalTextPosition(SwingConstants.CENTER);
+            titulo.setVerticalTextPosition(SwingConstants.CENTER);
+            titulo.setIcon(imagenTitulo);
 
-        //--- LOGICA LAMINA ---
-        //Lamina
-        Lamina lamina = new Lamina();
-        lamina.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 20, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+            //Imagenes botones
+            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("imagenes/FondoBoton.png", anchura / 5, altura / 10);
 
-        //Titulo
-        gbc.weighty = 0.4;
-        gbc.anchor = GridBagConstraints.CENTER;
-        lamina.add(titulo,gbc);
+            botonjugar.setHorizontalTextPosition(SwingConstants.CENTER);
+            botonjugar.setVerticalTextPosition(SwingConstants.CENTER);
+            botonjugar.setIcon(imagenBotonnes);
+            botonjugar.setBorderPainted(false);
+            botonjugar.setContentAreaFilled(false);
 
-        //Panel botones
-        JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new GridLayout(3,1,0,10));
-        panelBotones.setOpaque(false);
+            botoninstrucciones.setHorizontalTextPosition(SwingConstants.CENTER);
+            botoninstrucciones.setVerticalTextPosition(SwingConstants.CENTER);
+            botoninstrucciones.setIcon(imagenBotonnes);
+            botoninstrucciones.setBorderPainted(false);
+            botoninstrucciones.setContentAreaFilled(false);
 
-        //Botones
-        panelBotones.add(botonjugar);
-        panelBotones.add(botoninstrucciones);
-        panelBotones.add(botonsalir);
-        gbc.weighty = 0.6;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
-        lamina.add(panelBotones,gbc);
+            botonsalir.setHorizontalTextPosition(SwingConstants.CENTER);
+            botonsalir.setVerticalTextPosition(SwingConstants.CENTER);
+            botonsalir.setIcon(imagenBotonnes);
+            botonsalir.setBorderPainted(false);
+            botonsalir.setContentAreaFilled(false);
 
-        add(lamina);
-        setVisible(true);
+            //--- LOGICA LAMINA ---
+            //Lamina
+            Lamina lamina = new Lamina();
+            lamina.setLayout(new GridBagLayout());
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 20, 10);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+
+            //Titulo
+            gbc.weighty = 0.4;
+            gbc.anchor = GridBagConstraints.CENTER;
+            lamina.add(titulo, gbc);
+
+            //Panel botones
+            JPanel panelBotones = new JPanel(new GridLayout(3, 1, 0, 10));
+            panelBotones.setOpaque(false);
+
+            //Botones
+            panelBotones.add(botonjugar);
+            panelBotones.add(botoninstrucciones);
+            panelBotones.add(botonsalir);
+            gbc.weighty = 0.6;
+            gbc.gridy = 1;
+            gbc.anchor = GridBagConstraints.CENTER;
+            lamina.add(panelBotones, gbc);
+
+            add(lamina);
+            setVisible(true);
+        } catch (ImagenNoEncontradaException | FuenteNoEncontradaException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de recursos", JOptionPane.ERROR_MESSAGE);
+            System.exit(1); // opcional, para cerrar si los recursos son críticos
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonsalir) {
-            int opcion = JOptionPane.showConfirmDialog (this, "¿Seguro que querés salir?", "Salir", JOptionPane.YES_NO_OPTION);
+            int opcion = JOptionPane.showConfirmDialog (this, "¿Seguro que desea salir?", "Salir", JOptionPane.YES_NO_OPTION);
             if (opcion == JOptionPane.YES_OPTION) {
                 System.exit(0);
             };
@@ -285,45 +294,51 @@ class Partida extends JFrame implements ActionListener {
     JButton botoncarta3;
     JButton envido;
     JButton truco;
+class Partida extends JFrame implements ActionListener{
+    // --- Botones de cartas ---
+    JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
 
-    //Información de jugadores
-    JProgressBar j1salud;
-    JProgressBar j2salud;
-    JLabel j1mana;
-    JLabel j2mana;
-    JLabel j1nombre;
-    JLabel j2nombre;
-    JLabel jturno;
+    // --- Información de jugadores ---
+    JProgressBar j1salud, j2salud;
+    JLabel j1mana, j2mana, j1nombre, j2nombre, jturno;
 
-    //Paneles
-    JPanel j1Info;
-    JPanel j2Info;
-    JPanel manoCartas;
-    JPanel infoTurno;
-    JPanel infoEnvido;
-    JPanel infoTruco;
+    // --- Paneles ---
+    JPanel j1Info, j2Info, manoCartas, infoTurno, infoEnvido, infoTruco;
 
 
     Turnos turno;
     ArrayList<Carta> cartasjugadas;
 
     public Partida() {
-        //Creacion del marco principal
+        setTitle("Truco a 2 Lucas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-        //setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        //Titulo del programa e icono
-        setTitle("Truco a 2 Lucas");
-        Image fondo = mipantalla.getImage("Imagenes/Fondojuego.png");
-        setIconImage(fondo);
+        //Cargar icono.
+        try {
+            Image fondo = mipantalla.getImage("Imagenes/Fondojuego.png");
+            setIconImage(fondo);
+        } catch (ImagenNoEncontradaException e){
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el ícono del juego.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
 
-        //inicializar datos
-        turno = new Turnos();
+        //Inicializar datos del turno.
+        try {
+            turno = new Turnos();
+            turno.llenarMano(turno.getJugador1());
+            turno.llenarMano(turno.getJugador2());
+
+        } catch (MazoVacioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al iniciar la partida", JOptionPane.ERROR_MESSAGE);
+            dispose();
+            return;
+        }
+
         j1salud = new JProgressBar(0, 100);
         j2salud = new JProgressBar(0, 100);
         j1mana = new JLabel("Mana Jugador 1: " + turno.getJugador1().getMana());
@@ -336,9 +351,6 @@ class Partida extends JFrame implements ActionListener {
         botoncarta2 = new JButton("Carta 2");
         botoncarta3 = new JButton("Carta 3");
 
-        //Inicializacion jugadores y turno
-        turno.llenarMano(turno.getJugador1().getTresCartas(), turno.getJugador1());
-        turno.llenarMano(turno.getJugador2().getTresCartas(), turno.getJugador2());
         cartasjugadas =  new ArrayList<Carta>();
 
         //Tamanio botones
@@ -502,13 +514,25 @@ class Partida extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botoncarta1) {
-            turno.jugarCarta(0, cartasjugadas);
+            try {
+                turno.jugarCarta(0, cartasjugadas);
+            } catch (MazoVacioException | PosicionInvalidaException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         else if (e.getSource() == botoncarta2) {
-            turno.jugarCarta(1,cartasjugadas);
+            try {
+                turno.jugarCarta(1,cartasjugadas);
+            } catch (MazoVacioException | PosicionInvalidaException ex) {
+                throw new RuntimeException(ex);
             }
+        }
         else if (e.getSource() == botoncarta3) {
-            turno.jugarCarta(2, cartasjugadas);
+            try {
+                turno.jugarCarta(2, cartasjugadas);
+            } catch (MazoVacioException | PosicionInvalidaException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         else if (e.getSource() == envido) {
             Jugador jugadorActual = turno.getJugadorMano();
@@ -516,8 +540,18 @@ class Partida extends JFrame implements ActionListener {
             if (jugadorActual.getMana() >= 5) {
                 jugadorActual.agregarMana(-5);
 
-                int envidoJ1 = turno.getJugador1().calcularEnvido();
-                int envidoJ2 = turno.getJugador2().calcularEnvido();
+                int envidoJ1 = 0;
+                try {
+                    envidoJ1 = turno.getJugador1().calcularEnvido();
+                } catch (JugadorSinCartasException ex) {
+                    throw new RuntimeException(ex);
+                }
+                int envidoJ2 = 0;
+                try {
+                    envidoJ2 = turno.getJugador2().calcularEnvido();
+                } catch (JugadorSinCartasException ex) {
+                    throw new RuntimeException(ex);
+                }
                 JOptionPane.showMessageDialog(this, turno.jugarEnvido (envidoJ1, envidoJ2), "Resultado del Envido", JOptionPane.INFORMATION_MESSAGE);
 
             } else {

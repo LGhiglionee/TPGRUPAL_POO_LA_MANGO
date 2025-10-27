@@ -1,5 +1,6 @@
+import Excepciones.JugadorSinCartasException;
+import Excepciones.PosicionInvalidaException;
 import Mazo.Carta;
-
 import java.util.ArrayList;
 
 public class Jugador {
@@ -11,7 +12,7 @@ public class Jugador {
     public Jugador() {
         this.salud = 100;
         this.mana = 0;
-        this.trescartas = new ArrayList<>();
+        this.trescartas = new ArrayList<>(3);
         this.mano = true;
     }
 
@@ -19,11 +20,11 @@ public class Jugador {
         return salud;
     }
 
-    public void actualizarSalud(int curacion) {
-        if (this.salud + curacion > 100){
+    public void actualizarSalud(int salud) {
+        if (this.salud + salud > 100){
             this.salud = 100;
         } else {
-            this.salud += curacion;
+            this.salud += salud;
         }
     }
 
@@ -49,11 +50,18 @@ public class Jugador {
         this.trescartas = trescartas;
     }
 
-    public void setCarta(ArrayList<Carta> trescartas, int indice, Carta carta) {
+    public void setCarta(int indice, Carta carta) throws PosicionInvalidaException {
+        if (indice < 0 || indice >= this.trescartas.size()) {
+            throw new PosicionInvalidaException("Índice fuera de rango al intentar asignar carta: " + indice);
+        }
         this.trescartas.set(indice, carta);
     }
 
-    public int calcularEnvido(){
+    public int calcularEnvido() throws JugadorSinCartasException {
+        if (trescartas == null || trescartas.isEmpty()) {
+            throw new JugadorSinCartasException("El jugador no tiene cartas para calcular el envido.");
+        }
+
         ArrayList<Carta> cartas = this.getTresCartas();
         int maxEnvido = 0;
 
@@ -63,10 +71,9 @@ public class Jugador {
                 Carta c2 = cartas.get(j);
 
                 if (c1.getPalo().equals(c2.getPalo())) {
-                    int valor1 = valorEnvido(c1);
-                    int valor2 = valorEnvido(c2);
-                    int total = valor1 + valor2 + 20;
-                    if (total > maxEnvido) maxEnvido = total;
+                    int total = valorEnvido(c1) + valorEnvido(c2) + 20;
+                    if (total > maxEnvido)
+                        maxEnvido = total;
                 }
             }
         }

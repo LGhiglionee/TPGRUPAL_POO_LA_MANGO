@@ -1,6 +1,7 @@
+import Excepciones.MazoVacioException;
+import Excepciones.PosicionInvalidaException;
 import Mazo.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class Turnos {
@@ -57,15 +58,21 @@ public class Turnos {
         }
     }
 
-    public String resultado(Mazo mazo) {
-        if (!mazo.mazoVacio()) {
-            if (jugador1.getMana() > jugador2.getMana()) {
-                return "Gano jugador 1";
-            } else if (jugador1.getMana() == jugador2.getMana()) {
-                return "No gano nadie, EMPATE";
-            } else {
-                return "Gano jugador 2";
-            }
+    public String resultado(Mazo mazo) throws MazoVacioException {
+        if (mazo == null || mazo.cartasRestantes() == 0) {
+            throw new MazoVacioException("No se puede calcular el resultado: el mazo está vacío.");
+        }
+
+        int mana1 = jugador1.getMana();
+        int mana2 = jugador2.getMana();
+
+        if (mana1 > mana2) {
+            return "Gano jugador 1";
+        } else if (mana1 == mana2) {
+            return "No gano nadie, EMPATE";
+        } if (mana1 < mana2){
+            return "Gano jugador 2";
+
         } else if (jugador2.getMana() == 0) {
             return "Gano jugador 1";
         } else {
@@ -97,8 +104,9 @@ public class Turnos {
         }
     }
 
-    public void llenarMano(ArrayList<Carta> cartas, Jugador jugador) {
-        while (cartas.size() != 3) {
+    public void llenarMano(Jugador jugador) throws MazoVacioException {
+        ArrayList<Carta> cartas = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
             cartas.add(mazo.getCarta());
         }
         jugador.setTresCartas(cartas);
@@ -116,7 +124,7 @@ public class Turnos {
         return mazo;
     }
 
-    public void jugarCarta(int i, ArrayList<Carta> cartasjugadas) {
+    public void jugarCarta(int i, ArrayList<Carta> cartasjugadas) throws MazoVacioException, PosicionInvalidaException {
         Carta carta = getJugadorMano().getTresCartas().get(i);
 
         if (!cartasjugadas.isEmpty()) {
@@ -126,7 +134,7 @@ public class Turnos {
         } else {
             cartasjugadas.add(carta);
         }
-        getJugadorMano().setCarta(getJugadorMano().getTresCartas(), i, getMazo().getCarta());
+        getJugadorMano().setCarta(i, getMazo().getCarta());
 
         alternarTurno();
     }
