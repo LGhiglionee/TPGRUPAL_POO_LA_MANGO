@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Mazo {
-    private ArrayList<Carta> cartas;
+    private final ArrayList<Carta> cartas;
 
     public Mazo() {
         cartas = new ArrayList<Carta>();
@@ -23,18 +23,16 @@ public class Mazo {
         if (cartas.isEmpty()) {
             throw new MazoVacioException("No es posible obtener una carta. El mazo está vacío.");
         }
-        Carta cartaAleatoria = cartas.getFirst();
-        cartas.removeFirst();
+        Carta cartaAleatoria = cartas.get(0);
+        cartas.remove(0);
         return cartaAleatoria;
     }
 
-    public ArrayList<Carta> mezclarMazo() {
+    public void mezclarMazo() {
         Collections.shuffle(cartas);
-        return cartas;
     }
 
     public int cartasRestantes() {
         return cartas.size();
     }
-
 }

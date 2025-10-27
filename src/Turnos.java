@@ -62,12 +62,17 @@ public class Turnos {
         if (mazo == null || mazo.cartasRestantes() == 0) {
             throw new MazoVacioException("No se puede calcular el resultado: el mazo está vacío.");
         }
-        if (jugador1.getMana() > jugador2.getMana()) {
+
+        int mana1 = jugador1.getMana();
+        int mana2 = jugador2.getMana();
+
+        if (mana1 > mana2) {
             return "Gano jugador 1";
-        } else if (jugador1.getMana() == jugador2.getMana()) {
+        } else if (mana1 == mana2) {
             return "No gano nadie, EMPATE";
-        } if (jugador1.getMana() < jugador2.getMana()){
+        } if (mana1 < mana2){
             return "Gano jugador 2";
+
         } else if (jugador2.getMana() == 0) {
             return "Gano jugador 1";
         } else {
@@ -99,10 +104,8 @@ public class Turnos {
         }
     }
 
-    public void llenarMano(ArrayList<Carta> cartas, Jugador jugador) throws MazoVacioException, PosicionInvalidaException {
-        if (cartas == null) {
-            throw new PosicionInvalidaException("No se puede llenar un mazo vacio");
-        }
+    public void llenarMano(Jugador jugador) throws MazoVacioException {
+        ArrayList<Carta> cartas = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             cartas.add(mazo.getCarta());
         }
@@ -131,7 +134,7 @@ public class Turnos {
         } else {
             cartasjugadas.add(carta);
         }
-        getJugadorMano().setCarta(getJugadorMano().getTresCartas(), i, getMazo().getCarta());
+        getJugadorMano().setCarta(i, getMazo().getCarta());
 
         alternarTurno();
     }
