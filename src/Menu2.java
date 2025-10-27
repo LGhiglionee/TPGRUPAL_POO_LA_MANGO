@@ -1,14 +1,16 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.File;
+import java.awt.Font;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import Mazo.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.awt.Font;
 
 public class Menu2 {
     public static void main(String[] args) {
@@ -32,44 +34,91 @@ class Inicio extends JFrame implements ActionListener {
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-
+        //Creacion de fuente
+        Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
+        Font fuenteTitulo = fuente.deriveFont(Font.BOLD,45f);
+        Font funeteBoton = fuente.deriveFont(Font.BOLD,20f);
         //Tamaño de pnatalla
-        setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
-
+        //setBounds(anchura / 4, altura / 4, anchura, altura);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         //Icono del programa
-        Image fondo = mipantalla.getImage("Imagenes/Fondojuego.png");
+        Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
         setIconImage(fondo);
 
-        //lamina
+        //--- LABELS ---
+        //Titulo
+        titulo = new  JLabel("Truco a 2 lucas");
+        titulo.setFont(fuenteTitulo);
+        titulo.setForeground(Color.black);
+
+        //Botones de jugar y salir
+        botonjugar = new JButton("Jugar");
+        botonjugar.setFont(funeteBoton);
+        botonjugar.addActionListener(this);
+
+        botoninstrucciones = new JButton("Instrucciones");
+        botoninstrucciones.setFont(funeteBoton);
+        botoninstrucciones.addActionListener(this);
+
+        botonsalir = new JButton("Salir");
+        botonsalir.setFont(funeteBoton);
+        botonsalir.addActionListener(this);
+
+        //--- IMAGENES LABELS ----
+        //Imagen titulo
+        ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("Imagenes/FondoTitulo.png",anchura/2,altura/4);
+        titulo.setHorizontalTextPosition(SwingConstants.CENTER);
+        titulo.setVerticalTextPosition(SwingConstants.CENTER);
+        titulo.setIcon(imagenTitulo);
+
+        //Imagenes botones
+        ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("imagenes/FondoBoton.png",anchura/5,altura/10);
+
+        botonjugar.setHorizontalTextPosition(SwingConstants.CENTER);
+        botonjugar.setVerticalTextPosition(SwingConstants.CENTER);
+        botonjugar.setIcon(imagenBotonnes);
+        botonjugar.setBorderPainted(false);
+        botonjugar.setContentAreaFilled(false);
+
+        botoninstrucciones.setHorizontalTextPosition(SwingConstants.CENTER);
+        botoninstrucciones.setVerticalTextPosition(SwingConstants.CENTER);
+        botoninstrucciones.setIcon(imagenBotonnes);
+        botoninstrucciones.setBorderPainted(false);
+        botoninstrucciones.setContentAreaFilled(false);
+
+        botonsalir.setHorizontalTextPosition(SwingConstants.CENTER);
+        botonsalir.setVerticalTextPosition(SwingConstants.CENTER);
+        botonsalir.setIcon(imagenBotonnes);
+        botonsalir.setBorderPainted(false);
+        botonsalir.setContentAreaFilled(false);
+
+        //--- LOGICA LAMINA ---
+        //Lamina
         Lamina lamina = new Lamina();
         lamina.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10, 10, 20, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;
 
         //Titulo
-        titulo = new  JLabel("Truco a 2 lucas");
-        titulo.setFont(new Font("Arial", Font.BOLD, 50));
-        titulo.setForeground(Color.BLUE);
+        gbc.weighty = 0.4;
+        gbc.anchor = GridBagConstraints.CENTER;
         lamina.add(titulo,gbc);
 
-        //Botones de jugar y salir
+        //Panel botones
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new GridLayout(3,1,0,10));
+        panelBotones.setOpaque(false);
+
+        //Botones
+        panelBotones.add(botonjugar);
+        panelBotones.add(botoninstrucciones);
+        panelBotones.add(botonsalir);
+        gbc.weighty = 0.6;
         gbc.gridy = 1;
-        botonjugar = new JButton("Jugar");
-        botonjugar.addActionListener(this);
-        lamina.add(botonjugar,gbc);
-
-        gbc.gridy = 2;
-        botoninstrucciones = new JButton("Instrucciones");
-        botoninstrucciones.addActionListener(this);
-        lamina.add(botoninstrucciones,gbc);
-
-
-        gbc.gridy = 3;
-        botonsalir = new JButton("Salir");
-        botonsalir.addActionListener(this);
-        lamina.add(botonsalir,gbc);
+        gbc.anchor = GridBagConstraints.CENTER;
+        lamina.add(panelBotones,gbc);
 
         add(lamina);
         setVisible(true);
@@ -98,12 +147,7 @@ class Lamina extends JPanel {
     //Imagen de fondo
 
     public Lamina() {
-        File miimagen = new File("Imagenes/Fondojuego.png");
-        try {
-            imagen = ImageIO.read(miimagen);
-        } catch (IOException e) {
-            System.out.println("La imagen no se encuentra");
-        }
+        imagen = GestorRecursos.cargarImagen("Imagenes/FondoMenu.png");
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -114,8 +158,6 @@ class Lamina extends JPanel {
             Graphics2D g2 = (Graphics2D) g;
             g2.drawImage(imagen, 0, 0, getWidth(),getHeight(),this);
         }
-
-
     }
 }
 
@@ -149,8 +191,9 @@ class Partida extends JFrame implements ActionListener {
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-        setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
+        //setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         //Titulo del programa e icono
         setTitle("Truco a 2 Lucas");
@@ -212,16 +255,25 @@ class Partida extends JFrame implements ActionListener {
         ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
         Image img1 = imgcarta1.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
         botoncarta1 = new JButton(new ImageIcon(img1));
+        botoncarta1.setContentAreaFilled(false);
+        botoncarta1.setBorderPainted(false);
+        botoncarta1.setFocusPainted(false);
         botoncarta1.addActionListener(this);
 
         ImageIcon imgcarta2 = new ImageIcon(carta2.getImagen());
         Image img2 = imgcarta2.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
         botoncarta2 = new JButton(new ImageIcon(img2));
+        botoncarta2.setContentAreaFilled(false);
+        botoncarta2.setBorderPainted(false);
+        botoncarta2.setFocusPainted(false);
         botoncarta2.addActionListener(this);
 
         ImageIcon imgcarta3 = new ImageIcon(carta3.getImagen());
         Image img3 = imgcarta3.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
         botoncarta3 = new JButton(new ImageIcon(img3));
+        botoncarta3.setContentAreaFilled(false);
+        botoncarta3.setBorderPainted(false);
+        botoncarta3.setFocusPainted(false);
         botoncarta3.addActionListener(this);
 
         //Panel Principal
@@ -392,34 +444,26 @@ class Instrucciones extends JFrame {
     }
 }
 
-    class Juego extends JPanel {
-        private Image imagen;
+class Juego extends JPanel {
+    private Image imagen;
 
-        private String turnoActual = "Jugador 1";
+    private String turnoActual = "Jugador 1";
 
-        public void setTurnoActual(String turnoActual) {
-            this.turnoActual = turnoActual;
-        }
+    public void setTurnoActual(String turnoActual) {
+        this.turnoActual = turnoActual;
+    }
+    public Juego(){
+        //Imagen de fondo
+        imagen = GestorRecursos.cargarImagen("Imagenes/FondoJuego.png");
+    }
+    public void paintComponent(Graphics g) {
+        //Cosas de la funcion
+        super.paintComponent(g);
 
-        public void paintComponent(Graphics g) {
-            //Cosas de la funcion
-            super.paintComponent(g);
+        if (imagen != null) {
+
             Graphics2D g2 = (Graphics2D) g;
-
-            //Imagen de fondo
-            File miimagen = new File("Imagenes/FondoJuego.png");
-            try {
-                imagen = ImageIO.read(miimagen);
-            } catch (IOException e) {
-                System.out.println("La imagen no se encuentra");
-            }
-            Image imagencompleta = imagen.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-            g2.drawImage(imagencompleta, 0, 0, null);
-
-            //Fuente de la letra del titulo
-            Toolkit mipantalla = Toolkit.getDefaultToolkit();
-            Dimension tamanio = mipantalla.getScreenSize();
-            int altura = tamanio.height;
-            int anchura = tamanio.width;
+            g2.drawImage(imagen, 0, 0, getWidth(),getHeight(),this);
         }
     }
+}
