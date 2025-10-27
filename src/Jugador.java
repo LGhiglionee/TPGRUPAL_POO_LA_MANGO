@@ -12,7 +12,7 @@ public class Jugador {
     public Jugador() {
         this.salud = 100;
         this.mana = 0;
-        this.trescartas = new ArrayList<>();
+        this.trescartas = new ArrayList<>(3);
         this.mano = true;
     }
 
@@ -50,8 +50,8 @@ public class Jugador {
         this.trescartas = trescartas;
     }
 
-    public void setCarta(ArrayList<Carta> trescartas, int indice, Carta carta) throws PosicionInvalidaException {
-        if (indice < 0 || indice >= trescartas.size()) {
+    public void setCarta(int indice, Carta carta) throws PosicionInvalidaException {
+        if (indice < 0 || indice >= this.trescartas.size()) {
             throw new PosicionInvalidaException("Índice fuera de rango al intentar asignar carta: " + indice);
         }
         this.trescartas.set(indice, carta);
@@ -72,7 +72,8 @@ public class Jugador {
 
                 if (c1.getPalo().equals(c2.getPalo())) {
                     int total = valorEnvido(c1) + valorEnvido(c2) + 20;
-                    if (total > maxEnvido) maxEnvido = total;
+                    if (total > maxEnvido)
+                        maxEnvido = total;
                 }
             }
         }

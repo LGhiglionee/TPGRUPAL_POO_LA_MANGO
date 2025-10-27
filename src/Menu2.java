@@ -12,7 +12,6 @@ import Excepciones.*;
 import Mazo.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.Font;
 
 public class Menu2 {
     public static void main(String[] args) {
@@ -126,7 +125,7 @@ class Inicio extends JFrame implements ActionListener {
 
             add(lamina);
             setVisible(true);
-        } catch (ImagenNoEncontradaException | FuenteNOEncontradaException ex) {
+        } catch (ImagenNoEncontradaException | FuenteNoEncontradaException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de recursos", JOptionPane.ERROR_MESSAGE);
             System.exit(1); // opcional, para cerrar si los recursos son críticos
         }
@@ -205,9 +204,10 @@ class Partida extends JFrame implements ActionListener{
         //Inicializar datos del turno.
         try {
             turno = new Turnos();
-            turno.llenarMano(turno.getJugador1().getTresCartas(), turno.getJugador1());
-            turno.llenarMano(turno.getJugador2().getTresCartas(), turno.getJugador2());
-        } catch (MazoVacioException | PosicionInvalidaException e) {
+            turno.llenarMano(turno.getJugador1());
+            turno.llenarMano(turno.getJugador2());
+
+        } catch (MazoVacioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al iniciar la partida", JOptionPane.ERROR_MESSAGE);
             dispose();
             return;
