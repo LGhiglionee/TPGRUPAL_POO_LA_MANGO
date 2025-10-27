@@ -1,5 +1,5 @@
-import Mazo.Carta;
-
+import Excepciones.MazoVacioException;
+import Mazo.*;
 import java.util.ArrayList;
 
 public class Bot extends Jugador {
@@ -12,16 +12,83 @@ public class Bot extends Jugador {
         this.mano = false;
     }
 
+    public Carta decision(Mazo mazo) throws MazoVacioException {
+        if (this.dificultad == 0) {
+            return analisisFacil();
+        }
+        return analisisMedio(mazo);
+    }
+
     public boolean hayPalo(String palo) {
         ArrayList<Carta> turista = this.trescartas;
 
+        while (!turista.isEmpty()) {
+            if (turista.getFirst().getPalo().equals(palo)) {
+                return true;
+            }
+            turista.removeFirst();
+        }
+        return false;
     }
 
-    public Carta analisis() {
-        if (this.salud < 10) {
-            return this.trescartas.getFirst();
+    public Carta cartaMasAlta(String palo) {
+        ArrayList<Carta> turista = this.trescartas;
+        Carta max = new Carta();
+
+        while (!turista.isEmpty()) {
+            if (turista.getFirst().getPalo().equals(palo) && max.getNumero() < turista.getFirst().getNumero()) {
+                max = turista.getFirst();
+            }
+            turista.removeFirst();
         }
-        else
-            return null;
+        return max;
+    }
+
+    public float porcentajePaloMazo(Mazo mazo, String palo) throws MazoVacioException {
+        Mazo turista = mazo;
+        float total = 0;
+        float carta = 0;
+
+        while (turista.cartasRestantes() != 0) {
+            if (turista.getCarta().getPalo().equals(palo)) {
+                carta += 1;
+            }
+            total += 1;
+        }
+        return carta / total;
+    }
+
+    public Carta analisisFacil() {
+        if (this.salud < 10 && hayPalo("Copa")) {
+            return cartaMasAlta("Copa");
+        }
+        else if (hayPalo("Basto")) {
+            return cartaMasAlta("Basto");
+        }
+        else if (hayPalo("Espada")) {
+            return cartaMasAlta("Espada");
+        }
+        else if (hayPalo("Oro")) {
+            return cartaMasAlta("Oro");
+        }
+        return this.trescartas.getFirst();
+    }
+
+    public Carta analisisMedio(Mazo mazo) throws MazoVacioException {
+        if (this.salud < 10 && hayPalo("Copa")) {
+            return cartaMasAlta("Copa");
+        }
+        else if (hayPalo("Espada") && porcentajePaloMazo(mazo, "Basto") >= 0.15) {
+            return cartaMasAlta("Espada");
+        }
+        else if (hayPalo("Basto") && porcentajePaloMazo(mazo, "Espada") <= 0.2) {
+            return cartaMasAlta("Basto");
+        }
+        else if (hayPalo("Oro") && porcentajePaloMazo(mazo, "Basto") >= 0.1) {
+            return cartaMasAlta("Oro");
+        }
+        else if (hayPalo("Espada"))
+            return cartaMasAlta("Espada");
+        return this.trescartas.getFirst();
     }
 }
