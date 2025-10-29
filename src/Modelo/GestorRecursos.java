@@ -12,9 +12,15 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ *  — Centraliza la carga de recursos gráficos del juego.
+ */
+
 public class GestorRecursos {
 
-    //Funcion para cargar fuentes
+    /**
+     * Carga una fuente desde la ruta indicada y la registra en el sistema gráfico.
+     */
     public static Font cargarFuente(String rutaFuente) {
         File archivo = new File(rutaFuente);
         if (!archivo.exists()) {
@@ -29,7 +35,9 @@ public class GestorRecursos {
         }
     }
 
-    //Funcion para cargar imagenes; retorna Image.
+    /**
+     * Carga una imagen desde la ruta indicada.
+     */
     public static Image cargarImagen(String rutaImagen) {
         File archivo = new File(rutaImagen);
         if (!archivo.exists()) {
@@ -42,7 +50,9 @@ public class GestorRecursos {
             throw new ImagenNoEncontradaException("Error al cargar imagen "+rutaImagen);
         }
     }
-
+    /**
+     * Carga una imagen y la escala suavemente a las dimensiones indicadas.
+     */
     public static ImageIcon cargarImagenEscalada(String rutaImagen, int ancho, int alto){
         Image imagen = cargarImagen(rutaImagen);
         Image imagenEscalada = imagen.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
