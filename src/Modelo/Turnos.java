@@ -1,6 +1,8 @@
-import Excepciones.MazoVacioException;
-import Excepciones.PosicionInvalidaException;
-import Mazo.*;
+package Modelo;
+
+import Excepciones.Juego.MazoVacioException;
+import Excepciones.Juego.PosicionInvalidaException;
+import Modelo.Mazo.*;
 
 import java.util.ArrayList;
 
@@ -90,8 +92,8 @@ public class Turnos {
 
     public String getStringJugadorMano() {
         if (jugador1.getMano()) {
-            return "Jugador 1";
-        } else return "Jugador 2";
+            return "Modelo.Jugador 1";
+        } else return "Modelo.Jugador 2";
     }
 
     public void alternarTurno() {
@@ -140,14 +142,14 @@ public class Turnos {
     }
 
     public String jugarEnvido(int envidoJ1, int envidoJ2) {
-        String mensaje = "Jugador 1: " + envidoJ1 + " puntos\n" +
-                "Jugador 2: " + envidoJ2 + " puntos\n";
+        String mensaje = "Modelo.Jugador 1: " + envidoJ1 + " puntos\n" +
+                "Modelo.Jugador 2: " + envidoJ2 + " puntos\n";
 
         if (envidoJ1 > envidoJ2) {
-            mensaje += "Gana el envido Jugador 1";
+            mensaje += "Gana el envido Modelo.Jugador 1";
             getJugador2().actualizarSalud(-envidoJ1 / 2);
         } else if (envidoJ2 > envidoJ1) {
-            mensaje += "Gana el envido Jugador 2";
+            mensaje += "Gana el envido Modelo.Jugador 2";
             getJugador1().actualizarSalud(-envidoJ1 / 2);
         } else {
             mensaje += "Empate en el envido";

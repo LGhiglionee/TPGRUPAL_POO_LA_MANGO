@@ -8,10 +8,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Excepciones.*;
-import Mazo.*;
+import Excepciones.Recursos.FuenteNoEncontradaException;
+import Excepciones.Recursos.ImagenNoEncontradaException;
+import Excepciones.Juego.JugadorSinCartasException;
+import Excepciones.Juego.MazoVacioException;
+import Excepciones.Juego.PosicionInvalidaException;
+import Modelo.Jugador;
+import Modelo.Mazo.*;
+import Modelo.GestorRecursos;
+import Modelo.Turnos;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 
 public class Menu2 {
     public static void main(String[] args) {
@@ -38,12 +47,12 @@ class Inicio extends JFrame implements ActionListener {
 
         try {
             //Creacion de fuente
-            Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
+            Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
             Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
             Font funeteBoton = fuente.deriveFont(Font.BOLD, 20f);
 
             // --- ICONO E IMÁGENES ---
-            Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
+            Image fondo = mipantalla.getImage("src/Recursos/Imagenes/FondoMenu.png");
             setIconImage(fondo);
 
             // --- TÍTULO ---
@@ -69,13 +78,13 @@ class Inicio extends JFrame implements ActionListener {
             setExtendedState(JFrame.MAXIMIZED_BOTH);
 
             //Imagen titulo
-            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("Imagenes/FondoTitulo.png", anchura / 2, altura / 4);
+            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png", anchura / 2, altura / 4);
             titulo.setHorizontalTextPosition(SwingConstants.CENTER);
             titulo.setVerticalTextPosition(SwingConstants.CENTER);
             titulo.setIcon(imagenTitulo);
 
             //Imagenes botones
-            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("imagenes/FondoBoton.png", anchura / 5, altura / 10);
+            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoBoton.png", anchura / 5, altura / 10);
 
             botonjugar.setHorizontalTextPosition(SwingConstants.CENTER);
             botonjugar.setVerticalTextPosition(SwingConstants.CENTER);
@@ -154,7 +163,7 @@ class Lamina extends JPanel {
     //Imagen de fondo
 
     public Lamina() {
-        imagen = GestorRecursos.cargarImagen("Imagenes/FondoMenu.png");
+        imagen = GestorRecursos.cargarImagen("src/Recursos/Imagenes/FondoMenu.png");
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -184,14 +193,14 @@ class OpcionesJuego extends JFrame implements ActionListener {
         int anchura = tamanio.width;
 
         //Creacion de fuente
-        Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
+        Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTitulo = fuente.deriveFont(Font.BOLD,45f);
         Font fuenteBoton = fuente.deriveFont(Font.BOLD,20f);
 
         //Tamaño de pnatalla
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         //Icono del programa
-        Image fondo = mipantalla.getImage("Imagenes/FondoMenu.png");
+        Image fondo = mipantalla.getImage("src/Recursos/Imagenes/FondoMenu.png");
         setIconImage(fondo);
 
         //Titulo
@@ -216,13 +225,13 @@ class OpcionesJuego extends JFrame implements ActionListener {
 
         //--- IMAGENES LABELS ----
         //Imagen titulo
-        ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("Imagenes/FondoTitulo.png",anchura/2,altura/4);
+        ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png",anchura/2,altura/4);
         titulo.setHorizontalTextPosition(SwingConstants.CENTER);
         titulo.setVerticalTextPosition(SwingConstants.CENTER);
         titulo.setIcon(imagenTitulo);
 
         //Imagenes botones
-        ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("imagenes/FondoBoton.png",anchura/5,altura/10);
+        ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoBoton.png",anchura/5,altura/10);
 
         botonOpcionPvP.setHorizontalTextPosition(SwingConstants.CENTER);
         botonOpcionPvP.setVerticalTextPosition(SwingConstants.CENTER);
@@ -315,7 +324,7 @@ class Partida extends JFrame implements ActionListener{
 
         //Cargar icono.
         try {
-            Image fondo = mipantalla.getImage("Imagenes/Fondojuego.png");
+            Image fondo = mipantalla.getImage("src/Recursos/Imagenes/Fondojuego.png");
             setIconImage(fondo);
         } catch (ImagenNoEncontradaException e){
             JOptionPane.showMessageDialog(this, "No se pudo cargar el ícono del juego.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -335,11 +344,11 @@ class Partida extends JFrame implements ActionListener{
 
         j1salud = new JProgressBar(0, 100);
         j2salud = new JProgressBar(0, 100);
-        j1mana = new JLabel("Mana Jugador 1: " + turno.getJugador1().getMana());
+        j1mana = new JLabel("Mana Modelo.Jugador 1: " + turno.getJugador1().getMana());
         j1mana.setForeground(Color.WHITE);
-        j2mana = new JLabel("Mana Jugador 2: " + turno.getJugador2().getMana());
+        j2mana = new JLabel("Mana Modelo.Jugador 2: " + turno.getJugador2().getMana());
         j2mana.setForeground(Color.WHITE);
-        jturno = new JLabel("Turno de Jugador 1");
+        jturno = new JLabel("Turno de Modelo.Jugador 1");
 
         botoncarta1 = new JButton("Carta 1");
         botoncarta2 = new JButton("Carta 2");
@@ -360,7 +369,7 @@ class Partida extends JFrame implements ActionListener{
         j1nombre = new JLabel();
         j2nombre = new JLabel();
 
-        // Salud Jugador 1
+        // Salud Modelo.Jugador 1
         j1salud = new JProgressBar(0, 100);
         j1salud.setValue(turno.getJugador1().getSalud());
         j1salud.setStringPainted(true);
@@ -435,8 +444,8 @@ class Partida extends JFrame implements ActionListener{
 
 
         //Borde de los sub-paneles
-        j1Info.setBorder(BorderFactory.createTitledBorder("Jugador 1"));
-        j2Info.setBorder(BorderFactory.createTitledBorder("Jugador 2"));
+        j1Info.setBorder(BorderFactory.createTitledBorder("Modelo.Jugador 1"));
+        j2Info.setBorder(BorderFactory.createTitledBorder("Modelo.Jugador 2"));
 
         //Organiza sub-paneles
         j1Info.setLayout(new GridLayout(3,1));
@@ -561,9 +570,9 @@ class Partida extends JFrame implements ActionListener{
             }
         }
         if (turno.getJugadorMano() == turno.getJugador1()) {
-            jturno.setText("Turno de Jugador 1");
+            jturno.setText("Turno de Modelo.Jugador 1");
         } else {
-            jturno.setText("Turno de Jugador 2");
+            jturno.setText("Turno de Modelo.Jugador 2");
         }
 
         //Cambio de cartas en botones
@@ -578,8 +587,8 @@ class Partida extends JFrame implements ActionListener{
         j2salud.setValue(turno.getJugador2().getSalud());
         j2salud.setString("Vida: " + turno.getJugador2().getSalud());
 
-        j1mana.setText("Mana Jugador 1: "+turno.getJugador1().getMana());
-        j2mana.setText("Mana Jugador 2: "+turno.getJugador2().getMana());
+        j1mana.setText("Mana Modelo.Jugador 1: "+turno.getJugador1().getMana());
+        j2mana.setText("Mana Modelo.Jugador 2: "+turno.getJugador2().getMana());
 
 
         jturno.repaint();
@@ -596,7 +605,7 @@ class Instrucciones extends JFrame {
         int anchura = tamanio.width;
         setBounds(anchura/4,altura/4,anchura/2,altura/2);
 
-        Font fuente = GestorRecursos.cargarFuente("Fuente/ka1.ttf");
+        Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuente/ka1.ttf");
         Font fuenteTexto = fuente.deriveFont(Font.BOLD,10f);
         setTitle("Instrucciones del Juego");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -608,7 +617,7 @@ class Instrucciones extends JFrame {
         JScrollPane scroll = new JScrollPane(texto);
         add(scroll, BorderLayout.CENTER);
 
-        String ruta = "Instrucciones/instrucciones.txt";
+        String ruta = "src/Recursos/Instrucciones/instrucciones.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             StringBuilder contenido = new StringBuilder();
             String linea;
@@ -627,14 +636,14 @@ class Instrucciones extends JFrame {
 class Juego extends JPanel {
     private Image imagen;
 
-    private String turnoActual = "Jugador 1";
+    private String turnoActual = "Modelo.Jugador 1";
 
     public void setTurnoActual(String turnoActual) {
         this.turnoActual = turnoActual;
     }
     public Juego(){
         //Imagen de fondo
-        imagen = GestorRecursos.cargarImagen("Imagenes/FondoJuego.png");
+        imagen = GestorRecursos.cargarImagen("src/Recursos/Imagenes/FondoJuego.png");
     }
     public void paintComponent(Graphics g) {
         //Cosas de la funcion
