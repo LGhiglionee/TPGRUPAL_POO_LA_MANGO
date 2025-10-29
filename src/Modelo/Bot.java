@@ -1,5 +1,7 @@
-import Excepciones.MazoVacioException;
-import Mazo.*;
+package Modelo;
+
+import Excepciones.Juego.MazoVacioException;
+import Modelo.Mazo.*;
 import java.util.ArrayList;
 
 public class Bot extends Jugador {
@@ -59,36 +61,29 @@ public class Bot extends Jugador {
     }
 
     public Carta analisisFacil() {
-        if (this.salud < 10 && hayPalo("Copa")) {
-            return cartaMasAlta("Copa");
+        if (this.salud < 10 && hayPalo("Copa")) { return cartaMasAlta("Copa");
         }
-        else if (hayPalo("Basto")) {
-            return cartaMasAlta("Basto");
+        else if (hayPalo("Basto")) { return cartaMasAlta("Basto");
         }
-        else if (hayPalo("Espada")) {
-            return cartaMasAlta("Espada");
+        else if (hayPalo("Espada")) { return cartaMasAlta("Espada");
         }
-        else if (hayPalo("Oro")) {
-            return cartaMasAlta("Oro");
+        else if (hayPalo("Oro")) { return cartaMasAlta("Oro");
         }
-        return this.trescartas.getFirst();
+        else { return this.trescartas.getFirst(); }
     }
 
     public Carta analisisMedio(Mazo mazo) throws MazoVacioException {
-        if (this.salud < 10 && hayPalo("Copa")) {
-            return cartaMasAlta("Copa");
+        if (this.salud < 10 && hayPalo("Copa")) { return cartaMasAlta("Copa");
         }
-        else if (hayPalo("Espada") && porcentajePaloMazo(mazo, "Basto") >= 0.15) {
-            return cartaMasAlta("Espada");
+        else if (hayPalo("Espada") && porcentajePaloMazo(mazo, "Basto") <= 0.15) { return cartaMasAlta("Espada");
         }
-        else if (hayPalo("Basto") && porcentajePaloMazo(mazo, "Espada") <= 0.2) {
-            return cartaMasAlta("Basto");
+        else if (hayPalo("Basto") && porcentajePaloMazo(mazo, "Espada") <= 0.2) { return cartaMasAlta("Basto");
         }
-        else if (hayPalo("Oro") && porcentajePaloMazo(mazo, "Basto") >= 0.1) {
-            return cartaMasAlta("Oro");
+        else if (hayPalo("Oro") && porcentajePaloMazo(mazo, "Basto") >= 0.1) { return cartaMasAlta("Oro");
         }
-        else if (hayPalo("Espada"))
-            return cartaMasAlta("Espada");
-        return this.trescartas.getFirst();
+        else if (hayPalo("Espada")) { return cartaMasAlta("Espada");
+        }
+        else { return this.trescartas.getFirst();
+        }
     }
 }

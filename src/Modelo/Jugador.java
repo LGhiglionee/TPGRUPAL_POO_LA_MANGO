@@ -10,12 +10,14 @@ public class Jugador {
     protected int mana;
     protected boolean mano;
     protected ArrayList<Carta> trescartas;
+    protected boolean desangrado;
 
     public Jugador() {
         this.salud = 100;
         this.mana = 0;
         this.trescartas = new ArrayList<>(3);
         this.mano = true;
+        this.desangrado = false;
     }
 
     public int getSalud() {
@@ -24,10 +26,18 @@ public class Jugador {
 
     public void actualizarSalud(int salud) {
         if (this.salud + salud > 100){
-            this.salud = 100;
+            this.salud = 50;
         } else {
             this.salud += salud;
         }
+    }
+
+    public boolean getDesangrado() {
+        return desangrado;
+    }
+
+    public void setDesangrado(boolean desangrado) {
+        this.desangrado = desangrado;
     }
 
     public void agregarMana(int mana) {
