@@ -308,6 +308,7 @@ class Partida extends JFrame implements ActionListener{
     // --- Paneles ---
     JPanel j1Info, j2Info, manoCartas, infoTurno, infoEnvido, infoTruco;
 
+    int anchocarta, altocarta;
 
     Turnos turno;
     ArrayList<Carta> cartasjugadas;
@@ -359,6 +360,8 @@ class Partida extends JFrame implements ActionListener{
         //Tamanio botones
         int anchoboton = anchura/12;
         int  altoboton = altura/6;
+        this.anchocarta = anchoboton;
+        this.altocarta = altoboton;
 
         //Obtener cartas
         Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
@@ -576,9 +579,13 @@ class Partida extends JFrame implements ActionListener{
         }
 
         //Cambio de cartas en botones
-        botoncarta1.setIcon(new ImageIcon(turno.getJugadorMano().getTresCartas().get(0).getImagen()));
-        botoncarta2.setIcon(new ImageIcon(turno.getJugadorMano().getTresCartas().get(1).getImagen()));
-        botoncarta3.setIcon(new ImageIcon(turno.getJugadorMano().getTresCartas().get(2).getImagen()));
+        Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
+        Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
+        Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
+
+        actualizarBotonCarta(botoncarta1, carta1, anchocarta, altocarta);
+        actualizarBotonCarta(botoncarta2, carta2, anchocarta, altocarta);
+        actualizarBotonCarta(botoncarta3, carta3, anchocarta, altocarta);
 
         //Cambio de etiquetas
 
@@ -590,9 +597,28 @@ class Partida extends JFrame implements ActionListener{
         j1mana.setText("Mana Modelo.Jugador 1: "+turno.getJugador1().getMana());
         j2mana.setText("Mana Modelo.Jugador 2: "+turno.getJugador2().getMana());
 
+        if (turno.condicionFinalizacion()){
+            new PantallaGanador(turno.partidaTerminada());
+        }
 
         jturno.repaint();
     }
+
+    private void actualizarBotonCarta(JButton boton, Carta carta, int ancho, int alto) {
+        if (carta == null) {
+            boton.setIcon(null);
+            boton.setEnabled(false);
+            boton.setVisible(false);  // o true si preferís mantener el espacio
+            return;
+        }
+
+        boton.setVisible(true);
+        boton.setEnabled(true);
+
+        ImageIcon icon = new ImageIcon(carta.getImagen());
+        Image img = icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        boton.setIcon(new ImageIcon(img));}
+
 }
 
 class Instrucciones extends JFrame {
@@ -630,6 +656,58 @@ class Instrucciones extends JFrame {
         }
 
         setVisible(true);
+    }
+}
+
+class PantallaGanador extends JFrame implements ActionListener {
+
+    private Image imagen;
+    private JButton btnMenu;
+    private JButton btnSalir;
+
+    public  PantallaGanador(String mensaje) {
+        setTitle("Resultado del Juego");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setSize(600, 350);
+        setLocationRelativeTo(null); // centrar
+
+        Font fuente;
+        try {
+            fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf").deriveFont(Font.BOLD, 28f);
+        } catch (Exception ex) {
+            fuente = new Font("Arial", Font.BOLD, 28);
+        }
+
+        // Mensaje principal
+        JLabel lbl = new JLabel(mensaje, SwingConstants.CENTER);
+        lbl.setFont(fuente);
+        lbl.setForeground(Color.BLACK);
+        lbl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        add(lbl, BorderLayout.CENTER);
+
+        // Botones inferiores
+        btnMenu = new JButton("Volver al menú");
+        btnMenu.addActionListener(this);
+        btnSalir = new JButton("Salir");
+        btnSalir.addActionListener(this);
+
+        JPanel panelBtns = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        panelBtns.add(btnMenu);
+        panelBtns.add(btnSalir);
+        add(panelBtns, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnMenu){
+            new Inicio();
+            dispose();
+        }
+        if (e.getSource() == btnSalir){
+            System.exit(0);
+        }
     }
 }
 
