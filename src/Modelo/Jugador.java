@@ -18,9 +18,7 @@ public class Jugador {
         this.mano = true;
     }
 
-    public int getSalud() {
-        return salud;
-    }
+    public int getSalud() {return salud;}
 
     public void actualizarSalud(int salud) {
         if (this.salud + salud > 100){
@@ -30,27 +28,17 @@ public class Jugador {
         }
     }
 
-    public void agregarMana(int mana) {
-        this.mana += mana;
-    }
+    public void agregarMana(int mana) {this.mana += mana;}
 
-    public int getMana() {
-        return mana;
-    }
+    public int getMana() {return mana;}
 
     public boolean getMano() { return mano; }
 
-    public void setMano(boolean mano) {
-        this.mano = mano;
-    }
+    public void setMano(boolean mano) {this.mano = mano;}
 
-    public ArrayList<Carta> getTresCartas() {
-        return trescartas;
-    }
+    public ArrayList<Carta> getTresCartas() {return trescartas;}
 
-    public  void setTresCartas(ArrayList<Carta> trescartas) {
-        this.trescartas = trescartas;
-    }
+    public  void setTresCartas(ArrayList<Carta> trescartas) {this.trescartas = trescartas;}
 
     public void setCarta(int indice, Carta carta) throws PosicionInvalidaException {
         if (indice < 0 || indice >= this.trescartas.size()) {
@@ -97,5 +85,3 @@ public class Jugador {
         return numero;
     }
 }
-
-

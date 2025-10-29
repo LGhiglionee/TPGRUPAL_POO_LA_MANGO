@@ -28,11 +28,7 @@ public class Mazo {
         return cartaAleatoria;
     }
 
-    public void mezclarMazo() {
-        Collections.shuffle(cartas);
-    }
+    public void mezclarMazo() {Collections.shuffle(cartas);}
 
-    public int cartasRestantes() {
-        return cartas.size();
-    }
+    public int cartasRestantes() {return cartas.size();}
 }

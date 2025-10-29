@@ -130,17 +130,11 @@ public class Turnos {
         jugador.setTresCartas(cartas);
     }
 
-    public Jugador getJugador1() {
-        return jugador1;
-    }
+    public Jugador getJugador1() {return jugador1;}
 
-    public Jugador getJugador2() {
-        return jugador2;
-    }
+    public Jugador getJugador2() {return jugador2;}
 
-    public Mazo getMazo() {
-        return mazo;
-    }
+    public Mazo getMazo() {return mazo;}
 
     public void jugarCarta(int i, ArrayList<Carta> cartasjugadas) throws MazoVacioException, PosicionInvalidaException {
         Carta carta = getJugadorMano().getTresCartas().get(i);
@@ -185,6 +179,3 @@ public class Turnos {
         return mensaje;
     }
 }
-
-
-
