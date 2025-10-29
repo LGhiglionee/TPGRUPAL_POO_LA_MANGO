@@ -1,5 +1,5 @@
-package Mazo;
-import Excepciones.MazoVacioException;
+package Modelo.Mazo;
+import Excepciones.Juego.MazoVacioException;
 
 import java.util.ArrayList;
 import java.util.Collections;

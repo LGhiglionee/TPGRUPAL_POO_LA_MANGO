@@ -1,5 +1,7 @@
-import Excepciones.FuenteNoEncontradaException;
-import Excepciones.ImagenNoEncontradaException;
+package Modelo;
+
+import Excepciones.Recursos.FuenteNoEncontradaException;
+import Excepciones.Recursos.ImagenNoEncontradaException;
 
 import java.awt.Font;
 import java.awt.FontFormatException;

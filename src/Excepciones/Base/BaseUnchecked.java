@@ -1,4 +1,4 @@
-package Excepciones;
+package Excepciones.Base;
 
 public class BaseUnchecked extends RuntimeException{
     public BaseUnchecked(String mensaje){
