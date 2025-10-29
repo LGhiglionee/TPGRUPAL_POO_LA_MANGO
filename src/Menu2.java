@@ -345,11 +345,11 @@ class Partida extends JFrame implements ActionListener{
 
         j1salud = new JProgressBar(0, 100);
         j2salud = new JProgressBar(0, 100);
-        j1mana = new JLabel("Mana Modelo.Jugador 1: " + turno.getJugador1().getMana());
+        j1mana = new JLabel("Mana Jugador 1: " + turno.getJugador1().getMana());
         j1mana.setForeground(Color.WHITE);
-        j2mana = new JLabel("Mana Modelo.Jugador 2: " + turno.getJugador2().getMana());
+        j2mana = new JLabel("Mana Jugador 2: " + turno.getJugador2().getMana());
         j2mana.setForeground(Color.WHITE);
-        jturno = new JLabel("Turno de Modelo.Jugador 1");
+        jturno = new JLabel("Turno de Jugador 1");
 
         botoncarta1 = new JButton("Carta 1");
         botoncarta2 = new JButton("Carta 2");
@@ -447,8 +447,8 @@ class Partida extends JFrame implements ActionListener{
 
 
         //Borde de los sub-paneles
-        j1Info.setBorder(BorderFactory.createTitledBorder("Modelo.Jugador 1"));
-        j2Info.setBorder(BorderFactory.createTitledBorder("Modelo.Jugador 2"));
+        j1Info.setBorder(BorderFactory.createTitledBorder("Jugador 1"));
+        j2Info.setBorder(BorderFactory.createTitledBorder("Jugador 2"));
 
         //Organiza sub-paneles
         j1Info.setLayout(new GridLayout(3,1));
@@ -573,9 +573,9 @@ class Partida extends JFrame implements ActionListener{
             }
         }
         if (turno.getJugadorMano() == turno.getJugador1()) {
-            jturno.setText("Turno de Modelo.Jugador 1");
+            jturno.setText("Turno de Jugador 1");
         } else {
-            jturno.setText("Turno de Modelo.Jugador 2");
+            jturno.setText("Turno de Jugador 2");
         }
 
         //Cambio de cartas en botones
@@ -594,8 +594,8 @@ class Partida extends JFrame implements ActionListener{
         j2salud.setValue(turno.getJugador2().getSalud());
         j2salud.setString("Vida: " + turno.getJugador2().getSalud());
 
-        j1mana.setText("Mana Modelo.Jugador 1: "+turno.getJugador1().getMana());
-        j2mana.setText("Mana Modelo.Jugador 2: "+turno.getJugador2().getMana());
+        j1mana.setText("Mana Jugador 1: "+turno.getJugador1().getMana());
+        j2mana.setText("Mana Jugador 2: "+turno.getJugador2().getMana());
 
         if (turno.condicionFinalizacion()){
             new PantallaGanador(turno.partidaTerminada());
@@ -714,7 +714,7 @@ class PantallaGanador extends JFrame implements ActionListener {
 class Juego extends JPanel {
     private Image imagen;
 
-    private String turnoActual = "Modelo.Jugador 1";
+    private String turnoActual = "Jugador 1";
 
     public void setTurnoActual(String turnoActual) {
         this.turnoActual = turnoActual;
