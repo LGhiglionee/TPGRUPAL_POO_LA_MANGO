@@ -1,6 +1,8 @@
-import Excepciones.MazoVacioException;
-import Excepciones.PosicionInvalidaException;
-import Mazo.*;
+package Modelo;
+
+import Excepciones.Juego.MazoVacioException;
+import Excepciones.Juego.PosicionInvalidaException;
+import Modelo.Mazo.*;
 
 import java.util.ArrayList;
 
@@ -58,27 +60,43 @@ public class Turnos {
         }
     }
 
-    public String resultado(Mazo mazo) throws MazoVacioException {
-        if (mazo == null || mazo.cartasRestantes() == 0) {
-            throw new MazoVacioException("No se puede calcular el resultado: el mazo está vacío.");
-        }
+    public String partidaTerminada() {
 
-        int mana1 = jugador1.getMana();
-        int mana2 = jugador2.getMana();
-
-        if (mana1 > mana2) {
-            return "Gano jugador 1";
-        } else if (mana1 == mana2) {
-            return "No gano nadie, EMPATE";
-        } if (mana1 < mana2){
+        if (jugador1.getSalud() <= 0 && jugador2.getSalud() <= 0)
+            return "Empate: ambos llegaron a 0 de vida";
+        if (jugador1.getSalud() <= 0)
             return "Gano jugador 2";
-
-        } else if (jugador2.getMana() == 0) {
+        if (jugador2.getSalud() <= 0)
             return "Gano jugador 1";
-        } else {
-            return "Gano jugador 2";
-        }
+        if (jugador1.getSalud() > jugador2.getSalud()) return "Gano jugador 1";
+        if (jugador2.getSalud() > jugador1.getSalud()) return "Gano jugador 2";
+        if (jugador1.getMana() > jugador2.getMana()) return "Gano jugador 1 (por mana)";
+        if (jugador2.getMana() > jugador1.getMana()) return "Gano jugador 2 (por mana)";
+        return "Empate total";
     }
+
+    public boolean condicionFinalizacion() {
+
+        if (jugador1.getSalud() <= 0 || jugador2.getSalud() <= 0)
+            return true;
+
+        boolean mazoVacio = (mazo == null || mazo.cartasRestantes() == 0);
+
+        boolean sinCartas1 = true;
+        for (Carta c : jugador1.getTresCartas()) {
+            if (c != null) sinCartas1 = false;
+        }
+
+        boolean sinCartas2 = true;
+        for (Carta c : jugador2.getTresCartas()) {
+            if (c != null) sinCartas2 = false;
+        }
+
+        if (mazoVacio && sinCartas1 && sinCartas2)
+            return true;
+
+        return false;
+}
 
     public Jugador getJugadorMano() {
         if (jugador1.getMano()) {
@@ -127,6 +145,17 @@ public class Turnos {
     public void jugarCarta(int i, ArrayList<Carta> cartasjugadas) throws MazoVacioException, PosicionInvalidaException {
         Carta carta = getJugadorMano().getTresCartas().get(i);
 
+        if (i < 0 || i >= getJugadorMano().getTresCartas().size()) {
+            throw new PosicionInvalidaException("Índice de carta inválido: " + i);
+        }
+
+        if (carta == null) {
+            throw new PosicionInvalidaException("No hay carta en esa posición.");
+        }
+
+        getJugadorMano().setCarta(i, null);
+
+
         if (!cartasjugadas.isEmpty()) {
             cartasjugadas.add(carta);
             jugarMano(cartasjugadas.get(0), cartasjugadas.get(1));
@@ -134,10 +163,11 @@ public class Turnos {
         } else {
             cartasjugadas.add(carta);
         }
-        getJugadorMano().setCarta(i, getMazo().getCarta());
-
+        if (mazo.cartasRestantes() != 0){
+            getJugadorMano().setCarta(i, getMazo().getCarta());
+        }
         alternarTurno();
-    }
+}
 
     public String jugarEnvido(int envidoJ1, int envidoJ2) {
         String mensaje = "Jugador 1: " + envidoJ1 + " puntos\n" +

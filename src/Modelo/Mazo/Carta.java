@@ -1,12 +1,11 @@
-package Mazo;
+package Modelo.Mazo;
 
-import Excepciones.ImagenNoEncontradaException;
+import Excepciones.Recursos.ImagenNoEncontradaException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public class Carta {
     protected String palo;
@@ -54,7 +53,7 @@ public class Carta {
     }
 
     public void setImagen(String palo, int numero) {
-        String ruta = "Imagenes/Cartas/" + numero + palo + ".PNG";
+        String ruta = "src/Recursos/Imagenes/Cartas/" + numero + palo + ".PNG";
         try {
             File archivo = new File(ruta);
             imagen = ImageIO.read(archivo);
@@ -67,7 +66,7 @@ public class Carta {
     }
 
     public Image getImagen(){
-        File imagenCarta = new File("Imagenes/Cartas/"+ this.numero + this.palo + ".PNG");
+        File imagenCarta = new File("src/Recursos/Imagenes/Cartas/"+ this.numero + this.palo + ".PNG");
         try {
             imagen = ImageIO.read(imagenCarta);
         }

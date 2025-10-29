@@ -1,6 +1,8 @@
-import Excepciones.JugadorSinCartasException;
-import Excepciones.PosicionInvalidaException;
-import Mazo.Carta;
+package Modelo;
+
+import Excepciones.Juego.JugadorSinCartasException;
+import Excepciones.Juego.PosicionInvalidaException;
+import Modelo.Mazo.Carta;
 import java.util.ArrayList;
 
 public class Jugador {
