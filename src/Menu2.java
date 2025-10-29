@@ -12,6 +12,8 @@ import Excepciones.*;
 import Mazo.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 public class Menu2 {
     public static void main(String[] args) {
@@ -97,7 +99,7 @@ class Inicio extends JFrame implements ActionListener {
 
             //--- LOGICA LAMINA ---
             //Lamina
-            Lamina lamina = new Lamina();
+            Lamina lamina = new Lamina("Imagenes/FondoMenu.png");
             lamina.setLayout(new GridBagLayout());
 
             GridBagConstraints gbc = new GridBagConstraints();
@@ -144,6 +146,7 @@ class Inicio extends JFrame implements ActionListener {
         }
         else if (e.getSource() == botoninstrucciones) {
             new Instrucciones();
+            dispose();
         }
     }
 }
@@ -155,6 +158,9 @@ class Lamina extends JPanel {
 
     public Lamina() {
         imagen = GestorRecursos.cargarImagen("Imagenes/FondoMenu.png");
+    }
+    public Lamina(String rutaImagen){
+        imagen = GestorRecursos.cargarImagen(""+rutaImagen);
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -586,27 +592,41 @@ class Partida extends JFrame implements ActionListener{
     }
 }
 
-class Instrucciones extends JFrame {
-
+class Instrucciones extends JFrame implements ActionListener{
+    JButton botonVolver;
     public Instrucciones() {
 
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-        setBounds(anchura/4,altura/4,anchura/2,altura/2);
+        //Tamaño de pnatalla
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        Font fuente = GestorRecursos.cargarFuente("Fuente/ka1.ttf");
-        Font fuenteTexto = fuente.deriveFont(Font.BOLD,10f);
+        Lamina lamina = new Lamina("imagenes/FondoInstrucciones.png");
+        lamina.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        Font fuente = GestorRecursos.cargarFuente("Fuentes/ka1.ttf");
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD,15f);
         setTitle("Instrucciones del Juego");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JTextArea texto = new JTextArea();
+        JTextPane texto = new JTextPane();
         texto.setFont(fuenteTexto);
         texto.setEditable(false);
+        texto.setOpaque(false);
+        //
+        SimpleAttributeSet attribs = new SimpleAttributeSet();
+        StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
+        texto.setParagraphAttributes(attribs, false);
 
         JScrollPane scroll = new JScrollPane(texto);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.setBorder(null);
         add(scroll, BorderLayout.CENTER);
+
 
         String ruta = "Instrucciones/instrucciones.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
@@ -620,7 +640,40 @@ class Instrucciones extends JFrame {
             texto.setText("No se pudo cargar el archivo de instrucciones.");
         }
 
+        //gbc.anchor = GridBagConstraints.SOUTHWEST;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.6;
+        gbc.insets = new Insets(50, 100 , 50, 50);
+        lamina.add(scroll, gbc);
+
+        //Panel boton
+        JPanel panelBoton  = new JPanel();
+        panelBoton.setOpaque(false);
+        botonVolver = new JButton("Volver");
+        botonVolver.addActionListener(this);
+        panelBoton.add(botonVolver);
+
+
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 0.4;
+        gbc.weighty = 0.1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.SOUTH;
+        lamina.add(panelBoton,gbc);
+
+        add(lamina);
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==botonVolver){
+            new Inicio();
+            dispose();
+        }
     }
 }
 
