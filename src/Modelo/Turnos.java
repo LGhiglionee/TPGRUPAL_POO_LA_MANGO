@@ -20,11 +20,11 @@ import java.util.ArrayList;
  */
 
 public class Turnos {
-    Mazo mazo; // --- Mazo del juego.
+    static Mazo mazo; // --- Mazo del juego.
     ArrayList<Carta> doscartas; // --- Lista auxiliar para almacenar las dos cartas jugadas por turno.
     // --- Jugadores.
-    Jugador jugador1;
-    Jugador jugador2;
+    static Jugador jugador1;
+    static Jugador jugador2;
     private boolean envidodisponible = true;
 
     private boolean trucodisponible = true;
@@ -207,13 +207,21 @@ public class Turnos {
             descripcion.append("Jugador 2 → Vida: ").append(0).append("\n");
 
         }
-
-        if (jugador1.getSalud() > jugador2.getSalud()) {
-            ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 1";
-        } else if (jugador2.getSalud() > jugador1.getSalud()) {
-            ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 1";
-        } else {
-            ultimoResultado = descripcion + "\n🤝 Empate parcial entre ambos jugadores";
+        if (condicionFinalizacion()){
+            if (jugador1.getSalud() <= 0) {
+                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 1";
+            }
+            else {
+                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 2";
+            }
+        }else {
+            if (jugador1.getSalud() > jugador2.getSalud()) {
+                ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 1";
+            } else if (jugador2.getSalud() > jugador1.getSalud()) {
+                ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 2";
+            } else {
+                ultimoResultado = descripcion + "\n🤝 Empate parcial entre ambos jugadores";
+            }
         }
     }
 
@@ -261,7 +269,7 @@ public class Turnos {
      *
      * @return true si se cumple alguna condición de fin de partida.
      */
-    public boolean condicionFinalizacion() {
+    public static boolean condicionFinalizacion() {
 
         if (jugador1.getSalud() <= 0 || jugador2.getSalud() <= 0)
             return true;

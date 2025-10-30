@@ -49,6 +49,7 @@ class OpcionesJuego extends JFrame implements ActionListener {
         titulo.setHorizontalTextPosition(SwingConstants.CENTER);
         titulo.setVerticalTextPosition(SwingConstants.CENTER);
         titulo.setOpaque(false);
+        titulo.setForeground(Color.black);
         titulo.setIcon(GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png", anchura / 2, altura / 4));
 
         // --- Botones

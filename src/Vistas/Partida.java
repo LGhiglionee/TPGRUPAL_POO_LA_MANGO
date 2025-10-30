@@ -302,7 +302,6 @@ public class Partida extends JFrame implements ActionListener {
                         if (!pantalla.continuarJuego()) {
                             // Si un jugador abandonó, ya se manejó la pantallaGanador adentro
                             if (pantalla.getJugadorAbandono() == 0) {
-                                JOptionPane.showMessageDialog(this, "Partida finalizada por el jugador.");
                                 new Inicio();  // volver al menú
                                 dispose();
                             }

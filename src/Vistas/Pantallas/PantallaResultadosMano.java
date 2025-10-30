@@ -2,6 +2,8 @@ package Vistas.Pantallas;
 
 import javax.swing.*;
 import java.awt.*;
+
+import Modelo.Turnos;
 import Vistas.Pantallas.PantallaGanador;
 
 public class PantallaResultadosMano extends JDialog {
@@ -51,7 +53,7 @@ public class PantallaResultadosMano extends JDialog {
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
         panelBotones.setOpaque(false);
-        if (continuarJuego) {
+        if (!Turnos.condicionFinalizacion()) {
             panelBotones.add(btnContinuar);
             panelBotones.add(btnAbandonar);
         } else {
