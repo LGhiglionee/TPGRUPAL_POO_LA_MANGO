@@ -18,6 +18,7 @@ public class Jugador {
     protected boolean mano;
     protected ArrayList<Carta> trescartas;
     protected boolean desangrado;
+    protected boolean esBot;
 
     /**
      * Constructor por defecto.
@@ -29,6 +30,7 @@ public class Jugador {
         this.trescartas = new ArrayList<>(3);
         this.mano = true;
         this.desangrado = false;
+        this.esBot = false;
     }
 
     // --- Getters y Setters.

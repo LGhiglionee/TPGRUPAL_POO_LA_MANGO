@@ -25,6 +25,7 @@ public class Turnos {
     // --- Jugadores.
     Jugador jugador1;
     Jugador jugador2;
+    Bot bot;
 
     /**
      * Constructor que inicializa los jugadores, el mazo y mezcla las cartas.
@@ -35,6 +36,15 @@ public class Turnos {
         doscartas = new ArrayList<Carta>();
         jugador1 = new Jugador();
         jugador2 = new Jugador();
+    }
+
+    public Turnos(int dificultad) {
+        this.mazo = new Mazo();
+        mazo.mezclarMazo();
+        doscartas = new ArrayList<Carta>();
+        jugador1 = new Jugador();
+        jugador2 = new Jugador();
+        bot = new Bot(dificultad);
     }
     /**
      * Resuelve el enfrentamiento entre dos cartas jugadas en una mano.
@@ -263,5 +273,9 @@ public class Turnos {
             mensaje.append("Empate en el envido");
         }
         return mensaje.toString();
+    }
+
+    public Bot getBot() {
+        return bot;
     }
 }

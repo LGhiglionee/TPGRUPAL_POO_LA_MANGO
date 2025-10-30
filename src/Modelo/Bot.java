@@ -12,6 +12,7 @@ public class Bot extends Jugador {
         this.dificultad = dificultad;
         this.salud = (int) (30 + dificultad * 0.3);
         this.mano = false;
+        this.esBot = true;
     }
 
     public Carta decision(Mazo mazo) throws MazoVacioException {
@@ -85,5 +86,16 @@ public class Bot extends Jugador {
         }
         else { return this.trescartas.getFirst();
         }
+    }
+
+    public int indiceCartaElejida(Carta carta, ArrayList<Carta> cartas) {
+        int indice = 0;
+        for (Carta c : cartas) {
+            if (c == carta) {
+                return indice;
+            }
+            indice++;
+        }
+        return 0;
     }
 }

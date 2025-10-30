@@ -112,7 +112,8 @@ class OpcionesJuego extends JFrame implements ActionListener {
             new Partida();
             dispose();
         } else if (e.getSource() == botonOpcionPvC) {
-
+            new PartidaBot();
+            dispose();
         } else if (e.getSource() == botonVolver) {
             new Inicio();
             dispose();
