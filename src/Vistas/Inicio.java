@@ -69,7 +69,11 @@ public class Inicio extends JFrame implements ActionListener {
 
 
             // --- Configuración de tamaño completo de la ventana.
+            setUndecorated(true);
             setExtendedState(JFrame.MAXIMIZED_BOTH);
+            setSize(Toolkit.getDefaultToolkit().getScreenSize());
+            setLocationRelativeTo(null);
+            setAlwaysOnTop(true);
 
             // --- Imagen titulo
             ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png", anchura / 2, altura / 4);
