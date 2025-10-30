@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import Vistas.PantallaResultadosMano;
+import Vistas.Pantallas.*;
 
 public class Partida extends JFrame implements ActionListener {
     // --- Botones de cartas y acciones ---
@@ -260,7 +260,21 @@ public class Partida extends JFrame implements ActionListener {
         return boton;
     }
 
+    private void actualizarBotonCarta(JButton boton, Carta carta, int ancho, int alto) {
+        if (carta == null) {
+            boton.setIcon(null);
+            boton.setEnabled(false);
+            boton.setVisible(false);  // o true si preferís mantener el espacio
+            return;
+        }
 
+        boton.setVisible(true);
+        boton.setEnabled(true);
+
+        ImageIcon icon = new ImageIcon(carta.getImagen());
+        Image img = icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        boton.setIcon(new ImageIcon(img));
+    }
     public void actionPerformed(ActionEvent e) {
         try {
             // --- BOTONES DE CARTAS ---
@@ -306,41 +320,41 @@ public class Partida extends JFrame implements ActionListener {
             }
 
 
-        // --- ENVIDO ---
+            // --- ENVIDO ---
             else if (e.getSource() == envido) {
-            Jugador jugadorActual = turno.getJugadorMano();
+                Jugador jugadorActual = turno.getJugadorMano();
 
-            if (jugadorActual.getMana() >= 5) {
-                jugadorActual.agregarMana(-5);
+                if (jugadorActual.getMana() >= 5) {
+                    jugadorActual.agregarMana(-5);
 
-                int envidoJ1 = turno.getJugador1().calcularEnvido();
-                int envidoJ2 = turno.getJugador2().calcularEnvido();
+                    int envidoJ1 = turno.getJugador1().calcularEnvido();
+                    int envidoJ2 = turno.getJugador2().calcularEnvido();
 
-                JOptionPane.showMessageDialog(this,
-                        turno.jugarEnvido(envidoJ1, envidoJ2),
-                        "Resultado del Envido",
-                        JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            turno.jugarEnvido(envidoJ1, envidoJ2),
+                            "Resultado del Envido",
+                            JOptionPane.INFORMATION_MESSAGE);
 
-                turno.bloquearEnvido();
-                envido.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    turno.bloquearEnvido();
+                    envido.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
             }
-        }
 
-        // --- TRUCO ---
-        else if (e.getSource() == truco) {
-            if (turno.getJugadorMano().getMana() < 10) {
-                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
-                return;
+            // --- TRUCO ---
+            else if (e.getSource() == truco) {
+                if (turno.getJugadorMano().getMana() < 10) {
+                    JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                turno.getJugadorMano().agregarMana(-10);
+                turno.bloquearTruco();
+                JOptionPane.showMessageDialog(this, "¡Truco cantado! El perdedor de esta mano recibirá +15 de daño.");
+
+                //Se oculta boton
+                truco.setVisible(false);
             }
-            turno.getJugadorMano().agregarMana(-10);
-            turno.bloquearTruco();
-            JOptionPane.showMessageDialog(this, "¡Truco cantado! El perdedor de esta mano recibirá +15 de daño.");
-
-            //Se oculta boton
-            truco.setVisible(false);
-        }
 
             // --- ACTUALIZACIONES VISUALES ---
             if (turno.getJugadorMano() == turno.getJugador1()) {
@@ -383,131 +397,4 @@ public class Partida extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    static class PantallaCambioTurno extends JDialog {
-        private Image imagenFondo;
-
-        public PantallaCambioTurno(JFrame padre, String rutaImagen, String mensaje) {
-            super(padre, false); // modal
-            setUndecorated(true); // sin bordes
-            setAlwaysOnTop(true);
-
-            // --- Dimensiones ---
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            Dimension pantalla = tk.getScreenSize();
-            setBounds(0, 0, pantalla.width, pantalla.height);
-            setLocationRelativeTo(null);
-
-            // --- Carga de imagen ---
-            imagenFondo = new ImageIcon(rutaImagen).getImage();
-
-            // --- Panel personalizado ---
-            JPanel panel = new JPanel() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
-                }
-            };
-            panel.setLayout(new BorderLayout());
-
-            // --- Texto centrado ---
-            JLabel label = new JLabel(mensaje, SwingConstants.CENTER);
-            label.setForeground(Color.WHITE);
-            label.setFont(new Font("src/Recursos/Fuentes/ka1.ttf", Font.BOLD, 60));
-            label.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-            panel.add(label, BorderLayout.CENTER);
-
-            add(panel);
-
-            // --- Timer de cierre automático (3 segundos) ---
-            new Timer(3000, e -> dispose()).start();
-        }
-    }
-
-    static class PantallaGanador extends JFrame implements ActionListener {
-
-        // --- Imagen.
-        private Image imagen;
-
-        // --- Botones principales de la pantalla.
-        private JButton btnMenu;
-        private JButton btnSalir;
-
-
-        /**
-         * Constructor que crea la ventana de resultado con un mensaje central.
-         */
-        public PantallaGanador(String mensaje) {
-            // --- Configuración general de la ventana.
-            setTitle("Resultado del Juego");
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            setLayout(new BorderLayout());
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            Dimension pantalla = tk.getScreenSize();
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
-            setBounds(0, 0, pantalla.width, pantalla.height);
-
-            // --- Fuente personalizada.
-            Font fuente;
-            try {
-                fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf").deriveFont(Font.BOLD, 28f);
-            } catch (Exception ex) {
-                fuente = new Font("Arial", Font.BOLD, 28);
-            }
-
-            // --- Mensaje principal
-            JLabel lbl = new JLabel(mensaje, SwingConstants.CENTER);
-            lbl.setFont(fuente);
-            lbl.setForeground(Color.BLACK);
-            lbl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-            add(lbl, BorderLayout.CENTER);
-
-            // --- Botones inferiores
-            btnMenu = new JButton("Volver al menú");
-            btnMenu.addActionListener(this);
-
-
-            btnSalir = new JButton("Salir");
-            btnSalir.addActionListener(this);
-
-            // --- Panel de botones con separación uniforme.
-            JPanel panelBtns = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-            panelBtns.add(btnMenu);
-            panelBtns.add(btnSalir);
-            add(panelBtns, BorderLayout.SOUTH);
-
-            setVisible(true);
-        }
-
-        /**
-         * Maneja las acciones de los botones "Volver al menú" y "Salir".
-         */
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == btnMenu) {
-                new Inicio();
-                dispose();
-            }
-            if (e.getSource() == btnSalir) {
-                System.exit(0);
-            }
-        }
-    }
-
-    private void actualizarBotonCarta(JButton boton, Carta carta, int ancho, int alto) {
-        if (carta == null) {
-            boton.setIcon(null);
-            boton.setEnabled(false);
-            boton.setVisible(false);  // o true si preferís mantener el espacio
-            return;
-        }
-
-        boton.setVisible(true);
-        boton.setEnabled(true);
-
-        ImageIcon icon = new ImageIcon(carta.getImagen());
-        Image img = icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-        boton.setIcon(new ImageIcon(img));
-    }
-
 }

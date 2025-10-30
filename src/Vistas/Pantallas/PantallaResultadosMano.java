@@ -1,14 +1,13 @@
-package Vistas;
+package Vistas.Pantallas;
 
 import javax.swing.*;
 import java.awt.*;
-import Vistas.Partida.PantallaGanador;
+import Vistas.Pantallas.PantallaGanador;
 
 public class PantallaResultadosMano extends JDialog {
-    private JButton continuarBoton, abandonarBoton;
-        public boolean continuarJuego = false;
-        private int jugadorAbandono = 0;   // 0 ninguno, 1 o 2 si alguno abandona
-        private final JFrame padre;
+    public boolean continuarJuego = false;
+    private int jugadorAbandono = 0;   // 0 ninguno, 1 o 2 si alguno abandona
+    private final JFrame padre;
 
 
     public PantallaResultadosMano(JFrame padre,  Image img1, Image img2, String resultado) {
@@ -44,18 +43,29 @@ public class PantallaResultadosMano extends JDialog {
         // === Botones ===
         JButton btnContinuar = new JButton("Continuar jugando");
         JButton btnAbandonar = new JButton("Abandonar partida");
+        JButton btnFinalizar = new JButton("Partida finalizada");
 
         estilizarBoton(btnContinuar, new Color(40, 140, 40));
         estilizarBoton(btnAbandonar, new Color(160, 50, 50));
+        estilizarBoton(btnFinalizar, new Color(40, 140, 40));
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
         panelBotones.setOpaque(false);
-        panelBotones.add(btnContinuar);
-        panelBotones.add(btnAbandonar);
+        if (continuarJuego) {
+            panelBotones.add(btnContinuar);
+            panelBotones.add(btnAbandonar);
+        } else {
+            panelBotones.add(btnFinalizar);
+        }
 
         // === Acciones ===
         btnContinuar.addActionListener(e -> {
             continuarJuego = true;
+            dispose();
+        });
+
+        btnFinalizar.addActionListener(e -> {
+            continuarJuego = false;
             dispose();
         });
 

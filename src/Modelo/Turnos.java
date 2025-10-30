@@ -196,8 +196,17 @@ public class Turnos {
 
         //* --- Resultado final
         descripcion.append("\n⚔️ Resultado intermedio de la mano:\n");
-        descripcion.append("Jugador 1 → Vida: ").append(jugador1.getSalud()).append("\n");
-        descripcion.append("Jugador 2 → Vida: ").append(jugador2.getSalud()).append("\n");
+        if (jugador1.getSalud() > 0 & jugador2.getSalud() > 0) {
+            descripcion.append("Jugador 1 → Vida: ").append(jugador1.getSalud()).append("\n");
+            descripcion.append("Jugador 2 → Vida: ").append(jugador2.getSalud()).append("\n");
+        } else if (jugador1.getSalud() <= 0){
+            descripcion.append("Jugador 1 → Vida: ").append(0).append("\n");
+            descripcion.append("Jugador 2 → Vida: ").append(jugador2.getSalud()).append("\n");
+        } else {
+            descripcion.append("Jugador 1 → Vida: ").append(jugador1.getSalud()).append("\n");
+            descripcion.append("Jugador 2 → Vida: ").append(0).append("\n");
+
+        }
 
         if (jugador1.getSalud() > jugador2.getSalud()) {
             ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 1";

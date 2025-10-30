@@ -24,7 +24,7 @@ public class Jugador {
      * Inicializa la salud en 100, el maná en 0, tres cartas vacías y asigna la mano al jugador (por defecto true).
      */
     public Jugador() {
-        this.salud = 100;
+        this.salud = 10;
         this.mana = 0;
         this.trescartas = new ArrayList<>(3);
         this.mano = true;
