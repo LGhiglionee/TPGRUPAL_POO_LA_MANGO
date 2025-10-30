@@ -13,10 +13,11 @@ import java.util.ArrayList;
  */
 
 public class Jugador {
-    private int salud;
-    private int mana;
-    private boolean mano;
-    private ArrayList<Carta> trescartas;
+    protected int salud;
+    protected int mana;
+    protected boolean mano;
+    protected ArrayList<Carta> trescartas;
+    protected boolean desangrado;
 
     /**
      * Constructor por defecto.
@@ -27,6 +28,7 @@ public class Jugador {
         this.mana = 0;
         this.trescartas = new ArrayList<>(3);
         this.mano = true;
+        this.desangrado = false;
     }
 
     // --- Getters y Setters.
@@ -52,6 +54,14 @@ public class Jugador {
      * Incrementa el maná del jugador en la cantidad indicada.
      */
     public void agregarMana(int mana) {this.mana += mana;}
+
+    public boolean getDesangrado() {
+        return desangrado;
+    }
+
+    public void setDesangrado(boolean desangrado) {
+        this.desangrado = desangrado;
+    }
 
     /**
      * Asigna una carta a una posición específica dentro de las tres disponibles.
