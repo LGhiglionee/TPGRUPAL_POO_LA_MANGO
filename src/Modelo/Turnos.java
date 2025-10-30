@@ -27,9 +27,13 @@ public class Turnos {
     Jugador jugador2;
     private boolean envidodisponible = true;
 
+    private boolean trucodisponible = true;
+    int danoReciente1,danoReciente2;
+
     private Carta ultimaCartaJugadaJ1;
     private Carta ultimaCartaJugadaJ2;
     private String ultimoResultado = "";
+
 
     /**
      * Constructor que inicializa los jugadores, el mazo y mezcla las cartas.
@@ -51,11 +55,39 @@ public class Turnos {
     public void bloquearEnvido() { envidodisponible = false; }
     private void resetearEnvido() { envidodisponible = true; }
 
+
+    public boolean trucoDisponible() {return trucodisponible;}
+    public void bloquearTruco() {trucodisponible = false;}
+    private void resetearTruco() {trucodisponible = true;}
+
+    private void resetDanoReciente() {
+
+        danoReciente1 = 0;
+
+        danoReciente2=0;
+    }
+
+    private void infligirDanioA1(int danodetruco) {
+        if (danodetruco <= 0) return;
+        jugador1.actualizarSalud(-danodetruco);
+    }
+
+    private void infligirDanioA2(int danodetruco) {
+        if (danodetruco <= 0) return;
+        jugador2.actualizarSalud(-danodetruco);
+    }
+
     /**
      * Resuelve el enfrentamiento entre dos cartas jugadas en una mano.
      * Aplica efectos según el tipo de palo (curación, mana o daño).
      */
     public void jugarMano(Carta carta1, Carta carta2) {
+        // --- Resetea en 0 los daños.
+        resetDanoReciente();
+
+        danoReciente1 = jugador1.getSalud();
+        danoReciente2 = jugador2.getSalud();
+
         // --- Cartas de curación y maná.
         this.ultimaCartaJugadaJ1 = carta1;
         this.ultimaCartaJugadaJ2 = carta2;
@@ -138,6 +170,21 @@ public class Turnos {
                 }
             }
         }
+
+        danoReciente1 -= jugador1.getSalud();
+        danoReciente2 -= jugador2.getSalud();
+
+        if (!trucoDisponible()) { // Si se canto el Truco para esta mano
+            if (danoReciente1 > danoReciente2) {
+                // J1 recibió más daño, perdió la mano
+                infligirDanioA1(15);
+            } else if (danoReciente2 > danoReciente1) {
+                // J2 recibió más daño, perdió la mano
+                infligirDanioA2(15);
+            }
+            resetearTruco(); //Lo dejamos para la mano que viene
+        }
+
         // --- Efecto de sangrado
         if (jugador1.getDesangrado()) {
             jugador1.actualizarSalud(-5);

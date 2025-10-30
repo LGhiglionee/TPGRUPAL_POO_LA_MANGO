@@ -305,37 +305,42 @@ public class Partida extends JFrame implements ActionListener {
                 }
             }
 
-            // --- ENVIDO ---
+
+        // --- ENVIDO ---
             else if (e.getSource() == envido) {
-                Jugador jugadorActual = turno.getJugadorMano();
+            Jugador jugadorActual = turno.getJugadorMano();
 
-                if (jugadorActual.getMana() >= 5) {
-                    jugadorActual.agregarMana(-5);
+            if (jugadorActual.getMana() >= 5) {
+                jugadorActual.agregarMana(-5);
 
-                    int envidoJ1 = turno.getJugador1().calcularEnvido();
-                    int envidoJ2 = turno.getJugador2().calcularEnvido();
+                int envidoJ1 = turno.getJugador1().calcularEnvido();
+                int envidoJ2 = turno.getJugador2().calcularEnvido();
 
-                    JOptionPane.showMessageDialog(this,
-                            turno.jugarEnvido(envidoJ1, envidoJ2),
-                            "Resultado del Envido",
-                            JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        turno.jugarEnvido(envidoJ1, envidoJ2),
+                        "Resultado del Envido",
+                        JOptionPane.INFORMATION_MESSAGE);
 
-                    turno.bloquearEnvido();
-                    envido.setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
-                }
+                turno.bloquearEnvido();
+                envido.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
+        }
 
-            // --- TRUCO ---
-            else if (e.getSource() == truco) {
-                if (turno.getJugadorMano().getMana() >= 10) {
-                    turno.getJugadorMano().agregarMana(-10);
-                    // (Acá podrías agregar efectos del Truco más adelante)
-                } else {
-                    JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
-                }
+        // --- TRUCO ---
+        else if (e.getSource() == truco) {
+            if (turno.getJugadorMano().getMana() < 10) {
+                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+            turno.getJugadorMano().agregarMana(-10);
+            turno.bloquearTruco();
+            JOptionPane.showMessageDialog(this, "¡Truco cantado! El perdedor de esta mano recibirá +15 de daño.");
+
+            //Se oculta boton
+            truco.setVisible(false);
+        }
 
             // --- ACTUALIZACIONES VISUALES ---
             if (turno.getJugadorMano() == turno.getJugador1()) {
@@ -364,6 +369,8 @@ public class Partida extends JFrame implements ActionListener {
 
             // Envido visible o no
             envido.setVisible(turno.envidoDisponible());
+
+            truco.setVisible(turno.trucoDisponible());
 
             // Fin de partida
             if (turno.condicionFinalizacion()) {
