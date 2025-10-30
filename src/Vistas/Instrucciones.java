@@ -23,7 +23,8 @@ class Instrucciones extends JFrame {
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-        setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
+        //setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Instrucciones del Juego");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -31,10 +32,16 @@ class Instrucciones extends JFrame {
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 10f);
 
+        // --- Lamina
+        PanelConFondo lamina = new PanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+        lamina.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
         //--- Área de texto con scroll.
-        JTextArea texto = new JTextArea();
+        JTextPane texto = new JTextPane();
         texto.setFont(fuenteTexto);
         texto.setEditable(false);
+        texto.setOpaque(false);
 
         JScrollPane scroll = new JScrollPane(texto);
         add(scroll, BorderLayout.CENTER);
