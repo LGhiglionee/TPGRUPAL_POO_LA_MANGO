@@ -4,6 +4,7 @@ import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
+import Modelo.GestorRecursos;
 import Modelo.Jugador;
 import Modelo.Mazo.Carta;
 import Modelo.Turnos;
@@ -14,7 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-class Partida extends JFrame implements ActionListener {
+public class Partida extends JFrame implements ActionListener {
     // --- Botones de cartas y acciones ---
     private JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
 
@@ -36,64 +37,41 @@ class Partida extends JFrame implements ActionListener {
         configurarVentana();
         inicializarJuego();
         inicializarComponentesGraficos();
+        configurarPanelPrincipal();
 
-        //Panel Principal
+    }
+    private void configurarPanelPrincipal() {
+
+        // ===== 1️⃣ Panel de fondo general =====
         PanelConFondo juego = new PanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
         juego.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
         //Creacion de sub-paneles
-        j1Info = new JPanel();
-        j1Info.setOpaque(false);
-        j2Info = new JPanel();
-        j2Info.setOpaque(false);
-        infoTurno = new JPanel();
-        infoTurno.setOpaque(false);
-        manoCartas = new JPanel();
-        manoCartas.setOpaque(false);
-        infoEnvido = new JPanel();
-        infoEnvido.setOpaque(false);
-        infoTruco = new JPanel();
-        infoTruco.setOpaque(false);
+        crearSubPaneles ();
 
 
         //Borde de los sub-paneles
         j1Info.setBorder(BorderFactory.createTitledBorder("Jugador 1"));
         j2Info.setBorder(BorderFactory.createTitledBorder("Jugador 2"));
 
-        //Organiza sub-paneles
-        j1Info.setLayout(new GridLayout(3, 1));
-        j1Info.add(j1nombre);
-        j1Info.add(j1salud);
-        j1Info.add(j1mana);
-
-        j2Info.setLayout(new GridLayout(3, 1));
-        j2Info.add(j2nombre);
-        j2Info.add(j2salud);
-        j2Info.add(j2mana);
-
+        //Organizar contenido de sub-paneles
+        configurarPanelJugadores ();
         infoTurno.add(jturno);
 
-        JPanel panelInferior = new JPanel();
-        panelInferior.setLayout(new GridLayout(1, 3));
-        panelInferior.setOpaque(false);
+        // --- Panel inferior (ENVIDO + CARTAS + TRUCO)
+        JPanel panelInferior = crearPanelInferior();
 
-        manoCartas.setLayout(new GridLayout(1, 3)); // 1 fila, 3 columnas, 10px entre cartas
-        manoCartas.add(botoncarta1);
-        manoCartas.add(botoncarta2);
-        manoCartas.add(botoncarta3);
+        // --- Ubicar paneles en el layout principal.
+        ubicarPanelesEnLayout(juego, panelInferior, gbc);
 
-        infoEnvido.setLayout(new FlowLayout(FlowLayout.LEFT));
-        infoEnvido.add(envido);
-
-        infoTruco.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        infoTruco.add(truco);
-
-        panelInferior.add(infoEnvido);
-        panelInferior.add(manoCartas);
-        panelInferior.add(infoTruco);
-
+        add(juego);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    // Ubica todos los subpaneles en el GridBagLayout
+    private void ubicarPanelesEnLayout(PanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc){
         //Panel jugador 1 (Arriba - izquierda)
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -124,10 +102,56 @@ class Partida extends JFrame implements ActionListener {
         gbc.anchor = GridBagConstraints.SOUTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         juego.add(panelInferior, gbc);
+    }
 
-        add(juego);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // Crea el panel inferior con cartas + botones
+    private JPanel crearPanelInferior() {
+        JPanel panelInferior = new JPanel(new GridLayout(1, 3));
+        panelInferior.setOpaque(false);
+
+        manoCartas.setLayout(new GridLayout(1, 3)); // 1 fila, 3 columnas, 10px entre cartas
+        manoCartas.add(botoncarta1);
+        manoCartas.add(botoncarta2);
+        manoCartas.add(botoncarta3);
+
+        infoEnvido.setLayout(new FlowLayout(FlowLayout.LEFT));
+        infoEnvido.add(envido);
+
+        infoTruco.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        infoTruco.add(truco);
+
+        panelInferior.add(infoEnvido);
+        panelInferior.add(manoCartas);
+        panelInferior.add(infoTruco);
+
+        return panelInferior;
+    }
+
+    private void configurarPanelJugadores() {
+        j1Info.setLayout(new GridLayout(3, 1));
+        j1Info.add(j1nombre);
+        j1Info.add(j1salud);
+        j1Info.add(j1mana);
+
+        j2Info.setLayout(new GridLayout(3, 1));
+        j2Info.add(j2nombre);
+        j2Info.add(j2salud);
+        j2Info.add(j2mana);
+    }
+
+    private void crearSubPaneles() {
+        j1Info = new JPanel();
+        j1Info.setOpaque(false);
+        j2Info = new JPanel();
+        j2Info.setOpaque(false);
+        infoTurno = new JPanel();
+        infoTurno.setOpaque(false);
+        manoCartas = new JPanel();
+        manoCartas.setOpaque(false);
+        infoEnvido = new JPanel();
+        infoEnvido.setOpaque(false);
+        infoTruco = new JPanel();
+        infoTruco.setOpaque(false);
     }
 
     private void configurarVentana() {
@@ -198,18 +222,7 @@ class Partida extends JFrame implements ActionListener {
         // --- Botones de acción
         envido = crearBotonAccion("Envido");
         truco = crearBotonAccion("Truco");
-
     }
-
-
-
-
-
-
-
-
-
-
 
     private JProgressBar crearBarraSalud(Jugador jugador) {
         JProgressBar barra = new JProgressBar(0, 100);
@@ -245,13 +258,6 @@ class Partida extends JFrame implements ActionListener {
         boton.addActionListener(this);
         return boton;
     }
-
-
-
-
-
-
-
 
 
     public void actionPerformed(ActionEvent e) {
@@ -365,7 +371,7 @@ class Partida extends JFrame implements ActionListener {
         private Image imagenFondo;
 
         public PantallaCambioTurno(JFrame padre, String rutaImagen, String mensaje) {
-            super(padre, true); // modal
+            super(padre, false); // modal
             setUndecorated(true); // sin bordes
             setAlwaysOnTop(true);
 
@@ -399,6 +405,73 @@ class Partida extends JFrame implements ActionListener {
 
             // --- Timer de cierre automático (3 segundos) ---
              new Timer(3000, e -> dispose()).start();
+        }
+    }
+
+    class PantallaGanador extends JFrame implements ActionListener {
+
+        // --- Imagen.
+        private Image imagen;
+
+        // --- Botones principales de la pantalla.
+        private JButton btnMenu;
+        private JButton btnSalir;
+
+
+        /**
+         * Constructor que crea la ventana de resultado con un mensaje central.
+         */
+        public PantallaGanador(String mensaje) {
+            // --- Configuración general de la ventana.
+            setTitle("Resultado del Juego");
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setLayout(new BorderLayout());
+            setSize(600, 350);
+            setLocationRelativeTo(null); // --- Centra ventana en la pantalla.
+
+            // --- Fuente personalizada.
+            Font fuente;
+            try {
+                fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf").deriveFont(Font.BOLD, 28f);
+            } catch (Exception ex) {
+                fuente = new Font("Arial", Font.BOLD, 28);
+            }
+
+            // --- Mensaje principal
+            JLabel lbl = new JLabel(mensaje, SwingConstants.CENTER);
+            lbl.setFont(fuente);
+            lbl.setForeground(Color.BLACK);
+            lbl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            add(lbl, BorderLayout.CENTER);
+
+            // --- Botones inferiores
+            btnMenu = new JButton("Volver al menú");
+            btnMenu.addActionListener(this);
+
+
+            btnSalir = new JButton("Salir");
+            btnSalir.addActionListener(this);
+
+            // --- Panel de botones con separación uniforme.
+            JPanel panelBtns = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+            panelBtns.add(btnMenu);
+            panelBtns.add(btnSalir);
+            add(panelBtns, BorderLayout.SOUTH);
+
+            setVisible(true);
+        }
+
+        /**
+         * Maneja las acciones de los botones "Volver al menú" y "Salir".
+         */
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == btnMenu){
+                new Inicio();
+                dispose();
+            }
+            if (e.getSource() == btnSalir){
+                System.exit(0);
+            }
         }
     }
 

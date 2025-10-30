@@ -35,6 +35,8 @@ public class Turnos {
         doscartas = new ArrayList<Carta>();
         jugador1 = new Jugador();
         jugador2 = new Jugador();
+        jugador1.setMano(true);
+        System.out.println("Cartas disponibles al iniciar: " + mazo.cartasRestantes());
     }
     /**
      * Resuelve el enfrentamiento entre dos cartas jugadas en una mano.
