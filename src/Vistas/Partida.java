@@ -158,7 +158,11 @@ public class Partida extends JFrame implements ActionListener {
     private void configurarVentana() {
         setTitle("Truco a 2 Lucas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
 
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         //Cargar icono.

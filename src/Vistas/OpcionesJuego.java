@@ -26,7 +26,11 @@ class OpcionesJuego extends JFrame implements ActionListener {
     public OpcionesJuego() {
         setTitle("Truco a 2 Lucas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
 
         // --- Configuración de pantalla.
         Toolkit mipantalla = Toolkit.getDefaultToolkit();

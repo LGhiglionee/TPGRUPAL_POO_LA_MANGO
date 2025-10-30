@@ -24,12 +24,11 @@ public class PantallaGanador extends JFrame implements ActionListener {
     public PantallaGanador(String mensaje) {
         // --- Configuración general de la ventana.
         setTitle("Resultado del Juego");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension pantalla = tk.getScreenSize();
+        setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setBounds(0, 0, pantalla.width, pantalla.height);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
 
         // --- Fuente personalizada.
         Font fuente;

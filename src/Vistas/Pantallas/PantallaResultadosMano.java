@@ -16,12 +16,11 @@ public class PantallaResultadosMano extends JDialog {
         super(padre, true); // modal
         this.padre = padre;
         setTitle("Resultado de la Mano");
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension pantalla = tk.getScreenSize();
-        setBounds(0, 0, pantalla.width, pantalla.height);
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
-
+        setUndecorated(true);
+        padre.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
 
         // Panel principal:
         JPanel panel = new JPanel(new BorderLayout());
