@@ -15,132 +15,27 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 class Partida extends JFrame implements ActionListener {
-    // --- Botones de cartas ---
-    JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
+    // --- Botones de cartas y acciones ---
+    private JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
 
     // --- Información de jugadores ---
-    JProgressBar j1salud, j2salud;
-    JLabel j1mana, j2mana, j1nombre, j2nombre, jturno;
+    private JProgressBar j1salud, j2salud;
+    private JLabel j1mana, j2mana, j1nombre, j2nombre, jturno;
 
-    // --- Paneles ---
-    JPanel j1Info, j2Info, manoCartas, infoTurno, infoEnvido, infoTruco;
+    // --- Paneles principales ---
+    private JPanel j1Info, j2Info, manoCartas, infoTurno, infoEnvido, infoTruco;
 
-    int anchocarta, altocarta;
+    // --- Parámetros generales ---
+    private int anchocarta, altocarta;
 
-    Turnos turno;
-    ArrayList<Carta> cartasjugadas;
+    // --- Lógica de juego ---
+    private Turnos turno;
+    private ArrayList<Carta> cartasjugadas;
 
-    public Partida() {
-        setTitle("Truco a 2 Lucas");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        Toolkit mipantalla = Toolkit.getDefaultToolkit();
-        Dimension tamanio = mipantalla.getScreenSize();
-        int altura = tamanio.height;
-        int anchura = tamanio.width;
-
-        //Cargar icono.
-        try {
-            Image fondo = mipantalla.getImage("src/Recursos/Imagenes/Fondojuego.png");
-            setIconImage(fondo);
-        } catch (ImagenNoEncontradaException e) {
-            JOptionPane.showMessageDialog(this, "No se pudo cargar el ícono del juego.", "Aviso", JOptionPane.WARNING_MESSAGE);
-        }
-
-        //Inicializar datos del turno.
-        try {
-            turno = new Turnos();
-            turno.llenarMano(turno.getJugador1());
-            turno.llenarMano(turno.getJugador2());
-
-        } catch (MazoVacioException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al iniciar la partida", JOptionPane.ERROR_MESSAGE);
-            dispose();
-            return;
-        }
-
-        j1salud = new JProgressBar(0, 100);
-        j2salud = new JProgressBar(0, 100);
-        j1mana = new JLabel("Mana Jugador 1: " + turno.getJugador1().getMana());
-        j1mana.setForeground(Color.WHITE);
-        j2mana = new JLabel("Mana Jugador 2: " + turno.getJugador2().getMana());
-        j2mana.setForeground(Color.WHITE);
-        jturno = new JLabel("Turno de Jugador 1");
-
-        botoncarta1 = new JButton("Carta 1");
-        botoncarta2 = new JButton("Carta 2");
-        botoncarta3 = new JButton("Carta 3");
-
-        cartasjugadas = new ArrayList<Carta>();
-
-        //Tamanio botones
-        int anchoboton = anchura / 12;
-        int altoboton = altura / 6;
-        this.anchocarta = anchoboton;
-        this.altocarta = altoboton;
-
-        //Obtener cartas
-        Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
-        Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
-        Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
-
-        //Nombre jugador
-        j1nombre = new JLabel();
-        j2nombre = new JLabel();
-
-        // Salud Modelo.Jugador 1
-        j1salud = new JProgressBar(0, 100);
-        j1salud.setValue(turno.getJugador1().getSalud());
-        j1salud.setStringPainted(true);
-        j1salud.setForeground(Color.RED);
-        j1salud.setString("Vida: " + turno.getJugador1().getSalud());
-
-        // Salud J2
-        j2salud = new JProgressBar(0, 100);
-        j2salud.setValue(turno.getJugador2().getSalud());
-        j2salud.setStringPainted(true);
-        j2salud.setForeground(Color.RED);
-        j2salud.setString("Vida: " + turno.getJugador2().getSalud());
-
-        //Turno
-        Font mifuente = new Font("Arial", Font.BOLD, 45);
-        jturno.setFont(mifuente);
-        jturno.setForeground(Color.WHITE);
-
-        //Cartas
-        ImageIcon imgcarta1 = new ImageIcon(carta1.getImagen());
-        Image img1 = imgcarta1.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
-        botoncarta1 = new JButton(new ImageIcon(img1));
-        botoncarta1.setContentAreaFilled(false);
-        botoncarta1.setBorderPainted(false);
-        botoncarta1.setFocusPainted(false);
-        botoncarta1.addActionListener(this);
-
-        ImageIcon imgcarta2 = new ImageIcon(carta2.getImagen());
-        Image img2 = imgcarta2.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
-        botoncarta2 = new JButton(new ImageIcon(img2));
-        botoncarta2.setContentAreaFilled(false);
-        botoncarta2.setBorderPainted(false);
-        botoncarta2.setFocusPainted(false);
-        botoncarta2.addActionListener(this);
-
-        ImageIcon imgcarta3 = new ImageIcon(carta3.getImagen());
-        Image img3 = imgcarta3.getImage().getScaledInstance(anchoboton, altoboton, Image.SCALE_SMOOTH);
-        botoncarta3 = new JButton(new ImageIcon(img3));
-        botoncarta3.setContentAreaFilled(false);
-        botoncarta3.setBorderPainted(false);
-        botoncarta3.setFocusPainted(false);
-        botoncarta3.addActionListener(this);
-
-        //Botones (Envido y Truco)
-        envido = new JButton("Envido");
-        envido.setPreferredSize(new Dimension(100, 30));
-        envido.addActionListener(this);
-
-        truco = new JButton("Truco");
-        truco.setPreferredSize(new Dimension(100, 30));
-        truco.addActionListener(this);
+    public Partida () {
+        configurarVentana();
+        inicializarJuego();
+        inicializarComponentesGraficos();
 
         //Panel Principal
         PanelConFondo juego = new PanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
@@ -234,6 +129,130 @@ class Partida extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+    private void configurarVentana() {
+        setTitle("Truco a 2 Lucas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        Toolkit mipantalla = Toolkit.getDefaultToolkit();
+        //Cargar icono.
+        try {
+            Image fondo = mipantalla.getImage("src/Recursos/Imagenes/Fondojuego.png");
+            setIconImage(fondo);
+        } catch (ImagenNoEncontradaException e) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el ícono del juego.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void inicializarJuego() {
+        try {
+            turno = new Turnos();
+            turno.llenarMano(turno.getJugador1());
+            turno.llenarMano(turno.getJugador2());
+            cartasjugadas = new ArrayList<>();
+        } catch (MazoVacioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al iniciar la partida", JOptionPane.ERROR_MESSAGE);
+            dispose();
+            return;
+        }
+    }
+    private void inicializarComponentesGraficos () {
+        Toolkit mipantalla = Toolkit.getDefaultToolkit();
+        Dimension tamanio = mipantalla.getScreenSize();
+        int altura = tamanio.height;
+        int anchura = tamanio.width;
+
+        anchocarta = anchura / 12;
+        altocarta = altura / 6;
+        //Nombre jugador
+        j1nombre = new JLabel();
+        j2nombre = new JLabel();
+
+        // --- BARRAS DE SALUD ---
+        j1salud = crearBarraSalud(turno.getJugador1());
+        j2salud = crearBarraSalud(turno.getJugador2());
+
+        // --- Maná
+        j1mana = crearEtiquetaMana("Mana Jugador 1: ", turno.getJugador1());
+        j2mana = crearEtiquetaMana("Mana Jugador 2: ", turno.getJugador2());
+
+        // --- Turno
+        jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
+        jturno.setFont(new Font("Arial", Font.BOLD, 45));
+        jturno.setForeground(Color.WHITE);
+
+        //Obtener cartas
+        Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
+        Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
+        Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
+
+        botoncarta1 = crearBotonCarta(carta1);
+        botoncarta2 = crearBotonCarta(carta2);
+        botoncarta3 = crearBotonCarta(carta3);
+
+        botoncarta1.addActionListener(this);
+        botoncarta2.addActionListener(this);
+        botoncarta3.addActionListener(this);
+
+        // --- Botones de acción
+        envido = crearBotonAccion("Envido");
+        truco = crearBotonAccion("Truco");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private JProgressBar crearBarraSalud(Jugador jugador) {
+        JProgressBar barra = new JProgressBar(0, 100);
+        barra.setValue(jugador.getSalud());
+        barra.setString("Vida: " + jugador.getSalud());
+        barra.setStringPainted(true);
+        barra.setForeground(Color.RED);
+        return barra;
+    }
+
+    private JLabel crearEtiquetaMana(String texto, Jugador jugador) {
+        JLabel lbl = new JLabel(texto + jugador.getMana());
+        lbl.setForeground(Color.WHITE);
+        return lbl;
+    }
+
+    private JButton crearBotonCarta(Carta carta) {
+        JButton boton = new JButton();
+        if (carta != null) {
+            ImageIcon icon = new ImageIcon(carta.getImagen());
+            Image img = icon.getImage().getScaledInstance(anchocarta, altocarta, Image.SCALE_SMOOTH);
+            boton.setIcon(new ImageIcon(img));
+        }
+        boton.setContentAreaFilled(false);
+        boton.setBorderPainted(false);
+        boton.setFocusPainted(false);
+        return boton;
+    }
+
+    private JButton crearBotonAccion(String texto) {
+        JButton boton = new JButton(texto);
+        boton.setPreferredSize(new Dimension(100, 30));
+        boton.addActionListener(this);
+        return boton;
+    }
+
+
+
+
+
+
+
+
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botoncarta1) {
@@ -379,7 +398,7 @@ class Partida extends JFrame implements ActionListener {
             add(panel);
 
             // --- Timer de cierre automático (3 segundos) ---
-            new Timer(3000, e -> dispose()).start();
+             new Timer(3000, e -> dispose()).start();
         }
     }
 
