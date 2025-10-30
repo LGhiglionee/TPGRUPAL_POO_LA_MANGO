@@ -1,23 +1,14 @@
-package Vistas;
+package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
+import Vistas.Inicio;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *  — Ventana que muestra el resultado final del juego.
- *
- * <p>Se utiliza al finalizar una partida para mostrar quién ganó o el resultado general.
- * Incluye un mensaje central y dos botones inferiores:
- * <ul>
- *   <li><b>Volver al menú</b>: regresa a la pantalla principal.</li>
- *   <li><b>Salir</b>: cierra la aplicación.</li>
- */
-
-class PantallaGanador extends JFrame implements ActionListener {
+public class PantallaGanador extends JFrame implements ActionListener {
 
     // --- Imagen.
     private Image imagen;
@@ -33,10 +24,11 @@ class PantallaGanador extends JFrame implements ActionListener {
     public PantallaGanador(String mensaje) {
         // --- Configuración general de la ventana.
         setTitle("Resultado del Juego");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
-        setSize(600, 350);
-        setLocationRelativeTo(null); // --- Centra ventana en la pantalla.
+        setUndecorated(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
 
         // --- Fuente personalizada.
         Font fuente;
@@ -74,12 +66,13 @@ class PantallaGanador extends JFrame implements ActionListener {
      * Maneja las acciones de los botones "Volver al menú" y "Salir".
      */
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnMenu){
+        if (e.getSource() == btnMenu) {
             new Inicio();
             dispose();
         }
-        if (e.getSource() == btnSalir){
+        if (e.getSource() == btnSalir) {
             System.exit(0);
         }
     }
 }
+
