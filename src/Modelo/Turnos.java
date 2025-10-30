@@ -27,6 +27,10 @@ public class Turnos {
     Jugador jugador2;
     private boolean envidodisponible = true;
 
+    private Carta ultimaCartaJugadaJ1;
+    private Carta ultimaCartaJugadaJ2;
+    private String ultimoResultado = "";
+
     /**
      * Constructor que inicializa los jugadores, el mazo y mezcla las cartas.
      */
@@ -39,6 +43,9 @@ public class Turnos {
         jugador1.setMano(true);
         System.out.println("Cartas disponibles al iniciar: " + mazo.cartasRestantes());
     }
+    public Carta getUltimaCartaJugadaJ1() { return ultimaCartaJugadaJ1; }
+    public Carta getUltimaCartaJugadaJ2() { return ultimaCartaJugadaJ2; }
+    public String getUltimoResultado() { return ultimoResultado; }
 
     public boolean envidoDisponible() { return envidodisponible; }
     public void bloquearEnvido() { envidodisponible = false; }
@@ -50,20 +57,33 @@ public class Turnos {
      */
     public void jugarMano(Carta carta1, Carta carta2) {
         // --- Cartas de curación y maná.
+        this.ultimaCartaJugadaJ1 = carta1;
+        this.ultimaCartaJugadaJ2 = carta2;
+
+        StringBuilder descripcion = new StringBuilder();
+
+
         if ((carta1.getPalo().equals("Copa") || carta1.getPalo().equals("Oro")) &&
                 (carta2.getPalo().equals("Copa") || carta2.getPalo().equals("Oro"))) {
 
             if (carta1.getPalo().equals("Copa")) {
                 jugador1.actualizarSalud(carta1.getNumero());
                 jugador1.setDesangrado(false);
+                descripcion.append("Jugador 1 recupera ").append(carta1.getNumero()).append(" de vida.\n");
             }
-            if (carta1.getPalo().equals("Oro")) jugador1.agregarMana(carta1.getNumero());
-
+            if (carta1.getPalo().equals("Oro")) {
+                jugador1.agregarMana(carta1.getNumero());
+                descripcion.append("Jugador 1 gana ").append(carta1.getNumero()).append(" de maná.\n");
+            }
             if (carta2.getPalo().equals("Copa")) {
                 jugador2.actualizarSalud(carta2.getNumero());
                 jugador2.setDesangrado(false);
+                descripcion.append("Jugador 2 recupera ").append(carta2.getNumero()).append(" de vida.\n");
             }
-            if (carta2.getPalo().equals("Oro")) jugador2.agregarMana(carta2.getNumero());
+            if (carta2.getPalo().equals("Oro")) {
+                jugador2.agregarMana(carta2.getNumero());
+                descripcion.append("Jugador 2 gana ").append(carta2.getNumero()).append(" de maná.\n");
+            }
         }
         // --- Cartas ofensivas.
         else if ((carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) &&
@@ -76,11 +96,13 @@ public class Turnos {
             }
 
             calcularDanio(carta1, carta2);
+            descripcion.append("Ambos atacan con fuerza, las espadas y bastos chocan.\n");
         }
         // --- Cartas de distinto tipo; se aplica daño y efectos individuales.
         else {
             if (carta1.getPalo().equals("Espada") || carta1.getPalo().equals("Basto")) {
                 jugador2.actualizarSalud(-carta1.getNumero());
+                descripcion.append("Jugador 1 inflige ").append(carta1.getNumero()).append(" de daño a Jugador 2.\n");
 
                 if (carta1.getPalo().equals("Espada")) {
                     jugador2.setDesangrado(true);
@@ -88,10 +110,17 @@ public class Turnos {
                     jugador2.setDesangrado(false);
                 }
 
-                if (carta2.getPalo().equals("Copa")) jugador2.actualizarSalud(carta2.getNumero());
-                if (carta2.getPalo().equals("Oro")) jugador2.agregarMana(carta2.getNumero());
+                if (carta2.getPalo().equals("Copa")) {
+                    jugador2.actualizarSalud(carta2.getNumero());
+                    descripcion.append("Jugador 2 recupera ").append(carta2.getNumero()).append(" de vida.\n");
+                }
+                if (carta2.getPalo().equals("Oro")) {
+                    jugador2.agregarMana(carta2.getNumero());
+                    descripcion.append("Jugador 2 gana ").append(carta2.getNumero()).append(" de maná.\n");
+                }
             } else {
                 jugador1.actualizarSalud(-carta2.getNumero());
+                descripcion.append("Jugador 2 inflige ").append(carta2.getNumero()).append(" de daño a Jugador 1.\n");
 
                 if (carta2.getPalo().equals("Espada")) {
                     jugador1.setDesangrado(true);
@@ -99,14 +128,36 @@ public class Turnos {
                     jugador1.setDesangrado(false);
                 }
 
-                if (carta1.getPalo().equals("Copa")) jugador1.actualizarSalud(carta1.getNumero());
-                if (carta1.getPalo().equals("Oro")) jugador1.agregarMana(carta1.getNumero());
+                if (carta1.getPalo().equals("Copa")) {
+                    jugador1.actualizarSalud(carta1.getNumero());
+                    descripcion.append("Jugador 1 recupera ").append(carta1.getNumero()).append(" de vida.\n");
+                }
+                if (carta1.getPalo().equals("Oro")) {
+                    jugador1.agregarMana(carta1.getNumero());
+                    descripcion.append("Jugador 1 gana ").append(carta1.getNumero()).append(" de maná.\n");
+                }
             }
         }
+        // --- Efecto de sangrado
         if (jugador1.getDesangrado()) {
             jugador1.actualizarSalud(-5);
+            descripcion.append("Jugador 1 pierde 5 de vida por desangrarse.\n");
         } else if (jugador2.getDesangrado()) {
             jugador2.actualizarSalud(-5);
+            descripcion.append("Jugador 2 pierde 5 de vida por desangrarse.\n");
+        }
+
+        //* --- Resultado final
+        descripcion.append("\n⚔️ Resultado intermedio de la mano:\n");
+        descripcion.append("Jugador 1 → Vida: ").append(jugador1.getSalud()).append("\n");
+        descripcion.append("Jugador 2 → Vida: ").append(jugador2.getSalud()).append("\n");
+
+        if (jugador1.getSalud() > jugador2.getSalud()) {
+            ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 1";
+        } else if (jugador2.getSalud() > jugador1.getSalud()) {
+            ultimoResultado = descripcion + "\n🏆 La ventaja la tiene el Jugador 1";
+        } else {
+            ultimoResultado = descripcion + "\n🤝 Empate parcial entre ambos jugadores";
         }
     }
 

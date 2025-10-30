@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import Vistas.PantallaResultadosMano;
 
 public class Partida extends JFrame implements ActionListener {
     // --- Botones de cartas y acciones ---
@@ -261,116 +262,120 @@ public class Partida extends JFrame implements ActionListener {
 
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == botoncarta1) {
-            try {
-                turno.jugarCarta(0, cartasjugadas);
-                String siguienteTurno = (turno.getJugadorMano() == turno.getJugador1()) ?
-                        "Turno del Jugador 1" : "Turno del Jugador 2";
+        try {
+            // --- BOTONES DE CARTAS ---
+            if (e.getSource() == botoncarta1 || e.getSource() == botoncarta2 || e.getSource() == botoncarta3) {
 
-// 🔹 Mostramos la imagen de transición personalizada
-                String ruta = "src/Recursos/Imagenes/transicion_turno.png"; // 🔸 tu imagen elegida
-                PantallaCambioTurno pantalla = new PantallaCambioTurno(this, ruta, siguienteTurno);
-                pantalla.setVisible(true);
+                int indice = (e.getSource() == botoncarta1) ? 0 :
+                        (e.getSource() == botoncarta2) ? 1 : 2;
 
-            } catch (MazoVacioException | PosicionInvalidaException ex) {
-                throw new RuntimeException(ex);
-            }
-        } else if (e.getSource() == botoncarta2) {
-            try {
-                turno.jugarCarta(1, cartasjugadas);
-                String siguienteTurno = (turno.getJugadorMano() == turno.getJugador1()) ?
-                        "Turno del Jugador 1" : "Turno del Jugador 2";
+                turno.jugarCarta(indice, cartasjugadas);
 
-// 🔹 Mostramos la imagen de transición personalizada
-                String ruta = "src/Recursos/Imagenes/transicion_turno.png"; // 🔸 tu imagen elegida
-                PantallaCambioTurno pantalla = new PantallaCambioTurno(this, ruta, siguienteTurno);
-                pantalla.setVisible(true);
+                // ⚡ Si se jugaron las dos cartas (mano completa)
+                if (cartasjugadas.isEmpty()) {
+                    Carta c1 = turno.getUltimaCartaJugadaJ1();
+                    Carta c2 = turno.getUltimaCartaJugadaJ2();
 
-            } catch (MazoVacioException | PosicionInvalidaException ex) {
-                throw new RuntimeException(ex);
-            }
-        } else if (e.getSource() == botoncarta3) {
-            try {
-                turno.jugarCarta(2, cartasjugadas);
-                String siguienteTurno = (turno.getJugadorMano() == turno.getJugador1()) ?
-                        "Turno del Jugador 1" : "Turno del Jugador 2";
+                    if (c1 != null && c2 != null) {
+                        Image img1 = new ImageIcon(c1.getImagen()).getImage();
+                        Image img2 = new ImageIcon(c2.getImagen()).getImage();
+                        String resultado = turno.getUltimoResultado();
 
-// 🔹 Mostramos la imagen de transición personalizada
-                String ruta = "src/Recursos/Imagenes/transicion_turno.png"; // 🔸 tu imagen elegida
-                PantallaCambioTurno pantalla = new PantallaCambioTurno(this, ruta, siguienteTurno);
-                pantalla.setVisible(true);
+                        // 🔹 Pantalla de resultado ANTES del cambio de turno
+                        PantallaResultadosMano pantalla = new PantallaResultadosMano(this, img1, img2, resultado);
+                        pantalla.setVisible(true);
 
-            } catch (MazoVacioException | PosicionInvalidaException ex) {
-                throw new RuntimeException(ex);
-            }
-        } else if (e.getSource() == envido) {
-            Jugador jugadorActual = turno.getJugadorMano();
-
-            if (jugadorActual.getMana() >= 5) {
-                jugadorActual.agregarMana(-5);
-
-                int envidoJ1 = 0;
-                try {
-                    envidoJ1 = turno.getJugador1().calcularEnvido();
-                } catch (JugadorSinCartasException ex) {
-                    throw new RuntimeException(ex);
+                        if (!pantalla.continuarJuego()) {
+                            // Si un jugador abandonó, ya se manejó la pantallaGanador adentro
+                            if (pantalla.getJugadorAbandono() == 0) {
+                                JOptionPane.showMessageDialog(this, "Partida finalizada por el jugador.");
+                                new Inicio();  // volver al menú
+                                dispose();
+                            }
+                        }
+                    }
                 }
-                int envidoJ2 = 0;
-                try {
-                    envidoJ2 = turno.getJugador2().calcularEnvido();
-                } catch (JugadorSinCartasException ex) {
-                    throw new RuntimeException(ex);
+                // Si aún no se jugaron las dos cartas, mostrar pantalla de cambio de turno
+                else {
+                    String siguienteTurno = (turno.getJugadorMano() == turno.getJugador1())
+                            ? "Turno del Jugador 1" : "Turno del Jugador 2";
+                    String ruta = "src/Recursos/Imagenes/transicion_turno.png";
+                    PantallaCambioTurno pantallaCambio = new PantallaCambioTurno(this, ruta, siguienteTurno);
+                    pantallaCambio.setVisible(true);
                 }
-                JOptionPane.showMessageDialog(this, turno.jugarEnvido(envidoJ1, envidoJ2), "Resultado del Envido", JOptionPane.INFORMATION_MESSAGE);
-
-                turno.bloquearEnvido();
-                envido.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
-        } else if (e.getSource() == truco) {
-            if (turno.getJugadorMano().getMana() >= 10) {
-                //Agregar lo que haria cantar truco
-                turno.getJugadorMano().agregarMana(-10);
-            } else {
-                JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+
+            // --- ENVIDO ---
+            else if (e.getSource() == envido) {
+                Jugador jugadorActual = turno.getJugadorMano();
+
+                if (jugadorActual.getMana() >= 5) {
+                    jugadorActual.agregarMana(-5);
+
+                    int envidoJ1 = turno.getJugador1().calcularEnvido();
+                    int envidoJ2 = turno.getJugador2().calcularEnvido();
+
+                    JOptionPane.showMessageDialog(this,
+                            turno.jugarEnvido(envidoJ1, envidoJ2),
+                            "Resultado del Envido",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    turno.bloquearEnvido();
+                    envido.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
             }
+
+            // --- TRUCO ---
+            else if (e.getSource() == truco) {
+                if (turno.getJugadorMano().getMana() >= 10) {
+                    turno.getJugadorMano().agregarMana(-10);
+                    // (Acá podrías agregar efectos del Truco más adelante)
+                } else {
+                    JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+
+            // --- ACTUALIZACIONES VISUALES ---
+            if (turno.getJugadorMano() == turno.getJugador1()) {
+                jturno.setText("Turno de Jugador 1");
+            } else {
+                jturno.setText("Turno de Jugador 2");
+            }
+
+            // Actualizar cartas visibles
+            Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
+            Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
+            Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
+
+            actualizarBotonCarta(botoncarta1, carta1, anchocarta, altocarta);
+            actualizarBotonCarta(botoncarta2, carta2, anchocarta, altocarta);
+            actualizarBotonCarta(botoncarta3, carta3, anchocarta, altocarta);
+
+            // Actualizar salud y mana
+            j1salud.setValue(turno.getJugador1().getSalud());
+            j1salud.setString("Vida: " + turno.getJugador1().getSalud());
+            j2salud.setValue(turno.getJugador2().getSalud());
+            j2salud.setString("Vida: " + turno.getJugador2().getSalud());
+
+            j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
+            j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
+
+            // Envido visible o no
+            envido.setVisible(turno.envidoDisponible());
+
+            // Fin de partida
+            if (turno.condicionFinalizacion()) {
+                new PantallaGanador(turno.partidaTerminada());
+            }
+
+            jturno.repaint();
+
+        } catch (MazoVacioException | PosicionInvalidaException | JugadorSinCartasException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        if (turno.getJugadorMano() == turno.getJugador1()) {
-            jturno.setText("Turno de Jugador 1");
-        } else {
-            jturno.setText("Turno de Jugador 2");
-        }
-
-        //Cambio de cartas en botones
-        Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
-        Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
-        Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
-
-        actualizarBotonCarta(botoncarta1, carta1, anchocarta, altocarta);
-        actualizarBotonCarta(botoncarta2, carta2, anchocarta, altocarta);
-        actualizarBotonCarta(botoncarta3, carta3, anchocarta, altocarta);
-
-        //Cambio de etiquetas
-
-        j1salud.setValue(turno.getJugador1().getSalud());
-        j1salud.setString("Vida: " + turno.getJugador1().getSalud());
-        j2salud.setValue(turno.getJugador2().getSalud());
-        j2salud.setString("Vida: " + turno.getJugador2().getSalud());
-
-        j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
-        j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
-
-        //Envido si esta disponible
-        envido.setVisible(turno.envidoDisponible());
-
-        if (turno.condicionFinalizacion()) {
-            new PantallaGanador(turno.partidaTerminada());
-        }
-
-        jturno.repaint();
     }
-
 
     static class PantallaCambioTurno extends JDialog {
         private Image imagenFondo;
@@ -383,7 +388,7 @@ public class Partida extends JFrame implements ActionListener {
             // --- Dimensiones ---
             Toolkit tk = Toolkit.getDefaultToolkit();
             Dimension pantalla = tk.getScreenSize();
-            setSize(pantalla);
+            setBounds(0, 0, pantalla.width, pantalla.height);
             setLocationRelativeTo(null);
 
             // --- Carga de imagen ---
@@ -409,11 +414,11 @@ public class Partida extends JFrame implements ActionListener {
             add(panel);
 
             // --- Timer de cierre automático (3 segundos) ---
-             new Timer(3000, e -> dispose()).start();
+            new Timer(3000, e -> dispose()).start();
         }
     }
 
-    class PantallaGanador extends JFrame implements ActionListener {
+    static class PantallaGanador extends JFrame implements ActionListener {
 
         // --- Imagen.
         private Image imagen;
@@ -431,8 +436,10 @@ public class Partida extends JFrame implements ActionListener {
             setTitle("Resultado del Juego");
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setLayout(new BorderLayout());
-            setSize(600, 350);
-            setLocationRelativeTo(null); // --- Centra ventana en la pantalla.
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            Dimension pantalla = tk.getScreenSize();
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            setBounds(0, 0, pantalla.width, pantalla.height);
 
             // --- Fuente personalizada.
             Font fuente;
@@ -470,11 +477,11 @@ public class Partida extends JFrame implements ActionListener {
          * Maneja las acciones de los botones "Volver al menú" y "Salir".
          */
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == btnMenu){
+            if (e.getSource() == btnMenu) {
                 new Inicio();
                 dispose();
             }
-            if (e.getSource() == btnSalir){
+            if (e.getSource() == btnSalir) {
                 System.exit(0);
             }
         }
