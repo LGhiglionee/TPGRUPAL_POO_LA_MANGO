@@ -25,6 +25,7 @@ public class Turnos {
     // --- Jugadores.
     Jugador jugador1;
     Jugador jugador2;
+    private boolean envidodisponible = true;
 
     /**
      * Constructor que inicializa los jugadores, el mazo y mezcla las cartas.
@@ -36,6 +37,11 @@ public class Turnos {
         jugador1 = new Jugador();
         jugador2 = new Jugador();
     }
+
+    public boolean envidoDisponible() { return envidodisponible; }
+    public void bloquearEnvido() { envidodisponible = false; }
+    private void resetearEnvido() { envidodisponible = true; }
+
     /**
      * Resuelve el enfrentamiento entre dos cartas jugadas en una mano.
      * Aplica efectos según el tipo de palo (curación, mana o daño).
@@ -230,6 +236,7 @@ public class Turnos {
             cartasjugadas.add(carta);
             jugarMano(cartasjugadas.get(0), cartasjugadas.get(1));
             cartasjugadas.clear();
+            resetearEnvido();
         } else {
             cartasjugadas.add(carta);
         }

@@ -317,6 +317,8 @@ class Partida extends JFrame implements ActionListener {
                 }
                 JOptionPane.showMessageDialog(this, turno.jugarEnvido(envidoJ1, envidoJ2), "Resultado del Envido", JOptionPane.INFORMATION_MESSAGE);
 
+                turno.bloquearEnvido();
+                envido.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
@@ -352,6 +354,9 @@ class Partida extends JFrame implements ActionListener {
 
         j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
         j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
+
+        //Envido si esta disponible
+        envido.setVisible(turno.envidoDisponible());
 
         if (turno.condicionFinalizacion()) {
             new PantallaGanador(turno.partidaTerminada());
