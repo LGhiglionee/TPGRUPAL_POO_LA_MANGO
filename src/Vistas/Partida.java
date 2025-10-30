@@ -323,12 +323,16 @@ class Partida extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         } else if (e.getSource() == truco) {
-            if (turno.getJugadorMano().getMana() >= 10) {
-                //Agregar lo que haria cantar truco
-                turno.getJugadorMano().agregarMana(-10);
-            } else {
+            if (turno.getJugadorMano().getMana() < 10) {
                 JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+            turno.getJugadorMano().agregarMana(-10);
+            turno.bloquearTruco();
+            JOptionPane.showMessageDialog(this, "¡Truco cantado! El perdedor de esta mano recibirá +15 de daño.");
+
+            //Se oculta boton
+            truco.setVisible(false);
         }
         if (turno.getJugadorMano() == turno.getJugador1()) {
             jturno.setText("Turno de Jugador 1");
@@ -357,6 +361,8 @@ class Partida extends JFrame implements ActionListener {
 
         //Envido si esta disponible
         envido.setVisible(turno.envidoDisponible());
+
+        truco.setVisible(turno.trucoDisponible());
 
         if (turno.condicionFinalizacion()) {
             new PantallaGanador(turno.partidaTerminada());
