@@ -3,6 +3,7 @@ package Vistas;
 import Excepciones.Recursos.FuenteNoEncontradaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
 import Modelo.GestorRecursos;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -133,11 +134,23 @@ public class Inicio extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonsalir) {
-            int opcion = JOptionPane.showConfirmDialog (this, "¿Seguro que desea salir?", "Salir", JOptionPane.YES_NO_OPTION);
-            if (opcion == JOptionPane.YES_OPTION) {
+            Object[] opciones = {"Sí", "No"};
+            int seleccion = JOptionPane.showOptionDialog(
+                    this,
+                    "¿Estás seguro que deseas salir?",
+                    "Aviso",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
+
+            if (seleccion == 0) { // 0 corresponde a la opción "Sí"
                 System.exit(0);
-            };
+            }
         }
+
         else if (e.getSource() == botonjugar) {
             new OpcionesJuego();
             dispose();
