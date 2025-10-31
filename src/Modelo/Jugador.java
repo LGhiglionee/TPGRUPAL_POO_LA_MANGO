@@ -25,7 +25,7 @@ public class Jugador {
      */
     public Jugador() {
         this.salud = 100;
-        this.mana = 0;
+        this.mana = 999999999;
         this.trescartas = new ArrayList<>(3);
         this.mano = true;
         this.desangrado = false;

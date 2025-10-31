@@ -12,7 +12,7 @@ public class PantallaResultadosMano extends JDialog {
     private final JFrame padre;
 
 
-    public PantallaResultadosMano(JFrame padre,  Image img1, Image img2, String resultado) {
+    public PantallaResultadosMano(JFrame padre,  Image img1, Image img2, String resultado, boolean mostrarTruco) {
         super(padre, true); // modal
         this.padre = padre;
         setTitle("Resultado de la Mano");
@@ -53,6 +53,7 @@ public class PantallaResultadosMano extends JDialog {
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
         panelBotones.setOpaque(false);
+
         if (!Turnos.condicionFinalizacion()) {
             panelBotones.add(btnContinuar);
             panelBotones.add(btnAbandonar);
@@ -101,9 +102,52 @@ public class PantallaResultadosMano extends JDialog {
         });
 
         // === Ensamble ===
-        panel.add(lblResultado, BorderLayout.NORTH);
         panel.add(panelCartas, BorderLayout.CENTER);
         panel.add(panelBotones, BorderLayout.SOUTH);
+
+        // === Header con CardLayout para TRUCO/RESULTADO ===
+        JPanel header = new JPanel(new CardLayout());
+        header.setOpaque(false);
+
+        // Resultado (card "resultado")
+        lblResultado = new JLabel("<html>" + resultado.replace("\n", "<br>") + "</html>", SwingConstants.CENTER);
+        lblResultado.setFont(new Font("Arial", Font.BOLD, 26));
+        lblResultado.setForeground(Color.WHITE);
+        lblResultado.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        header.add(lblResultado, "resultado");
+
+        //-- Si se jugo el truco, muestra el card de TRUCO
+        if (mostrarTruco) {
+            JLabel lblTruco = new JLabel("¡EL TRUCO FUE ACTIVADO!", SwingConstants.CENTER);
+            lblTruco.setFont(new Font("Arial", Font.BOLD, 38));
+            lblTruco.setForeground(new Color(25, 25, 25));
+            lblTruco.setBackground(new Color(255, 250, 0));
+            lblTruco.setOpaque(true);
+            lblTruco.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3, true));
+            lblTruco.setPreferredSize(new Dimension(400, 20));
+            header.add(lblTruco, "truco");
+
+            // -- Muestra primero el cartel de truco
+            ((CardLayout) header.getLayout()).show(header, "truco");
+
+            // --NO muestra el resto
+            panelCartas.setVisible(false);
+            panelBotones.setVisible(false);
+
+            Timer t = new Timer(3000, e -> {
+                ((CardLayout) header.getLayout()).show(header, "resultado"); // cambiar al resultado
+                panelCartas.setVisible(true);
+                panelBotones.setVisible(true);
+                panel.revalidate();
+                panel.repaint();
+            });
+            t.setRepeats(false);
+            t.start();
+        } else {
+            ((CardLayout) header.getLayout()).show(header, "resultado");
+        }
+
+        panel.add(header, BorderLayout.NORTH);
         add(panel);
     }
 

@@ -296,7 +296,8 @@ public class Partida extends JFrame implements ActionListener {
                         String resultado = turno.getUltimoResultado();
 
                         // 🔹 Pantalla de resultado ANTES del cambio de turno
-                        PantallaResultadosMano pantalla = new PantallaResultadosMano(this, img1, img2, resultado);
+                        boolean mostrarTruco = turno.consumirBannerTruco();
+                        PantallaResultadosMano pantalla = new PantallaResultadosMano(this, img1, img2, resultado, mostrarTruco);
                         pantalla.setVisible(true);
 
                         if (!pantalla.continuarJuego()) {
