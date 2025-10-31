@@ -3,11 +3,11 @@ package Vistas.Partidas;
 import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
-import Modelo.Jugador;
-import Modelo.Mazo.Carta;
-import Modelo.Turnos;
-import Vistas.Pantallas.ConfigurPanelConFondo;
-import Vistas.Pantallas.ConfigurPantallas;
+import Modelo.Entidades.Jugador;
+import Modelo.Entidades.Carta;
+import Modelo.Motor.Turnos;
+import Vistas.Configuraciones.ConfigurPanelConFondo;
+import Vistas.Configuraciones.ConfigurPantallas;
 import Vistas.Pantallas.PantallaGanador;
 
 import javax.swing.*;
@@ -127,7 +127,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     private void configurarPanelPrincipal() {
 
         // ===== 1️⃣ Panel de fondo general =====
-        ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
+        ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoJuego.png");
         juego.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);

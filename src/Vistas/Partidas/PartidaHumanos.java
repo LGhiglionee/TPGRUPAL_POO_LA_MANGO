@@ -3,8 +3,8 @@ package Vistas.Partidas;
 import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
-import Modelo.Mazo.Carta;
-import Modelo.Turnos;
+import Modelo.Entidades.Carta;
+import Modelo.Motor.Turnos;
 import Vistas.Pantallas.PantallaCambioTurno;
 import Vistas.Pantallas.PantallaResultadosMano;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class PartidaHumanos extends PartidaBase{
 
     public PartidaHumanos() {
-        super("Truco a 2 Lucas", "src/Recursos/Imagenes/FondoJuego.png");
+        super("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoJuego.png");
     }
 
     protected void inicializarJuego() {

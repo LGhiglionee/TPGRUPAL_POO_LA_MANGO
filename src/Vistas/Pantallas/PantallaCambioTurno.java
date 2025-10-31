@@ -1,5 +1,7 @@
 package Vistas.Pantallas;
 
+import Vistas.Configuraciones.ConfigurPantallas;
+
 import javax.swing.*;
 import java.awt.*;
 

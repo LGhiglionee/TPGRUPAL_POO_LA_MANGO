@@ -2,7 +2,9 @@ package Vistas.Pantallas;
 
 import Excepciones.Recursos.FuenteNoEncontradaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
-import Modelo.GestorRecursos;
+import Modelo.Recursos.GestorRecursos;
+import Vistas.Configuraciones.ConfigurPanelConFondo;
+import Vistas.Configuraciones.ConfigurPantallas;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +32,7 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
      * los botones de acción (Jugar, PantallaInstrucciones y Salir).
      */
     public PantallaInicio() {
-        super("Truco a 2 lucas", "src/Recursos/Imagenes/FondoMenu.png");
+        super("Truco a 2 lucas", "src/Recursos/Imagenes/Fondos/FondoMenu.png");
 
         // --- Dimensiones de la pantalla.
         Toolkit mipantalla =  Toolkit.getDefaultToolkit();
@@ -63,19 +65,19 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
             botonsalir.addActionListener(this);
 
             // --- Imagen titulo
-            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png", anchura / 2, altura / 4);
+            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4);
             titulo.setHorizontalTextPosition(SwingConstants.CENTER);
             titulo.setVerticalTextPosition(SwingConstants.CENTER);
             titulo.setIcon(imagenTitulo);
 
             // --- Imagenes botones
-            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoBoton.png", anchura / 5, altura / 10);
+            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 5, altura / 10);
             configurarBotonConImagen(botonjugar, imagenBotonnes);
             configurarBotonConImagen(botoninstrucciones, imagenBotonnes);
             configurarBotonConImagen(botonsalir, imagenBotonnes);
 
             //--- Lámina
-            ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+            ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
             lamina.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(10, 10, 20, 10);

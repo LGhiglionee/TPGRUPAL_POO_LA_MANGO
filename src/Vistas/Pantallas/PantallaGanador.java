@@ -1,6 +1,7 @@
 package Vistas.Pantallas;
 
-import Modelo.GestorRecursos;
+import Modelo.Recursos.GestorRecursos;
+import Vistas.Configuraciones.ConfigurPantallas;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ public class PantallaGanador extends ConfigurPantallas implements ActionListener
      * Constructor que crea la ventana de resultado con un mensaje central.
      */
     public PantallaGanador(String mensaje) {
-        super("Resultado del Juego", "src/Recursos/Imagenes/FondoJuego.png");
+        super("Resultado del Juego", "src/Recursos/Imagenes/Fondos/FondoJuego.png");
 
         // --- Fuente personalizada.
         Font fuente;

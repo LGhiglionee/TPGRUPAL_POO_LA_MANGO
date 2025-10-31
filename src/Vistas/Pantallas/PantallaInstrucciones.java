@@ -1,6 +1,8 @@
 package Vistas.Pantallas;
 
-import Modelo.GestorRecursos;
+import Modelo.Recursos.GestorRecursos;
+import Vistas.Configuraciones.ConfigurPanelConFondo;
+import Vistas.Configuraciones.ConfigurPantallas;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -23,7 +25,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
      */
     JButton botonVolver;
     public PantallaInstrucciones() {
-        super("PantallaInstrucciones del juego", "src/Recursos/Imagenes/FondoInstrucciones.png");
+        super("PantallaInstrucciones del juego", "src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
 
         // --- Configuración general de la pantalla.
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
@@ -35,7 +37,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
 
         // --- Lamina
-        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoInstrucciones.png");
+        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
         lamina.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -55,7 +57,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         // --- Boton volver
         botonVolver = new JButton("Volver");
         botonVolver.addActionListener( this);
-        ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoBoton.png", anchura / 7, altura / 12);
+        ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 7, altura / 12);
         botonVolver.setHorizontalTextPosition(SwingConstants.CENTER);
         botonVolver.setVerticalTextPosition(SwingConstants.CENTER);
         botonVolver.setIcon(imagenBoton);

@@ -3,10 +3,9 @@ package Vistas.Partidas;
 import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
-import Modelo.Bot;
-import Modelo.Mazo.Carta;
-import Modelo.Turnos;
-import Vistas.Pantallas.PantallaInicio;
+import Modelo.Entidades.Bot;
+import Modelo.Entidades.Carta;
+import Modelo.Motor.Turnos;
 import Vistas.Pantallas.PantallaResultadosMano;
 
 import javax.swing.*;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 public class PartidaBot extends PartidaBase {
     public PartidaBot() {
-        super("Truco a 2 Lucas (vs Bot)", "src/Recursos/Imagenes/FondoJuego.png");
+        super("Truco a 2 Lucas (vs Bot)", "src/Recursos/Imagenes/Fondos/FondoJuego.png");
     }
 
     protected void inicializarJuego() {

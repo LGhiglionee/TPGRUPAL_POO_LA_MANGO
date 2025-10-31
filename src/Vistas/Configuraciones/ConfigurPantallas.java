@@ -1,4 +1,4 @@
-package Vistas.Pantallas;
+package Vistas.Configuraciones;
 
 import javax.swing.*;
 import java.awt.*;
