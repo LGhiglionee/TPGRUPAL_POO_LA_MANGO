@@ -27,7 +27,8 @@ public class Turnos {
     static Jugador jugador2;
     private boolean envidodisponible = true;
 
-    private boolean trucodisponible = true;
+    public boolean trucodisponible = true;
+    private boolean mostrarBannerTruco = false;
     int danoReciente1,danoReciente2;
 
     private Carta ultimaCartaJugadaJ1;
@@ -54,12 +55,18 @@ public class Turnos {
 
     public boolean envidoDisponible() { return envidodisponible; }
     public void bloquearEnvido() { envidodisponible = false; }
-    private void resetearEnvido() { envidodisponible = true; }
+    public void resetearEnvido() { envidodisponible = true; }
 
 
     public boolean trucoDisponible() {return trucodisponible;}
     public void bloquearTruco() {trucodisponible = false;}
-    private void resetearTruco() {trucodisponible = true;}
+    public void resetearTruco() {trucodisponible = true;}
+
+    public boolean consumirBannerTruco() {
+        boolean x = mostrarBannerTruco;
+        mostrarBannerTruco = false;
+        return x;
+    }
 
     private void resetDanoReciente() {
 
@@ -85,6 +92,12 @@ public class Turnos {
     private void infligirDanioA2(int danodetruco) {
         if (danodetruco <= 0) return;
         jugador2.actualizarSalud(-danodetruco);
+    }
+
+    // -- Se fija si la carta jugada es de espada o basto (Hecha para el truco)
+    private boolean esOfensiva(Carta c) {
+        String p = c.getPalo();
+        return "Espada".equals(p) || "Basto".equals(p);
     }
 
     /**
@@ -181,18 +194,28 @@ public class Turnos {
             }
         }
 
-        danoReciente1 -= jugador1.getSalud();
-        danoReciente2 -= jugador2.getSalud();
+        if (!trucoDisponible()) { // Truco activo esta mano
+            boolean of1 = esOfensiva(carta1);
+            boolean of2 = esOfensiva(carta2);
 
-        if (!trucoDisponible()) { // Si se canto el Truco para esta mano
-            if (danoReciente1 > danoReciente2) {
-                // J1 recibió más daño, perdió la mano
-                infligirDanioA1(15);
-            } else if (danoReciente2 > danoReciente1) {
-                // J2 recibió más daño, perdió la mano
-                infligirDanioA2(15);
+            if (of1 && of2) {
+                int n1 = carta1.getNumero();
+                int n2 = carta2.getNumero();
+                if (n1 < n2) { //-- Ambas son ofensivas
+                    infligirDanioA1(15);   // J1 tiro la más baja
+                } else if (n2 < n1) {
+                    infligirDanioA2(15);   // J2 tiro la más baja
+                }
+            } else if (of1 && !of2) {
+                infligirDanioA2(15);  // J1 atacó, J2 no
             }
-            resetearTruco(); //Lo dejamos para la mano que viene
+            else if (!of1 && of2) {
+                infligirDanioA1(15);  // J2 atacó, J1 no
+            }
+            //-- Si no nadie tiro de ataque
+
+            mostrarBannerTruco = true; // si querés mostrarlo siempre que hubo Truco
+            resetearTruco();
         }
 
         // --- Efecto de sangrado
@@ -202,6 +225,11 @@ public class Turnos {
         } else if (jugador2.getDesangrado()) {
             jugador2.actualizarSalud(-5);
             descripcion.append("Jugador 2 pierde 5 de vida por desangrarse.\n");
+        }
+
+        // -- Indica si el Truco esta activo
+        if (!trucoDisponible()) {
+            descripcion.append("El Truco esta ACTIVADO");
         }
 
         //* --- Resultado final
