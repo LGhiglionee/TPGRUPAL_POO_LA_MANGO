@@ -247,10 +247,10 @@ public class Turnos {
         }
         if (condicionFinalizacion()){
             if (jugador1.getSalud() <= 0) {
-                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 1";
+                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 2";
             }
             else {
-                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 2";
+                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 1";
             }
         }else {
             if (jugador1.getSalud() > jugador2.getSalud()) {
