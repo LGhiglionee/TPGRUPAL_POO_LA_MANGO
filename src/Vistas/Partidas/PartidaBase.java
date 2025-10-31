@@ -74,7 +74,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         // --- Maná
         j1mana = crearEtiquetaMana("Mana Jugador 1: " + turno.getJugador1().getMana());
-        j2mana = crearEtiquetaMana("Mana Jugador 2: *****");
+        j2mana = crearEtiquetaMana("Mana Jugador 2: *");
 
         // --- Turno
         jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
@@ -282,9 +282,9 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         if (turno.getJugadorMano() == turno.getJugador1()) {
             j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
-            j2mana.setText("Mana Jugador 2: *****");
+            j2mana.setText("Mana Jugador 2: *");
         } else {
-            j1mana.setText("Mana Jugador 1: ***** ");
+            j1mana.setText("Mana Jugador 1: *");
             j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
         }
 
