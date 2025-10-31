@@ -43,7 +43,7 @@ public class Bot extends Jugador {
         return max;
     }
 
-    public float porcentajePaloMazo(Mazo mazo, String palo) throws MazoVacioException {
+    public float porcentajePaloMazo(Mazo mazo, String palo) {
         ArrayList<Carta> turista = mazo.getCartasMazo();
         float total = 0;
         float cartas = 0;

@@ -23,6 +23,7 @@ public class Carta {
     // --- Atributos cartas.
     protected String palo;
     protected int numero;
+    private String rutaImagen;
     private Image imagen;
 
     /**
@@ -31,7 +32,8 @@ public class Carta {
     public Carta(String palo, int numero) {
         this.palo = palo;
         this.numero = numero;
-        setImagen(palo, numero);
+        this.rutaImagen = "src/Recursos/Imagenes/Cartas/" + numero + palo + ".PNG";
+        this.imagen = cargarImagen();
     }
 
     public Carta() {}
@@ -39,37 +41,21 @@ public class Carta {
     // --- Getters
     public String getPalo() {return this.palo;}
     public int getNumero() {return numero;}
+    public Image getImagen(){return  imagen;}
 
     /**
      * Carga la imagen asociada a la carta desde los recursos.
      */
-    public void setImagen(String palo, int numero) {
-        String ruta = "src/Recursos/Imagenes/Cartas/" + numero + palo + ".PNG";
+    private Image cargarImagen () {
         try {
-            File archivo = new File(ruta);
-            imagen = ImageIO.read(archivo);
-            if (imagen == null) {
-                throw new ImagenNoEncontradaException("No se pudo leer la imagen " + archivo.getAbsolutePath());
+            File archivo = new File (rutaImagen);
+            Image img = ImageIO.read(archivo);
+            if (img == null) {
+                throw new ImagenNoEncontradaException("No se pudo leer la imagen " + rutaImagen);
             }
-        } catch (IOException e) {
-            throw new ImagenNoEncontradaException("La imagen " + numero + palo + ".PNG no se encuentra.");
+            return img;
+        } catch (IOException ex) {
+            throw new ImagenNoEncontradaException("No se encontró la imagen " + rutaImagen);
         }
-    }
-
-    /**
-     * Devuelve la imagen actual de la carta cargada desde disco.
-     * <p>Vuelve a leer el archivo para asegurar que la imagen esté disponible
-     * incluso si fue modificada o regenerada externamente.</p>
-     *
-     */
-    public Image getImagen(){
-        File imagenCarta = new File("src/Recursos/Imagenes/Cartas/"+ this.numero + this.palo + ".PNG");
-        try {
-            imagen = ImageIO.read(imagenCarta);
-        }
-        catch(IOException e) {
-            throw new ImagenNoEncontradaException("La imagen " + this.numero + this.palo + ".png no se encuentra.");
-        }
-        return imagen;
     }
 }
