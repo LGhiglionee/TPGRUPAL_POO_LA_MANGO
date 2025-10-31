@@ -80,8 +80,9 @@ public class Turnos {
         mazo.mezclarMazo();
         doscartas = new ArrayList<Carta>();
         jugador1 = new Jugador();
-        jugador2 = new Jugador();
         bot = new Bot(dificultad);
+        jugador2 = bot; //Para no cambiar en partida
+        jugador1.setMano(true);
     }
 
     private void infligirDanioA1(int danodetruco) {
@@ -302,6 +303,21 @@ public class Turnos {
         if (jugador2.getMana() > jugador1.getMana()) return "Gano jugador 2 (por mana)";
         return "Empate total";
     }
+
+    public String partidaTerminadaconBot() {
+
+        if (jugador1.getSalud() <= 0 && jugador2.getSalud() <= 0)
+            return "Empate: ambos llegaron a 0 de vida";
+        if (jugador1.getSalud() <= 0)
+            return "Has Perdido!";
+        if (jugador2.getSalud() <= 0)
+            return "Has Ganado!";
+        if (jugador1.getSalud() > jugador2.getSalud()) return "Has Ganado!";
+        if (jugador2.getSalud() > jugador1.getSalud()) return "Has Perdido!";
+        if (jugador1.getMana() > jugador2.getMana()) return "Ganaste por mana";
+        if (jugador2.getMana() > jugador1.getMana()) return "Perdiste por mana";
+        return "Empate total";
+    }
     /**
      * Evalúa si la partida debe finalizar (por salud, cartas o mazo vacío).
      *
@@ -452,6 +468,7 @@ public class Turnos {
             else
                 getBot().setCarta(i, getMazo().getCarta());
         }
+        alternarTurno();
     }
 
     /**

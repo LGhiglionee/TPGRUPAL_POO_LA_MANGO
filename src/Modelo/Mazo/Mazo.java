@@ -56,4 +56,15 @@ public class Mazo {
      * Devuelve la cantidad de cartas restantes en el mazo.
      */
     public int cartasRestantes() {return cartas.size();}
+
+    public ArrayList<Carta> getCartasMazo() {
+        ArrayList<Carta> listacartas = new ArrayList<>();
+
+        for (Carta c : this.cartas){
+            if (c != null){
+                listacartas.add(c);
+            }
+        }
+        return listacartas;
+    }
 }

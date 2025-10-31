@@ -4,6 +4,7 @@ import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
+import Modelo.Bot;
 import Modelo.GestorRecursos;
 import Modelo.Jugador;
 import Modelo.Mazo.Carta;
@@ -34,13 +35,14 @@ public class PartidaBot extends JFrame implements ActionListener {
     private Turnos turno;
     private ArrayList<Carta> cartasjugadas;
 
-    public PartidaBot () {
+    public PartidaBot() {
         configurarVentana();
         inicializarJuego();
         inicializarComponentesGraficos();
         configurarPanelPrincipal();
 
     }
+
     private void configurarPanelPrincipal() {
 
         // ===== 1️⃣ Panel de fondo general =====
@@ -50,7 +52,7 @@ public class PartidaBot extends JFrame implements ActionListener {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         //Creacion de sub-paneles
-        crearSubPaneles ();
+        crearSubPaneles();
 
 
         //Borde de los sub-paneles
@@ -58,7 +60,7 @@ public class PartidaBot extends JFrame implements ActionListener {
         j2Info.setBorder(BorderFactory.createTitledBorder("Jugador 2"));
 
         //Organizar contenido de sub-paneles
-        configurarPanelJugadores ();
+        configurarPanelJugadores();
         infoTurno.add(jturno);
 
         // --- Panel inferior (ENVIDO + CARTAS + TRUCO)
@@ -71,8 +73,9 @@ public class PartidaBot extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
     // Ubica todos los subpaneles en el GridBagLayout
-    private void ubicarPanelesEnLayout(PanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc){
+    private void ubicarPanelesEnLayout(PanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc) {
         //Panel jugador 1 (Arriba - izquierda)
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -186,7 +189,8 @@ public class PartidaBot extends JFrame implements ActionListener {
             return;
         }
     }
-    private void inicializarComponentesGraficos () {
+
+    private void inicializarComponentesGraficos() {
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
@@ -279,132 +283,113 @@ public class PartidaBot extends JFrame implements ActionListener {
         Image img = icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
         boton.setIcon(new ImageIcon(img));
     }
+
     public void actionPerformed(ActionEvent e) {
         try {
-            turno.jugarCartaVsBot(turno.getBot().indiceCartaElejida(turno.getBot().decision(turno.getMazo()), turno.getBot().getTresCartas()), cartasjugadas, false);
-        } catch (MazoVacioException | PosicionInvalidaException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        try {
-            // --- BOTONES DE CARTAS ---
+            //Humano
             if (e.getSource() == botoncarta1 || e.getSource() == botoncarta2 || e.getSource() == botoncarta3) {
+                int indice = (e.getSource() == botoncarta1) ? 0 : (e.getSource() == botoncarta2) ? 1 : 2;
 
-                int indice = (e.getSource() == botoncarta1) ? 0 :
-                        (e.getSource() == botoncarta2) ? 1 : 2;
+                // Juega Humano
+                turno.jugarCartaVsBot(indice, cartasjugadas, /*humanoJuega*/ true);
 
-                turno.jugarCartaVsBot(indice, cartasjugadas, true);
-
-                // ⚡ Si se jugaron las dos cartas (mano completa)
-                if (cartasjugadas.isEmpty()) {
-                    Carta c1 = turno.getUltimaCartaJugadaJ1();
-                    Carta c2 = turno.getUltimaCartaJugadaJ2();
-
-                    if (c1 != null && c2 != null) {
-                        Image img1 = new ImageIcon(c1.getImagen()).getImage();
-                        Image img2 = new ImageIcon(c2.getImagen()).getImage();
-                        String resultado = turno.getUltimoResultado();
-
-                        // 🔹 Pantalla de resultado ANTES del cambio de turno
-                        boolean mostrarTruco = turno.consumirBannerTruco();
-                        PantallaResultadosMano pantalla = new PantallaResultadosMano(this, img1, img2, resultado, mostrarTruco);
-                        pantalla.setVisible(true);
-
-                        if (!pantalla.continuarJuego()) {
-                            // Si un jugador abandonó, ya se manejó la pantallaGanador adentro
-                            if (pantalla.getJugadorAbandono() == 0) {
-                                new Inicio();  // volver al menú
-                                dispose();
-                            }
-                        }
-                    }
+                if (cartasjugadas.size() == 1 && turno.getJugadorMano() == turno.getBot()) {
+                    //Juega Bot
+                    jugarTurnoBot();
                 }
-                // Si aún no se jugaron las dos cartas, mostrar pantalla de cambio de turno
-                else {
-                    String siguienteTurno = (turno.getJugadorMano() == turno.getJugador1())
-                            ? "Turno del Jugador 1" : "Turno del Jugador 2";
-                    String ruta = "src/Recursos/Imagenes/transicion_turno.png";
-                    PantallaCambioTurno pantallaCambio = new PantallaCambioTurno(this, ruta, siguienteTurno);
-                    pantallaCambio.setVisible(true);
-                }
-            }
 
-
-            // --- ENVIDO ---
-            else if (e.getSource() == envido) {
+            } else if (e.getSource() == envido) {
                 Jugador jugadorActual = turno.getJugadorMano();
-
                 if (jugadorActual.getMana() >= 5) {
                     jugadorActual.agregarMana(-5);
-
                     int envidoJ1 = turno.getJugador1().calcularEnvido();
                     int envidoJ2 = turno.getJugador2().calcularEnvido();
-
                     JOptionPane.showMessageDialog(this,
                             turno.jugarEnvido(envidoJ1, envidoJ2),
                             "Resultado del Envido",
                             JOptionPane.INFORMATION_MESSAGE);
-
                     turno.bloquearEnvido();
                     envido.setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
                 }
-            }
 
-            // --- TRUCO ---
-            else if (e.getSource() == truco) {
+            } else if (e.getSource() == truco) {
                 if (turno.getJugadorMano().getMana() < 10) {
                     JOptionPane.showMessageDialog(this, "No tienes suficiente mana", "Aviso", JOptionPane.WARNING_MESSAGE);
-                    return;
+                } else {
+                    turno.getJugadorMano().agregarMana(-10);
+                    turno.bloquearTruco();
+                    JOptionPane.showMessageDialog(this, "¡Truco cantado! El perdedor de esta mano recibirá +15 de daño.");
+                    truco.setVisible(false);
                 }
-                turno.getJugadorMano().agregarMana(-10);
-                turno.bloquearTruco();
-                JOptionPane.showMessageDialog(this, "¡Truco cantado! El perdedor de esta mano recibirá +15 de daño.");
-
-                //Se oculta boton
-                truco.setVisible(false);
             }
-
-            // --- ACTUALIZACIONES VISUALES ---
-            if (turno.getJugadorMano() == turno.getJugador1()) {
-                jturno.setText("Turno de Jugador 1");
-            } else {
-                jturno.setText("Turno de Jugador 2");
+            actualizarInterfaz();
+            if (Turnos.condicionFinalizacion()) {
+                new PantallaGanador(turno.partidaTerminadaconBot());
             }
-
-            // Actualizar cartas visibles
-            Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
-            Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
-            Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
-
-            actualizarBotonCarta(botoncarta1, carta1, anchocarta, altocarta);
-            actualizarBotonCarta(botoncarta2, carta2, anchocarta, altocarta);
-            actualizarBotonCarta(botoncarta3, carta3, anchocarta, altocarta);
-
-            // Actualizar salud y mana
-            j1salud.setValue(turno.getJugador1().getSalud());
-            j1salud.setString("Vida: " + turno.getJugador1().getSalud());
-            j2salud.setValue(turno.getJugador2().getSalud());
-            j2salud.setString("Vida: " + turno.getJugador2().getSalud());
-
-            j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
-            j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
-
-            // Envido visible o no
-            envido.setVisible(turno.envidoDisponible());
-
-            truco.setVisible(turno.trucoDisponible());
-
-            // Fin de partida
-            if (turno.condicionFinalizacion()) {
-                new PantallaGanador(turno.partidaTerminada());
-            }
-
-            jturno.repaint();
 
         } catch (MazoVacioException | PosicionInvalidaException | JugadorSinCartasException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+}
+
+    private void jugarTurnoBot() throws MazoVacioException, PosicionInvalidaException {
+        Bot bot = turno.getBot();
+        Carta eleccion = bot.decision(turno.getMazo());
+        int indice = bot.indiceCartaElejida(eleccion, bot.getTresCartas());
+
+        //Si te da mal, busca cualquiera de la mano (llega null o -1)
+        if (indice < 0 || indice >= bot.getTresCartas().size() || bot.getTresCartas().get(indice) == null) {
+            indice = 0;
+            for (int i = 0; i < bot.getTresCartas().size(); i++) {
+                if (bot.getTresCartas().get(i) != null) {
+                    indice = i;
+                    break;
+                }
+            }
+        }
+
+        if (indice != -1) {
+            //Juega bot
+            turno.jugarCartaVsBot(indice, cartasjugadas, false);
+        }
+        mostrarResultadosMano();
+    }
+
+    private void mostrarResultadosMano() {
+        Carta c1 = turno.getUltimaCartaJugadaJ1();
+        Carta c2 = turno.getUltimaCartaJugadaJ2();
+        if (c1 != null && c2 != null) {
+            Image img1 = new ImageIcon(c1.getImagen()).getImage();
+            Image img2 = new ImageIcon(c2.getImagen()).getImage();
+            String resultado = turno.getUltimoResultado();
+            boolean mostrarTruco = turno.consumirBannerTruco();
+            PantallaResultadosMano p = new PantallaResultadosMano(this, img1, img2, resultado, mostrarTruco);
+            p.setVisible(true);
+            if (!p.continuarJuego()) {
+                if (p.getJugadorAbandono() == 0) {
+                    new Inicio();
+                    dispose();
+                }
+            }
+        }
+    }
+
+    private void actualizarInterfaz() throws MazoVacioException {
+        jturno.setText(turno.getJugadorMano() == turno.getJugador1() ? "Turno de Jugador 1" : "Turno de Jugador 2");
+
+        var mano = turno.getJugadorMano().getTresCartas();
+        actualizarBotonCarta(botoncarta1, mano.get(0), anchocarta, altocarta);
+        actualizarBotonCarta(botoncarta2, mano.get(1), anchocarta, altocarta);
+        actualizarBotonCarta(botoncarta3, mano.get(2), anchocarta, altocarta);
+
+        j1salud.setValue(turno.getJugador1().getSalud()); j1salud.setString("Vida: " + turno.getJugador1().getSalud());
+        j2salud.setValue(turno.getJugador2().getSalud()); j2salud.setString("Vida: " + turno.getJugador2().getSalud());
+        j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
+        j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
+
+        envido.setVisible(turno.envidoDisponible());
+        truco.setVisible(turno.trucoDisponible());
     }
 }
