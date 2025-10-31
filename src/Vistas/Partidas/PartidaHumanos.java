@@ -14,10 +14,10 @@ import java.util.ArrayList;
 public class PartidaHumanos extends PartidaBase{
 
     public PartidaHumanos() {
-        super("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoJuego.png");
+        super("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoJuego.png", 0);
     }
 
-    protected void inicializarJuego() {
+    protected void inicializarJuego(int nousar) {
         try {
             turno = new Turnos();
             turno.llenarMano(turno.getJugador1());

@@ -20,14 +20,14 @@ import java.awt.event.ActionListener;
  * También ofrece la opción de volver al menú principal.</p>
  */
 
-public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionListener {
+public class PantallaOpcionesBot extends ConfigurPantallas implements ActionListener {
     JButton botonOpcionPvP, botonOpcionPvC, botonVolver;
     JLabel titulo;
 
     /**
      * Constructor que inicializa la ventana de selección de modo de juego.
      */
-    public PantallaOpcionesJuego() {
+    public PantallaOpcionesBot() {
         super ("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoMenu.png");
 
         // --- Configuración de pantalla.
@@ -53,8 +53,8 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
         // --- Botones
         ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 5, altura / 10);
 
-        botonOpcionPvP = crearBoton("Jugar PvP", fuenteBoton, imagenBoton);
-        botonOpcionPvC = crearBoton("Jugar PvC", fuenteBoton, imagenBoton);
+        botonOpcionPvP = crearBoton("Facil", fuenteBoton, imagenBoton);
+        botonOpcionPvC = crearBoton("Medio", fuenteBoton, imagenBoton);
         botonVolver = crearBoton("Volver", fuenteBoton, imagenBoton);
 
         //--- Panel de fondo
@@ -108,10 +108,10 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonOpcionPvP) {
-            new PartidaHumanos();
+            new PartidaBot(0);
             dispose();
         } else if (e.getSource() == botonOpcionPvC) {
-            new PantallaOpcionesBot();
+            new PartidaBot(1);
             dispose();
         } else if (e.getSource() == botonVolver) {
             new PantallaInicio();

@@ -13,11 +13,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PartidaBot extends PartidaBase {
-    public PartidaBot() {
-        super("Truco a 2 Lucas (vs Bot)", "src/Recursos/Imagenes/Fondos/FondoJuego.png");
+    public PartidaBot(int dificultad) {
+        super("Truco a 2 Lucas (vs Bot)", "src/Recursos/Imagenes/Fondos/FondoJuego.png", dificultad);
     }
 
-    protected void inicializarJuego() {
+    protected void inicializarJuego(int dificultad) {
         try {
             turno = new Turnos(1);
             turno.llenarMano(turno.getJugador1());
@@ -66,6 +66,18 @@ public class PartidaBot extends PartidaBase {
                     break;
                 }
             }
+        }
+
+        if (eleccion.getNumero() >= 10 && turno.trucoDisponible() && turno.getJugador2().getMana() >= 10 && turno.esOfensiva(eleccion)) {
+            turno.getJugadorMano().agregarMana(-10);
+            turno.bloquearTruco();
+            JOptionPane.showMessageDialog(this, "¡Truco cantado!");
+        } else if (turno.envidoDisponible() && turno.getJugador2().getMana() >= 5 && turno.getBot().calcularEnvido() >= 27) {
+            turno.getJugador2().agregarMana(-5);
+            JOptionPane.showMessageDialog(this,
+                    turno.jugarEnvido(turno.getJugador1().calcularEnvido(), turno.getJugador2().calcularEnvido()),
+                    "Resultado del Envido", JOptionPane.INFORMATION_MESSAGE);
+            turno.bloquearEnvido();
         }
 
         if (indice != -1) {

@@ -34,14 +34,14 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     protected Turnos turno;
     protected ArrayList<Carta> cartasjugadas;
 
-    public PartidaBase(String titulo, String fondo) {
+    public PartidaBase(String titulo, String fondo, int dificultad) {
         super(titulo, fondo);
-        inicializarJuego(); // lo define cada subclase
+        inicializarJuego(dificultad); // lo define cada subclase
         inicializarComponentesGraficos();
         configurarPanelPrincipal();
     }
 
-    protected void inicializarJuego() {
+    protected void inicializarJuego(int i) {
 
     }
 
