@@ -47,7 +47,6 @@ public class Turnos {
         jugador1 = new Jugador();
         jugador2 = new Jugador();
         jugador1.setMano(true);
-        System.out.println("Cartas disponibles al iniciar: " + mazo.cartasRestantes());
     }
     public Carta getUltimaCartaJugadaJ1() { return ultimaCartaJugadaJ1; }
     public Carta getUltimaCartaJugadaJ2() { return ultimaCartaJugadaJ2; }

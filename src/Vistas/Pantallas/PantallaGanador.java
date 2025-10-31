@@ -1,17 +1,13 @@
 package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
-import Vistas.Inicio;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PantallaGanador extends JFrame implements ActionListener {
-
-    // --- Imagen.
-    private Image imagen;
+public class PantallaGanador extends ConfigurPantallas implements ActionListener {
 
     // --- Botones principales de la pantalla.
     private JButton btnMenu;
@@ -22,13 +18,7 @@ public class PantallaGanador extends JFrame implements ActionListener {
      * Constructor que crea la ventana de resultado con un mensaje central.
      */
     public PantallaGanador(String mensaje) {
-        // --- Configuración general de la ventana.
-        setTitle("Resultado del Juego");
-        setUndecorated(true);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        setLocationRelativeTo(null);
-        setAlwaysOnTop(true);
+        super("Resultado del Juego", "src/Recursos/Imagenes/FondoJuego.png");
 
         // --- Fuente personalizada.
         Font fuente;
@@ -67,7 +57,7 @@ public class PantallaGanador extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnMenu) {
-            new Inicio();
+            new PantallaInicio();
             dispose();
         }
         if (e.getSource() == btnSalir) {
