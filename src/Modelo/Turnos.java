@@ -95,7 +95,7 @@ public class Turnos {
     }
 
     // -- Se fija si la carta jugada es de espada o basto (Hecha para el truco)
-    private boolean esOfensiva(Carta c) {
+    public boolean esOfensiva(Carta c) {
         String p = c.getPalo();
         return "Espada".equals(p) || "Basto".equals(p);
     }

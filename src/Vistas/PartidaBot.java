@@ -280,15 +280,30 @@ public class PartidaBot extends JFrame implements ActionListener {
         boton.setIcon(new ImageIcon(img));
     }
     public void actionPerformed(ActionEvent e) {
-        try {
-            turno.jugarCartaVsBot(turno.getBot().indiceCartaElejida(turno.getBot().decision(turno.getMazo()), turno.getBot().getTresCartas()), cartasjugadas, false);
-        } catch (MazoVacioException | PosicionInvalidaException ex) {
-            throw new RuntimeException(ex);
-        }
 
         try {
             // --- BOTONES DE CARTAS ---
             if (e.getSource() == botoncarta1 || e.getSource() == botoncarta2 || e.getSource() == botoncarta3) {
+                Carta cartabot = turno.getBot().decision(turno.getMazo());
+                if (turno.getBot().calcularEnvido() >= 27 && turno.envidoDisponible() && turno.getJugador2().getMana() >= 5) {
+                    turno.getJugador2().agregarMana(-5);
+
+                    int envidoJ1 = turno.getJugador1().calcularEnvido();
+                    int envidoJ2 = turno.getJugador2().calcularEnvido();
+
+                    JOptionPane.showMessageDialog(this,
+                            turno.jugarEnvido(envidoJ1, envidoJ2),
+                            "Resultado del Envido",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else if (turno.esOfensiva(cartabot) && turno.trucoDisponible() && turno.getJugador2().getMana() >= 10 && cartabot.getNumero() >= 10) {
+                    turno.getJugadorMano().agregarMana(-10);
+                    turno.bloquearTruco();
+                }
+                try {
+                    turno.jugarCartaVsBot(turno.getBot().indiceCartaElejida(cartabot, turno.getBot().getTresCartas()), cartasjugadas, false);
+                } catch (MazoVacioException | PosicionInvalidaException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 int indice = (e.getSource() == botoncarta1) ? 0 :
                         (e.getSource() == botoncarta2) ? 1 : 2;
