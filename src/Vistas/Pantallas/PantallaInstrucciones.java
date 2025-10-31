@@ -32,14 +32,32 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
+
+        // --- Configuración de tamaño completo de la ventana.
+        setUndecorated(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
+
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setTitle("Instrucciones del Juego");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         // --- Carga de fuente personalizada.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
 
-        // --- Lamina
-        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
+        // --- Lamina Principal
+        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
         lamina.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+
+        // --- Lamina Pergamino
+        ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
+        laminaPergamino.setLayout(new BorderLayout());
+        laminaPergamino.setOpaque(false);
+        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(200, 350, 50, 350));
 
         //--- Área de texto con scroll.
         JTextPane texto = new JTextPane();
@@ -52,7 +70,10 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         texto.setText(cargarTextoDesdeArchivo("src/Recursos/Instrucciones/instrucciones.txt"));
 
         JScrollPane scroll = new JScrollPane(texto);
-        add(scroll, BorderLayout.CENTER);
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.setBorder(null);
+        laminaPergamino.add(scroll, BorderLayout.CENTER);
 
         // --- Boton volver
         botonVolver = new JButton("Volver");
@@ -70,19 +91,19 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
-        gbc.insets = new Insets(100, 500, 10, 450);
+        gbc.weighty = 0.9;
+        gbc.insets = new Insets(50, 200, 0, 200);
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.CENTER;
-        lamina.add(texto,gbc);
+        lamina.add(laminaPergamino,gbc);
 
         gbc.gridy = 1;
-        gbc.weightx = 1;
-        gbc.insets = new Insets(10, 200, 10, 200);
-        gbc.anchor = GridBagConstraints.SOUTH;
+        gbc.weighty = 0.1;
+        gbc.insets = new Insets(0, 250, 10, 250);
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.NORTH;
         lamina.add(botonVolver,gbc);
 
         add(lamina);
-        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -105,5 +126,10 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
             return "No se pudo cargar el archivo de instrucciones.";
         }
         return contenido.toString();
+    }
+    public JPanel crearContenido() {
+        ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
+        // ... agregar componentes ...
+        return panel;
     }
 }

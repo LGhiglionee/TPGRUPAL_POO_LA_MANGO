@@ -30,12 +30,15 @@ public abstract class ConfigurPantallas extends JFrame {
                         "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         }
+        // 🧩 Se muestra solo después de construirse completamente
+        SwingUtilities.invokeLater(() -> setVisible(true));
     }
 
-    /** Método auxiliar: crea un panel de fondo ya configurado */
-    protected JPanel crearPanelConFondo(String rutaImagen) {
-        ConfigurPanelConFondo panel = new ConfigurPanelConFondo(rutaImagen);
-        panel.setLayout(new GridBagLayout());
-        return panel;
+    /** Reemplaza el contenido actual del frame sin crear una nueva ventana */
+    protected void cambiarContenido(JPanel nuevoPanel) {
+        getContentPane().removeAll();
+        add(nuevoPanel);
+        revalidate();
+        repaint();
     }
 }

@@ -16,6 +16,7 @@ import java.util.Collections;
  *
  */
 public class Mazo {
+    // === Atributos ===
     // --- Lista que contiene todas las cartas del mazo.
     private final ArrayList<Carta> cartas;
 
@@ -34,6 +35,9 @@ public class Mazo {
             }
         }
     }
+
+    // === Métodos principales ===
+
     /**
      * Devuelve una carta del mazo y la elimina de la lista.
      */
@@ -47,19 +51,26 @@ public class Mazo {
         return cartaAleatoria;
     }
 
+
     /**
      * Mezcla el orden de las cartas del mazo de forma aleatoria.
      */
     public void mezclarMazo() {Collections.shuffle(cartas);}
+
 
     /**
      * Devuelve la cantidad de cartas restantes en el mazo.
      */
     public int cartasRestantes() {return cartas.size();}
 
+
+    /**
+     * Devuelve una copia de las cartas actuales del mazo.
+     *
+     * @return lista con las cartas restantes (sin modificar el mazo original).
+     */
     public ArrayList<Carta> getCartasMazo() {
         ArrayList<Carta> listacartas = new ArrayList<>();
-
         for (Carta c : this.cartas){
             if (c != null){
                 listacartas.add(c);
