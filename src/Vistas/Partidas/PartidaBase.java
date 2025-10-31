@@ -41,9 +41,6 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         configurarPanelPrincipal();
     }
 
-    /**
-     * Método abstracto — se redefine según si hay bot o no
-     */
     protected void inicializarJuego() {
 
     }
@@ -66,8 +63,8 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         j2salud = crearBarraSalud(turno.getJugador2());
 
         // --- Maná
-        j1mana = crearEtiquetaMana("Mana Jugador 1: ", turno.getJugador1());
-        j2mana = crearEtiquetaMana("Mana Jugador 2: ", turno.getJugador2());
+        j1mana = crearEtiquetaMana("Mana Jugador 1: " + turno.getJugador1().getMana());
+        j2mana = crearEtiquetaMana("Mana Jugador 2: *****");
 
         // --- Turno
         jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
@@ -101,8 +98,8 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         return barra;
     }
 
-    private JLabel crearEtiquetaMana(String texto, Jugador jugador) {
-        JLabel lbl = new JLabel(texto + jugador.getMana());
+    private JLabel crearEtiquetaMana(String texto) {
+        JLabel lbl = new JLabel(texto);
         lbl.setForeground(Color.WHITE);
         return lbl;
     }
@@ -251,8 +248,14 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         j1salud.setValue(turno.getJugador1().getSalud()); j1salud.setString("Vida: " + turno.getJugador1().getSalud());
         j2salud.setValue(turno.getJugador2().getSalud()); j2salud.setString("Vida: " + turno.getJugador2().getSalud());
-        j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
-        j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
+
+        if (turno.getJugadorMano() == turno.getJugador1()) {
+            j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
+            j2mana.setText("Mana Jugador 2: *****");
+        } else {
+            j1mana.setText("Mana Jugador 1: ***** ");
+            j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
+        }
 
         envido.setVisible(turno.envidoDisponible());
         truco.setVisible(turno.trucoDisponible());
