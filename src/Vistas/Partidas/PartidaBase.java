@@ -34,7 +34,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 15f);
 
     // --- Parámetros generales ---
-    private int anchocarta, altocarta, anchobarra,altobarra;
+    private int altoBotonAccion,anchoBotonAccion, anchura,anchocarta, altocarta, anchobarra,altobarra;
 
     // --- Lógica de juego ---
     protected Turnos turno;
@@ -64,6 +64,8 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         anchobarra = anchura / 10;
         altobarra = altura / 30;
 
+        anchoBotonAccion = anchura / 10;
+        altoBotonAccion = altura / 18;
         // --- Crear nombre jugador
         j1nombre = crearNombreJugador("Jugador 1", turno.getJugador1());
         j2nombre = crearNombreJugador("Jugador 2", turno.getJugador2());
@@ -142,8 +144,21 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     }
 
     private JButton crearBotonAccion(String texto) {
+        ImageIcon imgFondo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBotonJuego.png", anchoBotonAccion, altoBotonAccion);
+
         JButton boton = new JButton(texto);
-        boton.setPreferredSize(new Dimension(100, 30));
+        boton.setIcon(imgFondo);
+        boton.setHorizontalTextPosition(SwingConstants.CENTER);
+        boton.setVerticalTextPosition(SwingConstants.CENTER);
+
+        boton.setFont(fuenteTexto);
+        boton.setForeground(Color.WHITE);
+
+        boton.setContentAreaFilled(false);
+        boton.setBorderPainted(false);
+        boton.setFocusPainted(false);
+        boton.setMargin(new Insets(0, 0, 0, 0));
+
         boton.addActionListener(this);
         return boton;
     }
@@ -219,6 +234,8 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         manoCartas.add(botoncarta3);
 
         infoEnvido.setLayout(new FlowLayout(FlowLayout.LEFT));
+        ImageIcon fondo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBotonJuego.png",100,100);
+        //infoEnvido.setIcon(fondo);
         infoEnvido.add(envido);
 
         infoTruco.setLayout(new FlowLayout(FlowLayout.RIGHT));
