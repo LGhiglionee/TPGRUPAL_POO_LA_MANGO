@@ -3,8 +3,7 @@ package Vistas.Pantallas;
 import javax.swing.*;
 import java.awt.*;
 
-import Modelo.Turnos;
-import Vistas.Pantallas.PantallaGanador;
+import Modelo.Motor.Turnos;
 
 public class PantallaResultadosMano extends JDialog {
     public boolean continuarJuego = false;

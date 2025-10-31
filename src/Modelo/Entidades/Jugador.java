@@ -1,8 +1,8 @@
-package Modelo;
+package Modelo.Entidades;
 
 import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.PosicionInvalidaException;
-import Modelo.Mazo.Carta;
+
 import java.util.ArrayList;
 
 /**

@@ -1,7 +1,7 @@
-package Modelo;
+package Modelo.Entidades;
 
 import Excepciones.Juego.MazoVacioException;
-import Modelo.Mazo.*;
+
 import java.util.ArrayList;
 
 public class Bot extends Jugador {

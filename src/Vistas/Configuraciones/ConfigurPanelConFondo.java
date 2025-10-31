@@ -1,6 +1,6 @@
-package Vistas.Pantallas;
+package Vistas.Configuraciones;
 
-import Modelo.GestorRecursos;
+import Modelo.Recursos.GestorRecursos;
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +11,7 @@ import java.awt.*;
  * la distorsión o los bordes en blanco.</p>
  *
  * Ejemplo de uso:</p>
- *     ConfigurPanelConFondo menu = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+ *     ConfigurPanelConFondo menu = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
  *     ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
  */
 

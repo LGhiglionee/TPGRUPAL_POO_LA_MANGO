@@ -1,4 +1,4 @@
-package Modelo.Mazo;
+package Modelo.Entidades;
 
 import Excepciones.Recursos.ImagenNoEncontradaException;
 

@@ -1,6 +1,8 @@
 package Vistas.Pantallas;
 
-import Modelo.GestorRecursos;
+import Modelo.Recursos.GestorRecursos;
+import Vistas.Configuraciones.ConfigurPanelConFondo;
+import Vistas.Configuraciones.ConfigurPantallas;
 import Vistas.Partidas.PartidaBot;
 import Vistas.Partidas.PartidaHumanos;
 
@@ -26,7 +28,7 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
      * Constructor que inicializa la ventana de selección de modo de juego.
      */
     public PantallaOpcionesJuego() {
-        super ("Truco a 2 Lucas", "src/Recursos/Imagenes/FondoMenu.png");
+        super ("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoMenu.png");
 
         // --- Configuración de pantalla.
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
@@ -46,17 +48,17 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
         titulo.setVerticalTextPosition(SwingConstants.CENTER);
         titulo.setOpaque(false);
         titulo.setForeground(Color.black);
-        titulo.setIcon(GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png", anchura / 2, altura / 4));
+        titulo.setIcon(GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4));
 
         // --- Botones
-        ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoBoton.png", anchura / 5, altura / 10);
+        ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 5, altura / 10);
 
         botonOpcionPvP = crearBoton("Jugar PvP", fuenteBoton, imagenBoton);
         botonOpcionPvC = crearBoton("Jugar PvC", fuenteBoton, imagenBoton);
         botonVolver = crearBoton("Volver", fuenteBoton, imagenBoton);
 
         //--- Panel de fondo
-        ConfigurPanelConFondo panelfondo = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+        ConfigurPanelConFondo panelfondo = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
         panelfondo.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 20, 10);

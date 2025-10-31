@@ -1,8 +1,11 @@
-package Modelo;
+package Modelo.Motor;
 
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
-import Modelo.Mazo.*;
+import Modelo.Entidades.Bot;
+import Modelo.Entidades.Carta;
+import Modelo.Entidades.Jugador;
+import Modelo.Entidades.Mazo;
 
 import java.util.ArrayList;
 

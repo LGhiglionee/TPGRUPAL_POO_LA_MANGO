@@ -1,6 +1,8 @@
 package Vistas.Pantallas;
 
-import Modelo.GestorRecursos;
+import Modelo.Recursos.GestorRecursos;
+import Vistas.Configuraciones.ConfigurPanelConFondo;
+import Vistas.Configuraciones.ConfigurPantallas;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -23,7 +25,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
      */
     JButton botonVolver;
     public PantallaInstrucciones() {
-        super("PantallaInstrucciones del juego", "src/Recursos/Imagenes/FondoInstrucciones.png");
+        super("PantallaInstrucciones del juego", "src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
 
         // --- Configuración general de la pantalla.
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
@@ -47,12 +49,12 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
 
         // --- Lamina Principal
-        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
         lamina.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         // --- Lamina Pergamino
-        ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoInstrucciones.png");
+        ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
         laminaPergamino.setLayout(new BorderLayout());
         laminaPergamino.setOpaque(false);
         laminaPergamino.setBorder(BorderFactory.createEmptyBorder(200, 350, 50, 350));
@@ -76,7 +78,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         // --- Boton volver
         botonVolver = new JButton("Volver");
         botonVolver.addActionListener( this);
-        ImageIcon imagenBoton = new ImageIcon(GestorRecursos.cargarImagenEscaladaImage("src/Recursos/Imagenes/FondoBoton.png", anchura / 7, altura / 12));
+        ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 7, altura / 12);
         botonVolver.setHorizontalTextPosition(SwingConstants.CENTER);
         botonVolver.setVerticalTextPosition(SwingConstants.CENTER);
         botonVolver.setIcon(imagenBoton);
