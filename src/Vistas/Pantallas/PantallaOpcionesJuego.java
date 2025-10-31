@@ -1,6 +1,9 @@
-package Vistas;
+package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
+import Vistas.PanelConFondo;
+import Vistas.Partida;
+import Vistas.PartidaBot;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,21 +19,15 @@ import java.awt.event.ActionListener;
  * También ofrece la opción de volver al menú principal.</p>
  */
 
-class OpcionesJuego extends JFrame implements ActionListener {
+public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionListener {
     JButton botonOpcionPvP, botonOpcionPvC, botonVolver;
     JLabel titulo;
 
     /**
      * Constructor que inicializa la ventana de selección de modo de juego.
      */
-    public OpcionesJuego() {
-        setTitle("Truco a 2 Lucas");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        setLocationRelativeTo(null);
-        setAlwaysOnTop(true);
+    public PantallaOpcionesJuego() {
+        super ("Truco a 2 Lucas", "src/Recursos/Imagenes/FondoMenu.png");
 
         // --- Configuración de pantalla.
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
@@ -42,10 +39,6 @@ class OpcionesJuego extends JFrame implements ActionListener {
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
         Font fuenteBoton = fuente.deriveFont(Font.BOLD, 20f);
-
-        // --- Icono de la ventana.
-        Image fondo = mipantalla.getImage("src/Recursos/Imagenes/FondoMenu.png");
-        setIconImage(fondo);
 
         // --- Titulo principal.
         titulo = new JLabel("Truco a 2 Lucas");
@@ -120,7 +113,7 @@ class OpcionesJuego extends JFrame implements ActionListener {
             new PartidaBot();
             dispose();
         } else if (e.getSource() == botonVolver) {
-            new Inicio();
+            new PantallaInicio();
             dispose();
         }
     }

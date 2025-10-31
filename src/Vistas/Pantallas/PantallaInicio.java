@@ -1,8 +1,9 @@
-package Vistas;
+package Vistas.Pantallas;
 
 import Excepciones.Recursos.FuenteNoEncontradaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
 import Modelo.GestorRecursos;
+import Vistas.PanelConFondo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,26 +13,25 @@ import java.awt.event.ActionListener;
     /*
      *  Esta clase representa la pantalla principal del juego (“menú inicial”), con:
             Un título grande “Truco a 2 Lucas”.
-            Tres botones: Jugar, Instrucciones y Salir.
+            Tres botones: Jugar, PantallaInstrucciones y Salir.
             Un fondo e iconos cargados mediante GestorRecursos.
         Acción de los botones:
-            Jugar → abre la clase OpcionesJuego.
-            Instrucciones → abre la clase Instrucciones.
+            Jugar → abre la clase PantallaOpcionesJuego.
+            PantallaInstrucciones → abre la clase PantallaInstrucciones.
             Salir → cierra el programa.
     */
 
-public class Inicio extends JFrame implements ActionListener {
+public class PantallaInicio extends ConfigurPantallas implements ActionListener {
     // --- Componentes principales de la ventana.
     JButton botonjugar, botonsalir, botoninstrucciones;
     JLabel titulo;
 
     /**
      * Constructor que inicializa la ventana de inicio, carga los recursos gráficos y configura
-     * los botones de acción (Jugar, Instrucciones y Salir).
+     * los botones de acción (Jugar, PantallaInstrucciones y Salir).
      */
-    public Inicio() {
-        setTitle("Truco a 2 Lucas");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public PantallaInicio() {
+        super("Truco a 2 lucas", "src/Recursos/Imagenes/FondoMenu.png");
 
         // --- Dimensiones de la pantalla.
         Toolkit mipantalla =  Toolkit.getDefaultToolkit();
@@ -43,11 +43,7 @@ public class Inicio extends JFrame implements ActionListener {
             // --- Carga de fuente personalizada.
             Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
             Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
-            Font funeteBoton = fuente.deriveFont(Font.BOLD, 20f);
-
-            // --- ICONO del programa.
-            Image fondo = mipantalla.getImage("src/Recursos/Imagenes/FondoMenu.png");
-            setIconImage(fondo);
+            Font fuenteBoton = fuente.deriveFont(Font.BOLD, 20f);
 
             // --- Título principal.
             titulo = new JLabel("Truco a 2 lucas");
@@ -56,24 +52,16 @@ public class Inicio extends JFrame implements ActionListener {
 
             // --- Botones principales.
             botonjugar = new JButton("Jugar");
-            botonjugar.setFont(funeteBoton);
+            botonjugar.setFont(fuenteBoton);
             botonjugar.addActionListener(this);
 
             botoninstrucciones = new JButton("Instrucciones");
-            botoninstrucciones.setFont(funeteBoton);
+            botoninstrucciones.setFont(fuenteBoton);
             botoninstrucciones.addActionListener(this);
 
             botonsalir = new JButton("Salir");
-            botonsalir.setFont(funeteBoton);
+            botonsalir.setFont(fuenteBoton);
             botonsalir.addActionListener(this);
-
-
-            // --- Configuración de tamaño completo de la ventana.
-            setUndecorated(true);
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
-            setSize(Toolkit.getDefaultToolkit().getScreenSize());
-            setLocationRelativeTo(null);
-            setAlwaysOnTop(true);
 
             // --- Imagen titulo
             ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/FondoTitulo.png", anchura / 2, altura / 4);
@@ -156,11 +144,12 @@ public class Inicio extends JFrame implements ActionListener {
         }
 
         else if (e.getSource() == botonjugar) {
-            new OpcionesJuego();
+            new PantallaOpcionesJuego();
             dispose();
         }
         else if (e.getSource() == botoninstrucciones) {
-            new Instrucciones();
+            new PantallaInstrucciones();
+            dispose();
         }
     }
 }

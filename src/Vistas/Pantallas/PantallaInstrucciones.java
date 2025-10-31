@@ -1,6 +1,7 @@
-package Vistas;
+package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
+import Vistas.PanelConFondo;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -17,22 +18,19 @@ import java.io.IOException;
  * Lee el contenido del archivo de texto {@code instrucciones.txt} ubicado en la carpeta de recursos.
  */
 
-class Instrucciones extends JFrame implements  ActionListener {
+public class PantallaInstrucciones extends ConfigurPantallas implements  ActionListener {
     /**
      * Constructor que inicializa la ventana y carga el texto de instrucciones.
      */
     JButton botonVolver;
-    public Instrucciones() {
+    public PantallaInstrucciones() {
+        super("PantallaInstrucciones del juego", "src/Recursos/Imagenes/FondoInstrucciones.png");
+
         // --- Configuración general de la pantalla.
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
-        //setBounds(anchura / 4, altura / 4, anchura / 2, altura / 2);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setTitle("Instrucciones del Juego");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         // --- Carga de fuente personalizada.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
@@ -50,6 +48,7 @@ class Instrucciones extends JFrame implements  ActionListener {
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
         texto.setParagraphAttributes(attribs, false);
+        texto.setText(cargarTextoDesdeArchivo("src/Recursos/PantallaInstrucciones/instrucciones.txt"));
 
         JScrollPane scroll = new JScrollPane(texto);
         add(scroll, BorderLayout.CENTER);
@@ -65,9 +64,6 @@ class Instrucciones extends JFrame implements  ActionListener {
         botonVolver.setContentAreaFilled(false);
         botonVolver.setFont(fuenteTexto);
 
-        // --- Carga del archivo de instrucciones
-        String ruta = "src/Recursos/Instrucciones/instrucciones.txt";
-        texto.setText(cargarTextoDesdeArchivo(ruta));
 
         // --- Logica gbc - Lamina
         gbc.gridx = 0;
@@ -90,7 +86,7 @@ class Instrucciones extends JFrame implements  ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonVolver) {
-            new Inicio();
+            new PantallaInicio();
             dispose();
         }
     }

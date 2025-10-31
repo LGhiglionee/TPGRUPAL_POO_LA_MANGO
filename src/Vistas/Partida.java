@@ -4,7 +4,6 @@ import Excepciones.Juego.JugadorSinCartasException;
 import Excepciones.Juego.MazoVacioException;
 import Excepciones.Juego.PosicionInvalidaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
-import Modelo.GestorRecursos;
 import Modelo.Jugador;
 import Modelo.Mazo.Carta;
 import Modelo.Turnos;
@@ -16,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import Vistas.Pantallas.*;
 
-public class Partida extends JFrame implements ActionListener {
+public class Partida extends ConfigurPantallas implements ActionListener {
     // --- Botones de cartas y acciones ---
     private JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
 
@@ -35,7 +34,7 @@ public class Partida extends JFrame implements ActionListener {
     private ArrayList<Carta> cartasjugadas;
 
     public Partida () {
-        configurarVentana();
+        super("Truco a 2 Lucas", "src/Recursos/Imagenes/FondoJuego.png");
         inicializarJuego();
         inicializarComponentesGraficos();
         configurarPanelPrincipal();
@@ -153,25 +152,6 @@ public class Partida extends JFrame implements ActionListener {
         infoEnvido.setOpaque(false);
         infoTruco = new JPanel();
         infoTruco.setOpaque(false);
-    }
-
-    private void configurarVentana() {
-        setTitle("Truco a 2 Lucas");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        setLocationRelativeTo(null);
-        setAlwaysOnTop(true);
-
-        Toolkit mipantalla = Toolkit.getDefaultToolkit();
-        //Cargar icono.
-        try {
-            Image fondo = mipantalla.getImage("src/Recursos/Imagenes/Fondojuego.png");
-            setIconImage(fondo);
-        } catch (ImagenNoEncontradaException e) {
-            JOptionPane.showMessageDialog(this, "No se pudo cargar el ícono del juego.", "Aviso", JOptionPane.WARNING_MESSAGE);
-        }
     }
 
     private void inicializarJuego() {
@@ -307,7 +287,7 @@ public class Partida extends JFrame implements ActionListener {
                         if (!pantalla.continuarJuego()) {
                             // Si un jugador abandonó, ya se manejó la pantallaGanador adentro
                             if (pantalla.getJugadorAbandono() == 0) {
-                                new Inicio();  // volver al menú
+                                new PantallaInicio();  // volver al menú
                                 dispose();
                             }
                         }

@@ -47,7 +47,6 @@ public class Turnos {
         jugador1 = new Jugador();
         jugador2 = new Jugador();
         jugador1.setMano(true);
-        System.out.println("Cartas disponibles al iniciar: " + mazo.cartasRestantes());
     }
     public Carta getUltimaCartaJugadaJ1() { return ultimaCartaJugadaJ1; }
     public Carta getUltimaCartaJugadaJ2() { return ultimaCartaJugadaJ2; }
@@ -80,8 +79,9 @@ public class Turnos {
         mazo.mezclarMazo();
         doscartas = new ArrayList<Carta>();
         jugador1 = new Jugador();
-        jugador2 = new Jugador();
         bot = new Bot(dificultad);
+        jugador2 = bot; //Para no cambiar en partida
+        jugador1.setMano(true);
     }
 
     private void infligirDanioA1(int danodetruco) {
@@ -247,10 +247,10 @@ public class Turnos {
         }
         if (condicionFinalizacion()){
             if (jugador1.getSalud() <= 0) {
-                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 1";
+                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 2";
             }
             else {
-                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 2";
+                ultimoResultado = descripcion + "\n🏆 Gano el Jugador 1";
             }
         }else {
             if (jugador1.getSalud() > jugador2.getSalud()) {
@@ -300,6 +300,21 @@ public class Turnos {
         if (jugador2.getSalud() > jugador1.getSalud()) return "Gano jugador 2";
         if (jugador1.getMana() > jugador2.getMana()) return "Gano jugador 1 (por mana)";
         if (jugador2.getMana() > jugador1.getMana()) return "Gano jugador 2 (por mana)";
+        return "Empate total";
+    }
+
+    public String partidaTerminadaconBot() {
+
+        if (jugador1.getSalud() <= 0 && jugador2.getSalud() <= 0)
+            return "Empate: ambos llegaron a 0 de vida";
+        if (jugador1.getSalud() <= 0)
+            return "Has Perdido!";
+        if (jugador2.getSalud() <= 0)
+            return "Has Ganado!";
+        if (jugador1.getSalud() > jugador2.getSalud()) return "Has Ganado!";
+        if (jugador2.getSalud() > jugador1.getSalud()) return "Has Perdido!";
+        if (jugador1.getMana() > jugador2.getMana()) return "Ganaste por mana";
+        if (jugador2.getMana() > jugador1.getMana()) return "Perdiste por mana";
         return "Empate total";
     }
     /**
@@ -452,6 +467,7 @@ public class Turnos {
             else
                 getBot().setCarta(i, getMazo().getCarta());
         }
+        alternarTurno();
     }
 
     /**

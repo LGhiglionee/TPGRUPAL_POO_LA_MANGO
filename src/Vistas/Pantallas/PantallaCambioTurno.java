@@ -3,16 +3,11 @@ package Vistas.Pantallas;
 import javax.swing.*;
 import java.awt.*;
 
-public class PantallaCambioTurno extends JDialog {
+public class PantallaCambioTurno extends ConfigurPantallas {
     private Image imagenFondo;
 
     public PantallaCambioTurno(JFrame padre, String rutaImagen, String mensaje) {
-        super(padre, false); // modal
-        setUndecorated(true);
-        padre.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        setLocationRelativeTo(null);
-        setAlwaysOnTop(true);
+        super("Cambio de turno", rutaImagen);
 
         // --- Carga de imagen ---
         imagenFondo = new ImageIcon(rutaImagen).getImage();

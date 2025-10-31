@@ -10,7 +10,7 @@ public class Bot extends Jugador {
     public Bot(int dificultad) {
         super();
         this.dificultad = dificultad;
-        this.salud = (int) (30 + dificultad * 0.3);
+        this.salud = 30 * dificultad;
         this.mano = false;
         this.esBot = true;
     }
@@ -23,42 +23,38 @@ public class Bot extends Jugador {
     }
 
     public boolean hayPalo(String palo) {
-        ArrayList<Carta> turista = new ArrayList<>(this.trescartas);
-
-        while (!turista.isEmpty()) {
-            if (turista.getFirst().getPalo().equals(palo)) {
+        for (Carta c : this.trescartas) {
+            if (c != null && palo.equals(c.getPalo())) {
                 return true;
             }
-            turista.removeFirst();
         }
         return false;
     }
 
     public Carta cartaMasAlta(String palo) {
-        ArrayList<Carta> turista = new ArrayList<>(this.trescartas);
-        Carta max = new Carta();
-
-        while (!turista.isEmpty()) {
-            if (turista.getFirst().getPalo().equals(palo) && max.getNumero() < turista.getFirst().getNumero()) {
-                max = turista.getFirst();
+        Carta max = null;
+        for (Carta c : this.trescartas) {
+            if (c != null && palo.equals(c.getPalo())) {
+                if (max == null || c.getNumero() > max.getNumero()) {
+                    max = c;
+                }
             }
-            turista.removeFirst();
         }
         return max;
     }
 
-    public float porcentajePaloMazo(Mazo mazo, String palo) throws MazoVacioException {
-        Mazo turista = mazo;
+    public float porcentajePaloMazo(Mazo mazo, String palo) {
+        ArrayList<Carta> turista = mazo.getCartasMazo();
         float total = 0;
-        float carta = 0;
+        float cartas = 0;
 
-        while (turista.cartasRestantes() != 0) {
-            if (turista.getCarta().getPalo().equals(palo)) {
-                carta += 1;
-            }
-            total += 1;
+        while (!turista.isEmpty()) {
+            Carta c = turista.get(0);
+            if (c != null && palo.equals(c.getPalo())) cartas++;
+            total++;
+            turista.removeFirst();
         }
-        return carta / total;
+        return cartas / total;
     }
 
     public Carta analisisFacil() {
@@ -89,12 +85,12 @@ public class Bot extends Jugador {
         }
     }
 
-    public int indiceCartaElejida(Carta carta, ArrayList<Carta> cartas) {
+    public int indiceCartaElegida(Carta carta, ArrayList<Carta> cartas) {
         for (int i = 0; i < cartas.size(); i++) {
             if (cartas.get(i) == carta) {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 }
