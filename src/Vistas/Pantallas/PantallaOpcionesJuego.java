@@ -2,8 +2,9 @@ package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
 import Vistas.PanelConFondo;
-import Vistas.Partida;
-import Vistas.PartidaBot;
+import Vistas.Partidas.PartidaBase;
+import Vistas.Partidas.PartidaBot;
+import Vistas.Partidas.PartidaHumanos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,7 +108,7 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonOpcionPvP) {
-            new Partida();
+            new PartidaHumanos();
             dispose();
         } else if (e.getSource() == botonOpcionPvC) {
             new PartidaBot();

@@ -48,7 +48,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
         texto.setParagraphAttributes(attribs, false);
-        texto.setText(cargarTextoDesdeArchivo("src/Recursos/PantallaInstrucciones/instrucciones.txt"));
+        texto.setText(cargarTextoDesdeArchivo("src/Recursos/Instrucciones/instrucciones.txt"));
 
         JScrollPane scroll = new JScrollPane(texto);
         add(scroll, BorderLayout.CENTER);
