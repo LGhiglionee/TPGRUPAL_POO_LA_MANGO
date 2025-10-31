@@ -85,7 +85,7 @@ public class Bot extends Jugador {
         }
     }
 
-    public int indiceCartaElejida(Carta carta, ArrayList<Carta> cartas) {
+    public int indiceCartaElegida(Carta carta, ArrayList<Carta> cartas) {
         for (int i = 0; i < cartas.size(); i++) {
             if (cartas.get(i) == carta) {
                 return i;

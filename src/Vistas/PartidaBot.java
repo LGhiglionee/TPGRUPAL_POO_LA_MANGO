@@ -317,7 +317,7 @@ public class PartidaBot extends ConfigurPantallas implements ActionListener {
     private void jugarTurnoBot() throws MazoVacioException, PosicionInvalidaException {
         Bot bot = turno.getBot();
         Carta eleccion = bot.decision(turno.getMazo());
-        int indice = bot.indiceCartaElejida(eleccion, bot.getTresCartas());
+        int indice = bot.indiceCartaElegida(eleccion, bot.getTresCartas());
 
         //Si te da mal, busca cualquiera de la mano (llega null o -1)
         if (indice < 0 || indice >= bot.getTresCartas().size() || bot.getTresCartas().get(indice) == null) {
