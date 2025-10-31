@@ -84,7 +84,6 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
 
         // --- Agrega el fondo del panel.
         add(panelfondo);
-        setVisible(true);
     }
 
     /**
@@ -117,5 +116,10 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
             new PantallaInicio();
             dispose();
         }
+    }
+    public JPanel crearContenido() {
+        ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
+        // ... agregar componentes ...
+        return panel;
     }
 }

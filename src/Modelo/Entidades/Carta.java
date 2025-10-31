@@ -13,18 +13,15 @@ import java.io.IOException;
  * <p>Cada carta tiene un número, un palo y una imagen asociada.
  * Se utiliza para las acciones del juego como ataques, curaciones o suma de maná.</p>
  *
- * <p>Las imágenes deben estar ubicadas en la carpeta:
- * {@code src/Recursos/Imagenes/Cartas/} y tener formato:
- * <b>{numero}{palo}.PNG</b> — por ejemplo:
- * <code>1Espada.PNG</code> o <code>7Copa.PNG</code>.</p>
  */
 
 public class Carta {
-    // --- Atributos cartas.
+    // === Atributos ===
     protected String palo;
     protected int numero;
-    private String rutaImagen;
     private Image imagen;
+
+    // === Constructores ===
 
     /**
      * Constructor que crea una carta con su palo, número e imagen correspondiente.
@@ -32,30 +29,40 @@ public class Carta {
     public Carta(String palo, int numero) {
         this.palo = palo;
         this.numero = numero;
-        this.rutaImagen = "src/Recursos/Imagenes/Cartas/" + numero + palo + ".PNG";
-        this.imagen = cargarImagen();
+        this.imagen = cargarImagenDesdeRecurso();
     }
 
-    public Carta() {}
+    /**
+     * Constructor vacío.
+     */
+    public Carta() {
+    }
 
-    // --- Getters
-    public String getPalo() {return this.palo;}
-    public int getNumero() {return numero;}
-    public Image getImagen(){return  imagen;}
+    // === Getters ===
+    public String getPalo() {
+        return this.palo;
+    }
+
+    public int getNumero() {
+        return this.numero;
+    }
+
+    public Image getImagen() {
+        return this.imagen;
+    }
+
+    // === Métodos carga de imagen ===
 
     /**
      * Carga la imagen asociada a la carta desde los recursos.
      */
-    private Image cargarImagen () {
+    private Image cargarImagenDesdeRecurso() {
+        String ruta = "/Recursos/Imagenes/Cartas/" + numero + palo + ".PNG";
         try {
-            File archivo = new File (rutaImagen);
-            Image img = ImageIO.read(archivo);
-            if (img == null) {
-                throw new ImagenNoEncontradaException("No se pudo leer la imagen " + rutaImagen);
-            }
-            return img;
-        } catch (IOException ex) {
-            throw new ImagenNoEncontradaException("No se encontró la imagen " + rutaImagen);
+            return ImageIO.read(getClass().getResourceAsStream(ruta));
+        } catch (IOException | NullPointerException e) {
+            throw new ImagenNoEncontradaException("No se pudo leer la imagen " + ruta);
         }
     }
 }
+

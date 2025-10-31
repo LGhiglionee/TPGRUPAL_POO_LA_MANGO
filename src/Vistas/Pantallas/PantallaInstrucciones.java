@@ -82,7 +82,6 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         lamina.add(botonVolver,gbc);
 
         add(lamina);
-        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -105,5 +104,10 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
             return "No se pudo cargar el archivo de instrucciones.";
         }
         return contenido.toString();
+    }
+    public JPanel crearContenido() {
+        ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
+        // ... agregar componentes ...
+        return panel;
     }
 }

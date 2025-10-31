@@ -145,12 +145,13 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
         }
 
         else if (e.getSource() == botonjugar) {
-            new PantallaOpcionesJuego();
-            dispose();
+            PantallaOpcionesJuego opciones = new PantallaOpcionesJuego();
+            cambiarContenido(opciones.crearContenido());  //
         }
+
         else if (e.getSource() == botoninstrucciones) {
-            new PantallaInstrucciones();
-            dispose();
+            PantallaInstrucciones instrucciones = new PantallaInstrucciones();
+            cambiarContenido(instrucciones.crearContenido());
         }
     }
 }
