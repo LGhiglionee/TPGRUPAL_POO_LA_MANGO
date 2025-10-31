@@ -6,6 +6,7 @@ import Excepciones.Juego.PosicionInvalidaException;
 import Modelo.Entidades.Jugador;
 import Modelo.Entidades.Carta;
 import Modelo.Motor.Turnos;
+import Modelo.Recursos.GestorRecursos;
 import Vistas.Configuraciones.ConfigurPanelConFondo;
 import Vistas.Configuraciones.ConfigurPantallas;
 import Vistas.Pantallas.PantallaGanador;
@@ -27,8 +28,13 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     // --- Paneles principales ---
     private JPanel j1Info, j2Info, manoCartas, infoTurno, infoEnvido, infoTruco;
 
+    // --- Fuentes ---
+    private Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
+    private Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 50f);
+    private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 15f);
+
     // --- Parámetros generales ---
-    private int anchocarta, altocarta;
+    private int anchocarta, altocarta, anchobarra,altobarra;
 
     // --- Lógica de juego ---
     protected Turnos turno;
@@ -54,9 +60,13 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         anchocarta = anchura / 12;
         altocarta = altura / 6;
-        //Nombre jugador
-        j1nombre = new JLabel();
-        j2nombre = new JLabel();
+
+        anchobarra = anchura / 10;
+        altobarra = altura / 30;
+
+        // --- Crear nombre jugador
+        j1nombre = crearNombreJugador("Jugador 1", turno.getJugador1());
+        j2nombre = crearNombreJugador("Jugador 2", turno.getJugador2());
 
         // --- BARRAS DE SALUD ---
         j1salud = crearBarraSalud(turno.getJugador1());
@@ -68,7 +78,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         // --- Turno
         jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
-        jturno.setFont(new Font("Arial", Font.BOLD, 45));
+        jturno.setFont(fuenteTitulo);
         jturno.setForeground(Color.WHITE);
 
         //Obtener cartas
@@ -89,18 +99,32 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         truco = crearBotonAccion("Truco");
     }
 
+
+    private JLabel crearNombreJugador(String nombreJugador, Jugador jugador) {
+        JLabel nombre = new JLabel(nombreJugador);
+        nombre.setFont(fuenteTexto);
+        nombre.setForeground(Color.WHITE);
+        nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return nombre;
+    }
     private JProgressBar crearBarraSalud(Jugador jugador) {
+        Dimension tamanoBarra = new Dimension(anchobarra, altobarra);
         JProgressBar barra = new JProgressBar(0, 100);
         barra.setValue(jugador.getSalud());
         barra.setString("Vida: " + jugador.getSalud());
         barra.setStringPainted(true);
         barra.setForeground(Color.RED);
+        barra.setPreferredSize(tamanoBarra);
+        barra.setMaximumSize(tamanoBarra);
+        barra.setMinimumSize(tamanoBarra); ;
         return barra;
     }
 
     private JLabel crearEtiquetaMana(String texto) {
         JLabel lbl = new JLabel(texto);
         lbl.setForeground(Color.WHITE);
+        lbl.setFont(fuenteTexto);
+        lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
         return lbl;
     }
 
@@ -135,11 +159,6 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         //Creacion de sub-paneles
         crearSubPaneles ();
 
-
-        //Borde de los sub-paneles
-        j1Info.setBorder(BorderFactory.createTitledBorder("Jugador 1"));
-        j2Info.setBorder(BorderFactory.createTitledBorder("Jugador 2"));
-
         //Organizar contenido de sub-paneles
         configurarPanelJugadores ();
         infoTurno.add(jturno);
@@ -157,6 +176,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     // Ubica todos los subpaneles en el GridBagLayout
     private void ubicarPanelesEnLayout(ConfigurPanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc){
         //Panel jugador 1 (Arriba - izquierda)
+        gbc.insets = new Insets(50, 50, 50, 50);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.1;
@@ -212,21 +232,32 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     }
 
     private void configurarPanelJugadores() {
-        j1Info.setLayout(new GridLayout(3, 1));
+        j1Info.setLayout(new BoxLayout(j1Info, BoxLayout.Y_AXIS));
+        j1Info.add(Box.createRigidArea(new Dimension(0, 50)));
         j1Info.add(j1nombre);
+        j1Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j1Info.add(j1salud);
+        j1Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j1Info.add(j1mana);
+        j1Info.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        j2Info.setLayout(new GridLayout(3, 1));
+        j2Info.setLayout(new BoxLayout(j2Info, BoxLayout.Y_AXIS));
+        j2Info.add(Box.createRigidArea(new Dimension(0, 50)));
         j2Info.add(j2nombre);
+        j2Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j2Info.add(j2salud);
+        j2Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j2Info.add(j2mana);
+        j2Info.add(Box.createRigidArea(new Dimension(0, 20)));
+
     }
 
     private void crearSubPaneles() {
-        j1Info = new JPanel();
+        j1Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoEstadisticas.png");
+        j1Info.setPreferredSize(new Dimension(340,190));
         j1Info.setOpaque(false);
-        j2Info = new JPanel();
+        j2Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoEstadisticas.png");
+        j2Info.setPreferredSize(new Dimension(340,190));
         j2Info.setOpaque(false);
         infoTurno = new JPanel();
         infoTurno.setOpaque(false);

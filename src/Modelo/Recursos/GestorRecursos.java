@@ -58,4 +58,9 @@ public class GestorRecursos {
         Image imagenEscalada = imagen.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
         return new ImageIcon(imagenEscalada);
     }
+    public static Image cargarImagenEscaladaImage(String rutaImagen, int ancho, int alto){
+        Image imagen = cargarImagen(rutaImagen);
+        Image imagenEscalada = imagen.getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        return imagenEscalada;
+    }
 }
