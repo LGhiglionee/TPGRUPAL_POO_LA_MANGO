@@ -8,14 +8,11 @@ public class PantallaCambioTurno extends JDialog {
 
     public PantallaCambioTurno(JFrame padre, String rutaImagen, String mensaje) {
         super(padre, false); // modal
-        setUndecorated(true); // sin bordes
-        setAlwaysOnTop(true);
-
-        // --- Dimensiones ---
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension pantalla = tk.getScreenSize();
-        setBounds(0, 0, pantalla.width, pantalla.height);
+        setUndecorated(true);
+        padre.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
         setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
 
         // --- Carga de imagen ---
         imagenFondo = new ImageIcon(rutaImagen).getImage();

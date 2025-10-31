@@ -35,6 +35,7 @@ public class Turnos {
     private Carta ultimaCartaJugadaJ2;
     private String ultimoResultado = "";
 
+    Bot bot;
 
     /**
      * Constructor que inicializa los jugadores, el mazo y mezcla las cartas.
@@ -72,6 +73,15 @@ public class Turnos {
         danoReciente1 = 0;
 
         danoReciente2=0;
+    }
+
+    public Turnos(int dificultad) {
+        mazo = new Mazo();
+        mazo.mezclarMazo();
+        doscartas = new ArrayList<Carta>();
+        jugador1 = new Jugador();
+        jugador2 = new Jugador();
+        bot = new Bot(dificultad);
     }
 
     private void infligirDanioA1(int danodetruco) {
@@ -355,6 +365,14 @@ public class Turnos {
         jugador.setTresCartas(cartas);
     }
 
+    public void llenarManoBot(Bot bot) throws MazoVacioException {
+        ArrayList<Carta> cartas = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            cartas.add(mazo.getCarta());
+        }
+        bot.setTresCartas(cartas);
+    }
+
     // --- Getters.
     public Jugador getJugador1() {return jugador1;}
     public Jugador getJugador2() {return jugador2;}
@@ -415,5 +433,9 @@ public class Turnos {
             mensaje.append("Empate en el envido");
         }
         return mensaje.toString();
+    }
+
+    public Bot getBot() {
+        return bot;
     }
 }

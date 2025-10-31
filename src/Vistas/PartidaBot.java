@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import Vistas.Pantallas.*;
 
-public class Partida extends JFrame implements ActionListener {
+public class PartidaBot extends JFrame implements ActionListener {
     // --- Botones de cartas y acciones ---
     private JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
 
@@ -34,7 +34,7 @@ public class Partida extends JFrame implements ActionListener {
     private Turnos turno;
     private ArrayList<Carta> cartasjugadas;
 
-    public Partida () {
+    public PartidaBot () {
         configurarVentana();
         inicializarJuego();
         inicializarComponentesGraficos();
@@ -176,9 +176,9 @@ public class Partida extends JFrame implements ActionListener {
 
     private void inicializarJuego() {
         try {
-            turno = new Turnos();
+            turno = new Turnos(1);
             turno.llenarMano(turno.getJugador1());
-            turno.llenarMano(turno.getJugador2());
+            turno.llenarManoBot(turno.getBot());
             cartasjugadas = new ArrayList<>();
         } catch (MazoVacioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al iniciar la partida", JOptionPane.ERROR_MESSAGE);
@@ -212,9 +212,9 @@ public class Partida extends JFrame implements ActionListener {
         jturno.setForeground(Color.WHITE);
 
         //Obtener cartas
-        Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
-        Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
-        Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
+        Carta carta1 = turno.getJugador1().getTresCartas().get(0);
+        Carta carta2 = turno.getJugador1().getTresCartas().get(1);
+        Carta carta3 = turno.getJugador1().getTresCartas().get(2);
 
         botoncarta1 = crearBotonCarta(carta1);
         botoncarta2 = crearBotonCarta(carta2);
@@ -281,6 +281,12 @@ public class Partida extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         try {
+            turno.jugarCarta(turno.getBot().indiceCartaElejida(turno.getBot().decision(turno.getMazo()), turno.getBot().getTresCartas()), cartasjugadas);
+        } catch (MazoVacioException | PosicionInvalidaException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        try {
             // --- BOTONES DE CARTAS ---
             if (e.getSource() == botoncarta1 || e.getSource() == botoncarta2 || e.getSource() == botoncarta3) {
 
@@ -300,8 +306,7 @@ public class Partida extends JFrame implements ActionListener {
                         String resultado = turno.getUltimoResultado();
 
                         // 🔹 Pantalla de resultado ANTES del cambio de turno
-                        boolean mostrarTruco = turno.consumirBannerTruco();
-                        PantallaResultadosMano pantalla = new PantallaResultadosMano(this, img1, img2, resultado, mostrarTruco);
+                        PantallaResultadosMano pantalla = new PantallaResultadosMano(this, img1, img2, resultado);
                         pantalla.setVisible(true);
 
                         if (!pantalla.continuarJuego()) {
