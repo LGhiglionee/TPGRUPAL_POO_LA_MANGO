@@ -253,10 +253,10 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     }
 
     private void crearSubPaneles() {
-        j1Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoEstadisticas.png");
+        j1Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoEstadisticas.png");
         j1Info.setPreferredSize(new Dimension(340,190));
         j1Info.setOpaque(false);
-        j2Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoEstadisticas.png");
+        j2Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoEstadisticas.png");
         j2Info.setPreferredSize(new Dimension(340,190));
         j2Info.setOpaque(false);
         infoTurno = new JPanel();
