@@ -6,7 +6,7 @@ import Excepciones.Juego.PosicionInvalidaException;
 import Modelo.Jugador;
 import Modelo.Mazo.Carta;
 import Modelo.Turnos;
-import Vistas.PanelConFondo;
+import Vistas.Pantallas.ConfigurPanelConFondo;
 import Vistas.Pantallas.ConfigurPantallas;
 import Vistas.Pantallas.PantallaGanador;
 
@@ -130,7 +130,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
     private void configurarPanelPrincipal() {
 
         // ===== 1️⃣ Panel de fondo general =====
-        PanelConFondo juego = new PanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
+        ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
         juego.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -158,7 +158,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     // Ubica todos los subpaneles en el GridBagLayout
-    private void ubicarPanelesEnLayout(PanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc){
+    private void ubicarPanelesEnLayout(ConfigurPanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc){
         //Panel jugador 1 (Arriba - izquierda)
         gbc.gridx = 0;
         gbc.gridy = 0;

@@ -3,7 +3,6 @@ package Vistas.Pantallas;
 import Excepciones.Recursos.FuenteNoEncontradaException;
 import Excepciones.Recursos.ImagenNoEncontradaException;
 import Modelo.GestorRecursos;
-import Vistas.PanelConFondo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +75,7 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
             configurarBotonConImagen(botonsalir, imagenBotonnes);
 
             //--- Lámina
-            PanelConFondo lamina = new PanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+            ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
             lamina.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(10, 10, 20, 10);

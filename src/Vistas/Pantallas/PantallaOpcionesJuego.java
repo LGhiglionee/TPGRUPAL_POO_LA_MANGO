@@ -1,8 +1,6 @@
 package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
-import Vistas.PanelConFondo;
-import Vistas.Partidas.PartidaBase;
 import Vistas.Partidas.PartidaBot;
 import Vistas.Partidas.PartidaHumanos;
 
@@ -58,7 +56,7 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
         botonVolver = crearBoton("Volver", fuenteBoton, imagenBoton);
 
         //--- Panel de fondo
-        PanelConFondo panelfondo = new PanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+        ConfigurPanelConFondo panelfondo = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
         panelfondo.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 20, 10);

@@ -1,4 +1,4 @@
-package Vistas;
+package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
 import javax.swing.*;
@@ -11,18 +11,18 @@ import java.awt.*;
  * la distorsión o los bordes en blanco.</p>
  *
  * Ejemplo de uso:</p>
- *     PanelConFondo menu = new PanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
- *     PanelConFondo juego = new PanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
+ *     ConfigurPanelConFondo menu = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoMenu.png");
+ *     ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
  */
 
-public class PanelConFondo extends JPanel {
+public class ConfigurPanelConFondo extends JPanel {
     // --- Imagen de fondo del panel.
     private Image imagen;
 
     /**
      * Constructor que carga la imagen de fondo desde los recursos indicados.
      */
-    public PanelConFondo(String rutaImagen) {
+    public ConfigurPanelConFondo(String rutaImagen) {
         imagen = GestorRecursos.cargarImagen(rutaImagen);
     }
 

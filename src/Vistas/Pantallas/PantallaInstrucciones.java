@@ -1,7 +1,6 @@
 package Vistas.Pantallas;
 
 import Modelo.GestorRecursos;
-import Vistas.PanelConFondo;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -36,7 +35,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
 
         // --- Lamina
-        PanelConFondo lamina = new PanelConFondo("src/Recursos/Imagenes/FondoInstrucciones.png");
+        ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoInstrucciones.png");
         lamina.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 

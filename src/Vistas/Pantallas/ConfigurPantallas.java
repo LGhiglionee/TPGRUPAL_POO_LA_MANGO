@@ -1,7 +1,5 @@
 package Vistas.Pantallas;
 
-import Vistas.PanelConFondo;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -36,7 +34,7 @@ public abstract class ConfigurPantallas extends JFrame {
 
     /** Método auxiliar: crea un panel de fondo ya configurado */
     protected JPanel crearPanelConFondo(String rutaImagen) {
-        PanelConFondo panel = new PanelConFondo(rutaImagen);
+        ConfigurPanelConFondo panel = new ConfigurPanelConFondo(rutaImagen);
         panel.setLayout(new GridBagLayout());
         return panel;
     }
