@@ -84,17 +84,16 @@ public class Bot extends Jugador {
         }
         else if (hayPalo("Espada")) { return cartaMasAlta("Espada");
         }
-        else { return this.trescartas.getFirst();
+        else {
+            return this.getTresCartas().getFirst();
         }
     }
 
     public int indiceCartaElejida(Carta carta, ArrayList<Carta> cartas) {
-        int indice = 0;
-        for (Carta c : cartas) {
-            if (c == carta) {
-                return indice;
+        for (int i = 0; i < cartas.size(); i++) {
+            if (cartas.get(i) == carta) {
+                return i;
             }
-            indice++;
         }
         return 0;
     }

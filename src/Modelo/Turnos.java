@@ -69,7 +69,7 @@ public class Turnos {
     }
 
     public Turnos(int dificultad) {
-        this.mazo = new Mazo();
+        mazo = new Mazo();
         mazo.mezclarMazo();
         doscartas = new ArrayList<Carta>();
         jugador1 = new Jugador();
@@ -335,6 +335,14 @@ public class Turnos {
             cartas.add(mazo.getCarta());
         }
         jugador.setTresCartas(cartas);
+    }
+
+    public void llenarManoBot(Bot bot) throws MazoVacioException {
+        ArrayList<Carta> cartas = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            cartas.add(mazo.getCarta());
+        }
+        bot.setTresCartas(cartas);
     }
 
     // --- Getters.
