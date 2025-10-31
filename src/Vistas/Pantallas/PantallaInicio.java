@@ -145,7 +145,6 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
         }
 
         else if (e.getSource() == botonjugar) {
-            dispose();
             PantallaOpcionesJuego opciones = new PantallaOpcionesJuego();
             cambiarContenido(opciones.crearContenido());  //
         }

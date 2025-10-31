@@ -24,6 +24,8 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
     JButton botonOpcionPvP, botonOpcionPvC, botonVolver;
     JLabel titulo;
 
+    private JPanel panelPrincipal;
+
     /**
      * Constructor que inicializa la ventana de selección de modo de juego.
      */
