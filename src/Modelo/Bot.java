@@ -23,7 +23,7 @@ public class Bot extends Jugador {
     }
 
     public boolean hayPalo(String palo) {
-        ArrayList<Carta> turista = this.trescartas;
+        ArrayList<Carta> turista = new ArrayList<>(this.trescartas);
 
         while (!turista.isEmpty()) {
             if (turista.getFirst().getPalo().equals(palo)) {
@@ -35,7 +35,7 @@ public class Bot extends Jugador {
     }
 
     public Carta cartaMasAlta(String palo) {
-        ArrayList<Carta> turista = this.trescartas;
+        ArrayList<Carta> turista = new ArrayList<>(this.trescartas);
         Carta max = new Carta();
 
         while (!turista.isEmpty()) {

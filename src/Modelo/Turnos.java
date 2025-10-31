@@ -381,7 +381,50 @@ public class Turnos {
         }
         // --- Cambia de turno.
         alternarTurno();
-}
+    }
+
+    public void jugarCartaVsBot(int i, ArrayList<Carta> cartasjugadas, boolean esJugador) throws MazoVacioException, PosicionInvalidaException {
+         if (esJugador)
+            if (i < 0 || i >= getJugador1().getTresCartas().size()) {
+                throw new PosicionInvalidaException("Índice de carta inválido: " + i);
+            }
+         else
+            if (i < 0 || i >= getBot().getTresCartas().size()) {
+                throw new PosicionInvalidaException("Índice de carta inválido: " + i);
+            }
+
+        Carta carta = new Carta();
+        if (esJugador)
+            carta = getJugadorMano().getTresCartas().get(i);
+        else
+            carta = getBot().getTresCartas().get(i);
+
+        if (carta == null) {
+            throw new PosicionInvalidaException("No hay carta en esa posición.");
+        }
+        // --- Quita mano jugada.
+        if (esJugador)
+            getJugador1().setCarta(i, null);
+        else
+            getBot().setCarta(i, null);
+
+        // --- Si ya hay carta jugada, se resuelve la mano.
+        if (!cartasjugadas.isEmpty()) {
+            cartasjugadas.add(carta);
+            jugarMano(cartasjugadas.get(0), cartasjugadas.get(1));
+            cartasjugadas.clear();
+            resetearEnvido();
+        } else {
+            cartasjugadas.add(carta);
+        }
+        // --- Repone carta del mazo, en caso que haya disponibles.
+        if (mazo.cartasRestantes() != 0){
+            if (esJugador)
+                getJugador1().setCarta(i, getMazo().getCarta());
+            else
+                getBot().setCarta(i, getMazo().getCarta());
+        }
+    }
 
     /**
      * Resuelve el enfrentamiento de "Envido" entre los dos jugadores.

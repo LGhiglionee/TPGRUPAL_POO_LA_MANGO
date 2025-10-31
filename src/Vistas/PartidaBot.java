@@ -281,7 +281,7 @@ public class PartidaBot extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent e) {
         try {
-            turno.jugarCarta(turno.getBot().indiceCartaElejida(turno.getBot().decision(turno.getMazo()), turno.getBot().getTresCartas()), cartasjugadas);
+            turno.jugarCartaVsBot(turno.getBot().indiceCartaElejida(turno.getBot().decision(turno.getMazo()), turno.getBot().getTresCartas()), cartasjugadas, false);
         } catch (MazoVacioException | PosicionInvalidaException ex) {
             throw new RuntimeException(ex);
         }
@@ -293,7 +293,7 @@ public class PartidaBot extends JFrame implements ActionListener {
                 int indice = (e.getSource() == botoncarta1) ? 0 :
                         (e.getSource() == botoncarta2) ? 1 : 2;
 
-                turno.jugarCarta(indice, cartasjugadas);
+                turno.jugarCartaVsBot(indice, cartasjugadas, true);
 
                 // ⚡ Si se jugaron las dos cartas (mano completa)
                 if (cartasjugadas.isEmpty()) {
