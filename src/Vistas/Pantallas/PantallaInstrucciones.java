@@ -46,7 +46,8 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
 
         // --- Carga de fuente personalizada.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 18f);
+        Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
 
         // --- Lamina Principal
         ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
@@ -57,7 +58,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
         laminaPergamino.setLayout(new BorderLayout());
         laminaPergamino.setOpaque(false);
-        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(200, 350, 50, 350));
+        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(altura/8, anchura/6, altura/8, anchura/6));
 
         //--- Área de texto con scroll.
         JTextPane texto = new JTextPane();
@@ -84,7 +85,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         botonVolver.setIcon(imagenBoton);
         botonVolver.setBorderPainted(false);
         botonVolver.setContentAreaFilled(false);
-        botonVolver.setFont(fuenteTexto);
+        botonVolver.setFont(fuenteBoton);
 
 
         // --- Logica gbc - Lamina

@@ -35,7 +35,7 @@ public class PartidaHumanos extends PartidaBase{
         if (!cartasjugadas.isEmpty()) {
             String siguienteTurno = (turno.getJugadorMano() == turno.getJugador1())
                     ? "Turno del Jugador 1" : "Turno del Jugador 2";
-            String ruta = "src/Recursos/Imagenes/Fondos/FondoInteremedio.png";
+            String ruta = "src/Recursos/Imagenes/Fondos/FondoIntermedio.png";
             PantallaCambioTurno cambio = new PantallaCambioTurno(this, ruta, siguienteTurno);
             cambio.setVisible(true);
         }

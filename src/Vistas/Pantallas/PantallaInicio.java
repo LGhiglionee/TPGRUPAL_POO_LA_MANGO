@@ -43,13 +43,12 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
         try {
             // --- Carga de fuente personalizada.
             Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-            Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
-            Font fuenteBoton = fuente.deriveFont(Font.BOLD, 20f);
+            Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
+            Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
 
             // --- Título principal.
             titulo = new JLabel("Truco a 2 lucas");
             titulo.setFont(fuenteTitulo);
-            titulo.setForeground(Color.black);
 
             // --- Botones principales.
             botonjugar = new JButton("Jugar");

@@ -9,6 +9,7 @@ import java.awt.*;
  * posición, ícono y tamaño.
  */
 
+
 public abstract class ConfigurPantallas extends JFrame {
     public ConfigurPantallas(String titulo, String rutaIcono) {
         // --- Configuración general de todas las ventanas ---
