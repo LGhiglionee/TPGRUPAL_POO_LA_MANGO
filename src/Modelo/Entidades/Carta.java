@@ -21,8 +21,9 @@ public class Carta {
     protected int numero;
     private Image imagen;
 
-    // === Constructores ===
 
+
+    // === Constructores ===
     /**
      * Constructor que crea una carta con su palo, número e imagen correspondiente.
      */
@@ -38,21 +39,22 @@ public class Carta {
     public Carta() {
     }
 
+
+
     // === Getters ===
     public String getPalo() {
         return this.palo;
     }
-
     public int getNumero() {
         return this.numero;
     }
-
     public Image getImagen() {
         return this.imagen;
     }
 
-    // === Métodos carga de imagen ===
 
+
+    // === Métodos carga de imagen ===
     /**
      * Carga la imagen asociada a la carta desde los recursos.
      */

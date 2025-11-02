@@ -63,7 +63,6 @@ public class PartidaBot extends PartidaBase {
             for (int i = 0; i < bot.getTresCartas().size(); i++) {
                 if (bot.getTresCartas().get(i) != null) {
                     indice = i;
-                    break;
                 }
             }
         }

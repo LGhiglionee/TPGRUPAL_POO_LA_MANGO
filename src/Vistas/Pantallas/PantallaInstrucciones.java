@@ -57,7 +57,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
         laminaPergamino.setLayout(new BorderLayout());
         laminaPergamino.setOpaque(false);
-        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(200, 350, 50, 350));
+        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(100, 350, 100, 350));
 
         //--- Área de texto con scroll.
         JTextPane texto = new JTextPane();
@@ -74,6 +74,9 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         scroll.getViewport().setOpaque(false);
         scroll.setBorder(null);
         laminaPergamino.add(scroll, BorderLayout.CENTER);
+
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         // --- Boton volver
         botonVolver = new JButton("Volver");
