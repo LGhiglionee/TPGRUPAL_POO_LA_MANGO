@@ -68,7 +68,8 @@ public class PantallaResultadosMano extends JDialog {
 
         // === Fuente personalizada ===
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 35f);
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 30f);
+        Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
 
         // === Panel principal ===
         ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoIntermedio.png");
@@ -172,13 +173,10 @@ public class PantallaResultadosMano extends JDialog {
 
         //-- Si se jugo el truco, muestra el card de TRUCO
         if (mostrarTruco) {
-            JLabel lblTruco = new JLabel("¡EL TRUCO FUE ACTIVADO!", SwingConstants.CENTER);
-            lblTruco.setFont(new Font("Arial", Font.BOLD, 38));
-            lblTruco.setForeground(new Color(25, 25, 25));
-            lblTruco.setBackground(new Color(255, 250, 0));
-            lblTruco.setOpaque(true);
-            lblTruco.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3, true));
-            lblTruco.setPreferredSize(new Dimension(400, 20));
+            JLabel lblTruco = new JLabel("EL TRUCO FUE ACTIVADO", SwingConstants.CENTER);
+            lblTruco.setForeground(Color.WHITE);
+            lblTruco.setFont(fuenteTitulo);
+            lblTruco.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
             header.add(lblTruco, "truco");
 
             // -- Muestra primero el cartel de truco

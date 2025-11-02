@@ -30,8 +30,8 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
     // --- Fuentes ---
     private Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-    private Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 50f);
-    private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 15f);
+    private Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
+    private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 20f);
 
     // --- Parámetros generales ---
     private int altoBotonAccion,anchoBotonAccion, anchura,anchocarta, altocarta, anchobarra,altobarra;
@@ -76,7 +76,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         // --- Maná
         j1mana = crearEtiquetaMana("Mana Jugador 1: " + turno.getJugador1().getMana());
-        j2mana = crearEtiquetaMana("Mana Jugador 2: *");
+        j2mana = crearEtiquetaMana("Mana Jugador 2: ##");
 
         // --- Turno
         jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
@@ -250,7 +250,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
     private void configurarPanelJugadores() {
         j1Info.setLayout(new BoxLayout(j1Info, BoxLayout.Y_AXIS));
-        j1Info.add(Box.createRigidArea(new Dimension(0, 50)));
+        j1Info.add(Box.createRigidArea(new Dimension(0, 35)));
         j1Info.add(j1nombre);
         j1Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j1Info.add(j1salud);
@@ -259,7 +259,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         j1Info.add(Box.createRigidArea(new Dimension(0, 20)));
 
         j2Info.setLayout(new BoxLayout(j2Info, BoxLayout.Y_AXIS));
-        j2Info.add(Box.createRigidArea(new Dimension(0, 50)));
+        j2Info.add(Box.createRigidArea(new Dimension(0, 35)));
         j2Info.add(j2nombre);
         j2Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j2Info.add(j2salud);
@@ -313,7 +313,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         if (carta == null) {
             boton.setIcon(null);
             boton.setEnabled(false);
-            boton.setVisible(false);  // o true si preferís mantener el espacio
+            boton.setVisible(false);
             return;
         }
 

@@ -55,7 +55,8 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
 
         // --- Carga de fuente personalizada.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 15f);
+        Font fuenteTextoBoton = fuente.deriveFont(Font.BOLD, 40f);
 
         // === Panel principal ===
         ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
@@ -66,19 +67,20 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
         laminaPergamino.setLayout(new BorderLayout());
         laminaPergamino.setOpaque(false);
-        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(100, 350, 100, 350));
+        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(altura/8, anchura/4, altura/9, anchura/4));
 
         // === Área de texto ===
         JTextPane texto = new JTextPane();
+        texto.setText(cargarTextoDesdeArchivo("src/Recursos/Instrucciones/instrucciones.txt"));
         texto.setFont(fuenteTexto);
         texto.setEditable(false);
         texto.setOpaque(false);
-        texto.setText(cargarTextoDesdeArchivo("src/Recursos/Instrucciones/instrucciones.txt"));
 
         // === Centrado del texto ===
+        javax.swing.text.StyledDocument doc = texto.getStyledDocument();
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
-        texto.setParagraphAttributes(attribs, false);
+        doc.setParagraphAttributes(0, doc.getLength(), attribs, false);
 
         // === Scroll sin barras visibles ===
         JScrollPane scroll = new JScrollPane(texto);
@@ -99,7 +101,7 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         botonVolver.setIcon(imagenBoton);
         botonVolver.setBorderPainted(false);
         botonVolver.setContentAreaFilled(false);
-        botonVolver.setFont(fuenteTexto);
+        botonVolver.setFont(fuenteTextoBoton);
 
         // === Layout general con GridBag ===
         gbc.gridx = 0;
