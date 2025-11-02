@@ -1,27 +1,37 @@
-INSTRUCCIONES DEL JUEGO
+COMO JUGAR
 
-Cómo jugar:
+1. Cada jugador recibe 3 cartas al iniciar.
 
-1. Cada jugador recibe 3 cartas españolas al inicio del turno.
+2. Las cartas se juegan al mismo tiempo.
 
-2. Las cartas se juegan simultáneamente.
+3. Se aplican los efectos segun el palo y valor.
 
-3. Se aplican las habilidades de las cartas según su palo y valor (ver abajo).
+4. Al final del turno, cada jugador roba una carta (mantiene 3).
 
-4. Al final del turno, cada jugador recibe una carta nueva, manteniendo siempre 3 cartas en mano.
+5. Si ambos atacan, la carta mas alta gana y causa dano igual a la diferencia.
 
-5. Si ambos jugadores juegan cartas de ataque, la carta de mayor valor gana y genera daño igual a la diferencia entre ambas cartas.
+6. El juego termina cuando,
 
-6. El juego termina cuando:
-    -La vida de un jugador llega a 0, o
-    -Se acaba el mazo; en este caso, el jugador con más mana acumulado será el ganador.
+    - Un jugador llega a 0 de vida, o
 
-Aclaracion: Si ambos tienen la misma cantidad de mana, será un empate y se jugará de nuevo.
+    - Se acaba el mazo: gana quien tenga mas mana (si empatan, se repite).
 
-🔹 Oro → Mana
+Efectos de cartas
 
-🔹 Espada → Daño
+- Oro → Gana mana.
 
-🔹 Basto → Daño
+- Espada / Basto → Causan daño.
 
-🔹 Copa → Vida
+- Copa → Recupera vida.
+
+Habilidades especiales:
+
+🌀 Truco: carta ofensiva más alta.
+
+    - Dano = diferencia mas 15
+    - Costo = 10 mana
+
+💬 Envido: cuesta 5 mana.
+
+    - El que tiene mayor envido gana.
+    - Se le resta al perdedor la mitad del valor del envido ganador

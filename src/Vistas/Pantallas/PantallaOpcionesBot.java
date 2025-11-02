@@ -12,36 +12,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * — Pantalla intermedia del juego "Truco a 2 Lucas".
+ * — Pantalla de selección de dificultad del modo "Jugador vs Computadora".
  *
- * Permite al jugador seleccionar entre los modos disponibles:
- *   <li>Jugador vs Jugador (PvP)</li>
- *   <li>Jugador vs Computadora (PvC, aún sin implementar)</li>
- * También ofrece la opción de volver al menú principal.</p>
+ * Actúa como menú intermedio en el flujo del juego “Truco a 2 Lucas”.
+ * Permite elegir entre los niveles de dificultad disponibles o volver al menú principal.
+ *
+ * Modos disponibles:
+ *    Fácil → crea una partida PartidaBot con dificultad 0.
+ *    Medio → crea una partida PartidaBot con dificultad 1.
+ *    Volver → regresa a PantallaInicio.
  */
 
 public class PantallaOpcionesBot extends ConfigurPantallas implements ActionListener {
+    // === Componentes principales ===
     JButton botonOpcionPvP, botonOpcionPvC, botonVolver;
     JLabel titulo;
 
+
+
+    // === Constructores ===
     /**
      * Constructor que inicializa la ventana de selección de modo de juego.
      */
     public PantallaOpcionesBot() {
         super ("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoMenu.png");
 
-        // --- Configuración de pantalla.
+        // === Configuración de dimensiones ===
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
 
-        // --- Fuentes personalizadas.
+        // === Fuentes personalizadas ===
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70);
         Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
 
-        // --- Titulo principal.
+        // === Título principal ===
         titulo = new JLabel("Truco a 2 Lucas");
         titulo.setFont(fuenteTitulo);
         titulo.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -49,14 +56,15 @@ public class PantallaOpcionesBot extends ConfigurPantallas implements ActionList
         titulo.setOpaque(false);
         titulo.setIcon(GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4));
 
-        // --- Botones
+        // === Imagen base para los botones ===
         ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 5, altura / 10);
 
+        // === Creación de botones ===
         botonOpcionPvP = crearBoton("Facil", fuenteBoton, imagenBoton);
         botonOpcionPvC = crearBoton("Medio", fuenteBoton, imagenBoton);
         botonVolver = crearBoton("Volver", fuenteBoton, imagenBoton);
 
-        //--- Panel de fondo
+        // === Panel principal con fondo ===
         ConfigurPanelConFondo panelfondo = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
         panelfondo.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -64,12 +72,12 @@ public class PantallaOpcionesBot extends ConfigurPantallas implements ActionList
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        // --- Título
+        // --- Título superior ---
         gbc.weighty = 0.4;
         gbc.anchor = GridBagConstraints.CENTER;
         panelfondo.add(titulo, gbc);
 
-        // --- Panel de botones
+        // --- Panel de botones ---
         JPanel panelBotones = new JPanel(new GridLayout(3, 1, 0, 10));
         panelBotones.setOpaque(false);
         panelBotones.add(botonOpcionPvP);
@@ -81,11 +89,13 @@ public class PantallaOpcionesBot extends ConfigurPantallas implements ActionList
         gbc.weighty = 0.6;
         panelfondo.add(panelBotones, gbc);
 
-        // --- Agrega el fondo del panel.
+        // === Ensamblado final ===
         add(panelfondo);
-        setVisible(true);
     }
 
+
+
+    // === Métodos ===
     /**
      * Crea un botón estilizado con fuente, imagen y acción asignada.
      */
@@ -101,10 +111,10 @@ public class PantallaOpcionesBot extends ConfigurPantallas implements ActionList
         return boton;
     }
 
+
     /**
      * Maneja las acciones de los botones de la pantalla.
      */
-
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonOpcionPvP) {
             new PartidaBot(0);

@@ -5,21 +5,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Clase {@code Mazo} — Representa el conjunto de cartas del juego.
+ * — Representa el conjunto de cartas del juego.
 
- * <p>Contiene las 40 cartas españolas divididas en los palos:
- * <b>Espada</b>, <b>Oro</b>, <b>Basto</b> y <b>Copa</b>,
- * con los valores 1, 2, 3, 4, 5, 6, 7, 10, 11 y 12.</p>
+ * Contiene las 40 cartas españolas divididas en los palos:
+ * Espada, Oro, Basto y Copa,
+ * con los valores 1, 2, 3, 4, 5, 6, 7, 10, 11 y 12.
 
- * <p>Permite mezclar el mazo, sacar cartas una por una
- * y consultar cuántas quedan disponibles.</p>
- *
+ * Permite mezclar el mazo, sacar cartas una por una
+ * y consultar cuántas quedan disponibles.
  */
 public class Mazo {
     // === Atributos ===
-    // --- Lista que contiene todas las cartas del mazo.
     private final ArrayList<Carta> cartas;
 
+
+
+    // === Constructores ===
     /**
      * Constructor que genera un mazo estándar de 40 cartas españolas.
      */
@@ -36,8 +37,9 @@ public class Mazo {
         }
     }
 
-    // === Métodos principales ===
 
+
+    // === Métodos ===
     /**
      * Devuelve una carta del mazo y la elimina de la lista.
      */
@@ -67,7 +69,7 @@ public class Mazo {
     /**
      * Devuelve una copia de las cartas actuales del mazo.
      *
-     * @return lista con las cartas restantes (sin modificar el mazo original).
+     * Retorna una lista con las cartas restantes (sin modificar el mazo original).
      */
     public ArrayList<Carta> getCartasMazo() {
         ArrayList<Carta> listacartas = new ArrayList<>();

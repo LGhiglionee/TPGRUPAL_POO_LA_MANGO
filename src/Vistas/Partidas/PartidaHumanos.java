@@ -11,12 +11,33 @@ import Vistas.Pantallas.PantallaResultadosMano;
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * — Implementa la partida entre dos jugadores humanos del juego "Truco a 2 Lucas".
+ *
+ * Extiende de PartidaBase y define la lógica específica de la versión PvP.
+ * Controla los turnos alternados, la visualización de resultados y las pantallas
+ * intermedias entre jugadas.
+ *
+ * Secuencia típica:
+ *   Inicializa los jugadores y reparte las cartas.
+ *   Cuando un jugador juega una carta, muestra una pantalla de cambio de turno.
+ *   Al completarse la jugada (ambos jugaron), muestra el resultado de la mano.
+ */
 public class PartidaHumanos extends PartidaBase{
-
+    // === Constructores ===
+    /**
+     * Constructor principal. Configura el título y fondo del modo "Jugador vs Jugador".
+     */
     public PartidaHumanos() {
         super("Truco a 2 Lucas", "src/Recursos/Imagenes/Fondos/FondoJuego.png", 0);
     }
 
+
+
+    // === Métodos ===
+    /**
+     * Inicializa el estado de juego: crea los jugadores, reparte las cartas y prepara el turno.
+     */
     protected void inicializarJuego(int nousar) {
         try {
             turno = new Turnos();
@@ -28,6 +49,13 @@ public class PartidaHumanos extends PartidaBase{
             dispose();
         }
     }
+
+
+    /**
+     * Procesa la carta jugada por el jugador actual.
+     *
+     * Parámetro: indice índice de la carta jugada (0–2)
+     */
     protected void procesarCartaJugada(int indice)
             throws MazoVacioException, PosicionInvalidaException, JugadorSinCartasException {
         turno.jugarCarta(indice, cartasjugadas);
@@ -45,6 +73,7 @@ public class PartidaHumanos extends PartidaBase{
             Carta c2 = turno.getUltimaCartaJugadaJ2();
             if (c1 != null && c2 != null) {
                 new PantallaResultadosMano(this,
+                        turno,
                         new ImageIcon(c1.getImagen()).getImage(),
                         new ImageIcon(c2.getImagen()).getImage(),
                         turno.getUltimoResultado(),

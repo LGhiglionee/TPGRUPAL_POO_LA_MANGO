@@ -10,9 +10,8 @@ import java.io.IOException;
 /**
  *  — Representa una carta individual del mazo español.
  *
- * <p>Cada carta tiene un número, un palo y una imagen asociada.
+ * Cada carta tiene un número, un palo y una imagen asociada.
  * Se utiliza para las acciones del juego como ataques, curaciones o suma de maná.</p>
- *
  */
 
 public class Carta {
@@ -21,8 +20,9 @@ public class Carta {
     protected int numero;
     private Image imagen;
 
-    // === Constructores ===
 
+
+    // === Constructores ===
     /**
      * Constructor que crea una carta con su palo, número e imagen correspondiente.
      */
@@ -32,27 +32,23 @@ public class Carta {
         this.imagen = cargarImagenDesdeRecurso();
     }
 
+
     /**
      * Constructor vacío.
      */
     public Carta() {
     }
 
+
+
     // === Getters ===
-    public String getPalo() {
-        return this.palo;
-    }
+    public String getPalo() {return this.palo;}
+    public int getNumero() {return this.numero;}
+    public Image getImagen() {return this.imagen;}
 
-    public int getNumero() {
-        return this.numero;
-    }
 
-    public Image getImagen() {
-        return this.imagen;
-    }
 
-    // === Métodos carga de imagen ===
-
+    // === Métodos ===
     /**
      * Carga la imagen asociada a la carta desde los recursos.
      */
@@ -65,4 +61,3 @@ public class Carta {
         }
     }
 }
-

@@ -30,9 +30,8 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
     // --- Fuentes ---
     private Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-    private Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
-    private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 30f);
-    private Font fuenteTextoBarra = fuente.deriveFont(Font.BOLD, 15f);
+    private Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 50f);
+    private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 15f);
 
     // --- Parámetros generales ---
     private int altoBotonAccion,anchoBotonAccion, anchura,anchocarta, altocarta, anchobarra,altobarra;
@@ -52,6 +51,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
     }
 
+
     private void inicializarComponentesGraficos () {
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
@@ -66,7 +66,6 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         anchoBotonAccion = anchura / 10;
         altoBotonAccion = altura / 18;
-
         // --- Crear nombre jugador
         j1nombre = crearNombreJugador("Jugador 1", turno.getJugador1());
         j2nombre = crearNombreJugador("Jugador 2", turno.getJugador2());
@@ -77,7 +76,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         // --- Maná
         j1mana = crearEtiquetaMana("Mana Jugador 1: " + turno.getJugador1().getMana());
-        j2mana = crearEtiquetaMana("Mana Jugador 2: #");
+        j2mana = crearEtiquetaMana("Mana Jugador 2: *");
 
         // --- Turno
         jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
@@ -116,7 +115,6 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         barra.setValue(jugador.getSalud());
         barra.setString("Vida: " + jugador.getSalud());
         barra.setStringPainted(true);
-        barra.setFont(fuenteTextoBarra);
         barra.setForeground(Color.RED);
         barra.setPreferredSize(tamanoBarra);
         barra.setMaximumSize(tamanoBarra);
@@ -252,7 +250,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
     private void configurarPanelJugadores() {
         j1Info.setLayout(new BoxLayout(j1Info, BoxLayout.Y_AXIS));
-        j1Info.add(Box.createRigidArea(new Dimension(0, 30)));
+        j1Info.add(Box.createRigidArea(new Dimension(0, 50)));
         j1Info.add(j1nombre);
         j1Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j1Info.add(j1salud);
@@ -261,7 +259,7 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         j1Info.add(Box.createRigidArea(new Dimension(0, 20)));
 
         j2Info.setLayout(new BoxLayout(j2Info, BoxLayout.Y_AXIS));
-        j2Info.add(Box.createRigidArea(new Dimension(0, 30)));
+        j2Info.add(Box.createRigidArea(new Dimension(0, 50)));
         j2Info.add(j2nombre);
         j2Info.add(Box.createRigidArea(new Dimension(0, 10)));
         j2Info.add(j2salud);
@@ -301,9 +299,9 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
         if (turno.getJugadorMano() == turno.getJugador1()) {
             j1mana.setText("Mana Jugador 1: " + turno.getJugador1().getMana());
-            j2mana.setText("Mana Jugador 2: #");
+            j2mana.setText("Mana Jugador 2: ##");
         } else {
-            j1mana.setText("Mana Jugador 1: #");
+            j1mana.setText("Mana Jugador 1: ##");
             j2mana.setText("Mana Jugador 2: " + turno.getJugador2().getMana());
         }
 

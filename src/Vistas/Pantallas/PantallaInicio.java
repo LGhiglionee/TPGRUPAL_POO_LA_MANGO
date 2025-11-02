@@ -11,21 +11,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-    /*
-     *  Esta clase representa la pantalla principal del juego (“menú inicial”), con:
-            Un título grande “Truco a 2 Lucas”.
-            Tres botones: Jugar, PantallaInstrucciones y Salir.
-            Un fondo e iconos cargados mediante GestorRecursos.
-        Acción de los botones:
-            Jugar → abre la clase PantallaOpcionesJuego.
-            PantallaInstrucciones → abre la clase PantallaInstrucciones.
-            Salir → cierra el programa.
-    */
-
+/**
+ * — Pantalla principal del juego “Truco a 2 Lucas”.
+ *
+ * Actúa como menú inicial del sistema, presentando el título del juego y
+ * tres opciones principales: Jugar, Instrucciones y Salir
+ *
+ * Responsabilidades principales:
+ *     Cargar fuentes e imágenes personalizadas mediante GestorRecursos.
+ *     Mostrar un diseño centrado con fondo gráfico e íconos estilizados.
+ *     Redirigir a las pantallas correspondientes según la acción del usuario.
+ */
 public class PantallaInicio extends ConfigurPantallas implements ActionListener {
-    // --- Componentes principales de la ventana.
+    // === Componentes principales ===
     JButton botonjugar, botonsalir, botoninstrucciones;
     JLabel titulo;
+
 
     /**
      * Constructor que inicializa la ventana de inicio, carga los recursos gráficos y configura
@@ -34,48 +35,40 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
     public PantallaInicio() {
         super("Truco a 2 lucas", "src/Recursos/Imagenes/Fondos/FondoMenu.png");
 
-        // --- Dimensiones de la pantalla.
+        // === Configuración general de dimensiones ===
         Toolkit mipantalla =  Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
 
         try {
-            // --- Carga de fuente personalizada.
+            // === Fuentes ===
             Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
             Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
             Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
 
-            // --- Título principal.
+            // === Imágenes ===
+            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4);
+            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 5, altura / 10);
+
+            // === Título principal ===
             titulo = new JLabel("Truco a 2 lucas");
             titulo.setFont(fuenteTitulo);
-
-            // --- Botones principales.
-            botonjugar = new JButton("Jugar");
-            botonjugar.setFont(fuenteBoton);
-            botonjugar.addActionListener(this);
-
-            botoninstrucciones = new JButton("Instrucciones");
-            botoninstrucciones.setFont(fuenteBoton);
-            botoninstrucciones.addActionListener(this);
-
-            botonsalir = new JButton("Salir");
-            botonsalir.setFont(fuenteBoton);
-            botonsalir.addActionListener(this);
-
-            // --- Imagen titulo
-            ImageIcon imagenTitulo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4);
             titulo.setHorizontalTextPosition(SwingConstants.CENTER);
             titulo.setVerticalTextPosition(SwingConstants.CENTER);
             titulo.setIcon(imagenTitulo);
 
-            // --- Imagenes botones
-            ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 5, altura / 10);
+            // === Botones principales ===
+            botonjugar = crearBoton("Jugar", fuenteBoton, imagenBotonnes);
+            botoninstrucciones = crearBoton("Instrucciones", fuenteBoton, imagenBotonnes);
+            botonsalir = crearBoton("Salir", fuenteBoton, imagenBotonnes);
+
             configurarBotonConImagen(botonjugar, imagenBotonnes);
             configurarBotonConImagen(botoninstrucciones, imagenBotonnes);
             configurarBotonConImagen(botonsalir, imagenBotonnes);
 
-            //--- Lámina
+
+            // === Panel principal ===
             ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
             lamina.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -83,12 +76,12 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
             gbc.gridx = 0;
             gbc.gridy = 0;
 
-            // --- Titulo de lámina.
+            // --- Título superior ---
             gbc.weighty = 0.4;
             gbc.anchor = GridBagConstraints.CENTER;
             lamina.add(titulo, gbc);
 
-            // --- Panel de botones
+            // --- Panel de botones ---
             JPanel panelBotones = new JPanel(new GridLayout(3, 1, 0, 10));
             panelBotones.setOpaque(false);
             panelBotones.add(botonjugar);
@@ -100,9 +93,8 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
             gbc.anchor = GridBagConstraints.CENTER;
             lamina.add(panelBotones, gbc);
 
-            // --- Finaliza configuración.
+            // === Ensamblado final ===
             add(lamina);
-            setVisible(true);
 
         } catch (ImagenNoEncontradaException | FuenteNoEncontradaException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de recursos", JOptionPane.ERROR_MESSAGE);
@@ -110,6 +102,23 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
         }
     }
 
+
+    // === Métodos ===
+    /**
+     * Crea y configura un botón con una fuente e imagen personalizada.
+     */
+    private JButton crearBoton(String texto, Font fuente, ImageIcon imagen) {
+        JButton boton = new JButton(texto);
+        boton.setFont(fuente);
+        boton.setIcon(imagen);
+        boton.setHorizontalTextPosition(SwingConstants.CENTER);
+        boton.setVerticalTextPosition(SwingConstants.CENTER);
+        boton.setBorderPainted(false);
+        boton.setContentAreaFilled(false);
+        boton.setFocusPainted(false);
+        boton.addActionListener(this);
+        return boton;
+    }
     /**
      * Metodo auxiliar para configurar un botón con una imagen de fondo.
      */
@@ -120,6 +129,7 @@ public class PantallaInicio extends ConfigurPantallas implements ActionListener 
         boton.setBorderPainted(false);
         boton.setContentAreaFilled(false);
     }
+
 
     /**
      * Maneja las acciones de los botones del menú principal.

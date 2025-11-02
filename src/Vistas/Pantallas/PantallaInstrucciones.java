@@ -15,25 +15,34 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- *  Ventana que muestra las reglas y explicaciones del juego "Truco a 2 Lucas"
- * Lee el contenido del archivo de texto {@code instrucciones.txt} ubicado en la carpeta de recursos.
+ * — Pantalla de instrucciones del juego "Truco a 2 Lucas".
+ *
+ * Muestra las reglas básicas y explicaciones del juego,
+ * leyendo el contenido desde un archivo de texto externo ubicado en
+ * src/Recursos/Instrucciones/instrucciones.txt.
+ *
+ * Características principales:
+ *     Diseño en modo pantalla completa con fondo temático.
+ *     Texto centrado y legible dentro de un "pergamino".
+ *     Botón “Volver” para regresar al menú principal.
  */
-
 public class PantallaInstrucciones extends ConfigurPantallas implements  ActionListener {
+    // --- Botón que permite volver al menú principal.
+    JButton botonVolver;
+
     /**
      * Constructor que inicializa la ventana y carga el texto de instrucciones.
      */
-    JButton botonVolver;
     public PantallaInstrucciones() {
         super("PantallaInstrucciones del juego", "src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
 
-        // --- Configuración general de la pantalla.
+        // === Configuración de pantalla ===
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
 
-        // --- Configuración de tamaño completo de la ventana.
+        // === Fuente personalizada ===
         setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -46,37 +55,42 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
 
         // --- Carga de fuente personalizada.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 18f);
-        Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 13f);
 
-        // --- Lamina Principal
+        // === Panel principal ===
         ConfigurPanelConFondo lamina = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
         lamina.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // --- Lamina Pergamino
+        // === Subpanel: “pergamino” para las reglas ===
         ConfigurPanelConFondo laminaPergamino = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoInstrucciones.png");
         laminaPergamino.setLayout(new BorderLayout());
         laminaPergamino.setOpaque(false);
-        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(altura/8, anchura/6, altura/8, anchura/6));
+        laminaPergamino.setBorder(BorderFactory.createEmptyBorder(100, 350, 100, 350));
 
-        //--- Área de texto con scroll.
+        // === Área de texto ===
         JTextPane texto = new JTextPane();
         texto.setFont(fuenteTexto);
         texto.setEditable(false);
         texto.setOpaque(false);
+        texto.setText(cargarTextoDesdeArchivo("src/Recursos/Instrucciones/instrucciones.txt"));
+
+        // === Centrado del texto ===
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
         texto.setParagraphAttributes(attribs, false);
-        texto.setText(cargarTextoDesdeArchivo("src/Recursos/Instrucciones/instrucciones.txt"));
 
+        // === Scroll sin barras visibles ===
         JScrollPane scroll = new JScrollPane(texto);
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
         scroll.setBorder(null);
         laminaPergamino.add(scroll, BorderLayout.CENTER);
 
-        // --- Boton volver
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        // === Botón “Volver” ===
         botonVolver = new JButton("Volver");
         botonVolver.addActionListener( this);
         ImageIcon imagenBoton = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 7, altura / 12);
@@ -85,10 +99,9 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         botonVolver.setIcon(imagenBoton);
         botonVolver.setBorderPainted(false);
         botonVolver.setContentAreaFilled(false);
-        botonVolver.setFont(fuenteBoton);
+        botonVolver.setFont(fuenteTexto);
 
-
-        // --- Logica gbc - Lamina
+        // === Layout general con GridBag ===
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -104,17 +117,28 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         gbc.anchor = GridBagConstraints.NORTH;
         lamina.add(botonVolver,gbc);
 
+        // === Ensamblado final ===
         add(lamina);
     }
 
+
+
+    // === Métodos ===
+    /**
+     * Acción del botón "Volver" → regresa al menú principal.
+     */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonVolver) {
             new PantallaInicio();
             dispose();
         }
     }
+
     /**
-     * Lee el contenido de un archivo de texto y lo devuelve como cadena.
+     * Lee el contenido de un archivo de texto línea por línea.
+     *
+     * Parámetro: rutaArchivo Ruta del archivo de texto a leer.
+     * Retorna: Texto completo del archivo, o mensaje de error si no se encuentra.
      */
     private String cargarTextoDesdeArchivo(String rutaArchivo) {
         StringBuilder contenido = new StringBuilder();
@@ -128,9 +152,14 @@ public class PantallaInstrucciones extends ConfigurPantallas implements  ActionL
         }
         return contenido.toString();
     }
+
+
+    /**
+     * Método opcional: crea un panel contenedor reutilizable
+     * si se desea insertar esta pantalla dentro de otra vista.
+     */
     public JPanel crearContenido() {
         ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
-        // ... agregar componentes ...
         return panel;
     }
 }
