@@ -306,20 +306,7 @@ public class Turnos {
         return "Empate total";
     }
 
-    public String partidaTerminadaconBot() {
 
-        if (jugador1.getSalud() <= 0 && jugador2.getSalud() <= 0)
-            return "Empate: ambos llegaron a 0 de vida";
-        if (jugador1.getSalud() <= 0)
-            return "Has Perdido!";
-        if (jugador2.getSalud() <= 0)
-            return "Has Ganado!";
-        if (jugador1.getSalud() > jugador2.getSalud()) return "Has Ganado!";
-        if (jugador2.getSalud() > jugador1.getSalud()) return "Has Perdido!";
-        if (jugador1.getMana() > jugador2.getMana()) return "Ganaste por mana";
-        if (jugador2.getMana() > jugador1.getMana()) return "Perdiste por mana";
-        return "Empate total";
-    }
     /**
      * Evalúa si la partida debe finalizar (por salud, cartas o mazo vacío).
      *
@@ -354,12 +341,6 @@ public class Turnos {
         } else {
             return jugador2;
         }
-    }
-    // --- Devuelve el nombre del jugador que tiene la mano actual. */
-    public String getStringJugadorMano() {
-        if (jugador1.getMano()) {
-            return "Jugador 1";
-        } else return "Jugador 2";
     }
 
     // ---  Alterna el turno entre los dos jugadores.

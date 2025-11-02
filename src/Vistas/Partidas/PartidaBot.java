@@ -46,7 +46,7 @@ public class PartidaBot extends PartidaBase {
             Image img2 = new ImageIcon(c2.getImagen()).getImage();
             String resultado = turno.getUltimoResultado();
             boolean mostrarTruco = turno.consumirBannerTruco();
-            PantallaResultadosMano p = new PantallaResultadosMano(this, img1, img2, resultado, mostrarTruco);
+            PantallaResultadosMano p = new PantallaResultadosMano(this, turno, img1, img2, resultado, mostrarTruco);
             p.setVisible(true);
         }
     }

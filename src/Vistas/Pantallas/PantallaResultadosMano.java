@@ -3,6 +3,7 @@ package Vistas.Pantallas;
 import javax.swing.*;
 import java.awt.*;
 
+import Modelo.Entidades.Bot;
 import Modelo.Motor.Turnos;
 import Modelo.Recursos.GestorRecursos;
 import Vistas.Configuraciones.ConfigurPanelConFondo;
@@ -10,12 +11,14 @@ import Vistas.Configuraciones.ConfigurPanelConFondo;
 public class PantallaResultadosMano extends JDialog {
     public boolean continuarJuego = false;
     private int jugadorAbandono = 0;   // 0 ninguno, 1 o 2 si alguno abandona
+    private Turnos turno;
     private final JFrame padre;
 
 
-    public PantallaResultadosMano(JFrame padre,  Image img1, Image img2, String resultado, boolean mostrarTruco) {
+    public PantallaResultadosMano(JFrame padre, Turnos turno,  Image img1, Image img2, String resultado, boolean mostrarTruco) {
         super(padre, true); // modal
         this.padre = padre;
+        this.turno = turno;
         setTitle("Resultado de la Mano");
         setUndecorated(true);
         padre.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -90,6 +93,14 @@ public class PantallaResultadosMano extends JDialog {
         btnAbandonar.addActionListener(e -> {
             continuarJuego = false;
 
+            // Si el jugador 2 es un bot → no preguntar, gana el bot automáticamente
+            if (turno.getJugador2() instanceof Bot) {
+                mostrarPantallaGanador("El bot gana por abandono del jugador.");
+                dispose();
+                return;
+            }
+
+            // Si no hay bot → preguntar quién abandona
             Object[] opciones = {"Jugador 1", "Jugador 2", "Cancelar"};
             int seleccion = JOptionPane.showOptionDialog(
                     this,

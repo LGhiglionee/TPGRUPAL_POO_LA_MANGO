@@ -45,6 +45,7 @@ public class PartidaHumanos extends PartidaBase{
             Carta c2 = turno.getUltimaCartaJugadaJ2();
             if (c1 != null && c2 != null) {
                 new PantallaResultadosMano(this,
+                        turno,
                         new ImageIcon(c1.getImagen()).getImage(),
                         new ImageIcon(c2.getImagen()).getImage(),
                         turno.getUltimoResultado(),
