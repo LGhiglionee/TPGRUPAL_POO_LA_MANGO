@@ -47,7 +47,6 @@ public class PantallaOpcionesBot extends ConfigurPantallas implements ActionList
         titulo.setHorizontalTextPosition(SwingConstants.CENTER);
         titulo.setVerticalTextPosition(SwingConstants.CENTER);
         titulo.setOpaque(false);
-        titulo.setForeground(Color.black);
         titulo.setIcon(GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4));
 
         // --- Botones
