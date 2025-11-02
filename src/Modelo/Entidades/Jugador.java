@@ -7,12 +7,13 @@ import java.util.ArrayList;
 
 /**
  *  — Representa a un jugador dentro del juego.
- * <p>Almacena los atributos principales del jugador (salud, maná, cartas, turno)
+ * Almacena los atributos principales del jugador (salud, maná, cartas, turno)
  * y provee métodos para manipularlos, incluyendo acciones como recuperar salud,
  * agregar maná, asignar cartas y calcular el envido.</p>
  */
 
 public class Jugador {
+    // === Atributos ===
     protected int salud;
     protected int mana;
     protected boolean mano;
@@ -20,6 +21,9 @@ public class Jugador {
     protected boolean desangrado;
     protected boolean esBot;
 
+
+
+    // === Constructores ===
     /**
      * Constructor por defecto.
      * Inicializa la salud en 100, el maná en 0, tres cartas vacías y asigna la mano al jugador (por defecto true).
@@ -33,6 +37,8 @@ public class Jugador {
         this.esBot = false;
     }
 
+
+
     // --- Getters y Setters.
     public int getSalud() {return salud;}
     public int getMana() {return mana;}
@@ -40,7 +46,16 @@ public class Jugador {
     public void setMano(boolean mano) {this.mano = mano;}
     public ArrayList<Carta> getTresCartas() {return trescartas;}
     public  void setTresCartas(ArrayList<Carta> trescartas) {this.trescartas = trescartas;}
+    public boolean getDesangrado() {
+        return desangrado;
+    }
+    public void setDesangrado(boolean desangrado) {
+        this.desangrado = desangrado;
+    }
 
+
+
+    // === Métodos ===
     /**
      * Modifica la salud del jugador, sin exceder el máximo de 100.
      */
@@ -52,18 +67,12 @@ public class Jugador {
         }
     }
 
+
     /**
      * Incrementa el maná del jugador en la cantidad indicada.
      */
     public void agregarMana(int mana) {this.mana += mana;}
 
-    public boolean getDesangrado() {
-        return desangrado;
-    }
-
-    public void setDesangrado(boolean desangrado) {
-        this.desangrado = desangrado;
-    }
 
     /**
      * Asigna una carta a una posición específica dentro de las tres disponibles.
@@ -75,10 +84,11 @@ public class Jugador {
         this.trescartas.set(indice, carta);
     }
 
+
     /**
      * Calcula el puntaje de envido del jugador según sus tres cartas.
      *
-     * <p>El cálculo sigue la lógica tradicional del truco:
+     * El cálculo sigue la lógica tradicional del truco:
      * si hay dos cartas del mismo palo, se suman sus valores (sin contar 10, 11, 12)
      * y se agrega un bono de 20 puntos.</p>
      */
@@ -115,9 +125,11 @@ public class Jugador {
         }
         return maxEnvido;
     }
+
+
     /**
      * Retorna el valor de una carta para el cálculo del envido.
-     * <p>Las cartas del 10 en adelante (10, 11, 12) valen 0.</p>
+     * Las cartas del 10 en adelante (10, 11, 12) valen 0.</p>
      */
     private int valorEnvido(Carta c) {
         int numero = c.getNumero();
