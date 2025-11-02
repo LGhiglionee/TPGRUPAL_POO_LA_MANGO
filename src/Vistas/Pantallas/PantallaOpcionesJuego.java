@@ -40,8 +40,8 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
 
         // --- Fuentes personalizadas.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-        Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
-        Font fuenteBoton = fuente.deriveFont(Font.BOLD, 20f);
+        Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70);
+        Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
 
         // --- Titulo principal.
         titulo = new JLabel("Truco a 2 Lucas");
@@ -49,7 +49,6 @@ public class PantallaOpcionesJuego extends ConfigurPantallas implements ActionLi
         titulo.setHorizontalTextPosition(SwingConstants.CENTER);
         titulo.setVerticalTextPosition(SwingConstants.CENTER);
         titulo.setOpaque(false);
-        titulo.setForeground(Color.black);
         titulo.setIcon(GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoTitulo.png", anchura / 2, altura / 4));
 
         // --- Botones

@@ -1,5 +1,6 @@
 package Vistas.Pantallas;
 
+import Modelo.Recursos.GestorRecursos;
 import Vistas.Configuraciones.ConfigurPantallas;
 
 import javax.swing.*;
@@ -13,6 +14,8 @@ public class PantallaCambioTurno extends ConfigurPantallas {
 
         // --- Carga de imagen ---
         imagenFondo = new ImageIcon(rutaImagen).getImage();
+        Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 70f);
 
         // --- Panel personalizado ---
         JPanel panel = new JPanel() {
@@ -27,7 +30,7 @@ public class PantallaCambioTurno extends ConfigurPantallas {
         // --- Texto centrado ---
         JLabel label = new JLabel(mensaje, SwingConstants.CENTER);
         label.setForeground(Color.WHITE);
-        label.setFont(new Font("src/Recursos/Fuentes/ka1.ttf", Font.BOLD, 60));
+        label.setFont(fuenteTexto);
         label.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         panel.add(label, BorderLayout.CENTER);
 

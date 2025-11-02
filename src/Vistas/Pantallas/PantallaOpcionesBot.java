@@ -38,8 +38,8 @@ public class PantallaOpcionesBot extends ConfigurPantallas implements ActionList
 
         // --- Fuentes personalizadas.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
-        Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 45f);
-        Font fuenteBoton = fuente.deriveFont(Font.BOLD, 20f);
+        Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70);
+        Font fuenteBoton = fuente.deriveFont(Font.BOLD, 40f);
 
         // --- Titulo principal.
         titulo = new JLabel("Truco a 2 Lucas");

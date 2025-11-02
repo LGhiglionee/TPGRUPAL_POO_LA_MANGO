@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import Modelo.Motor.Turnos;
+import Modelo.Recursos.GestorRecursos;
+import Vistas.Configuraciones.ConfigurPanelConFondo;
 
 public class PantallaResultadosMano extends JDialog {
     public boolean continuarJuego = false;
@@ -21,22 +23,37 @@ public class PantallaResultadosMano extends JDialog {
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
 
+        // Imagen cartas
+        Toolkit mipantalla = Toolkit.getDefaultToolkit();
+        Dimension tamanio = mipantalla.getScreenSize();
+        int altura = tamanio.height;
+        int anchura = tamanio.width;
+        int altoCartaGrande = altura/6;
+        int anchoCartaGrande = anchura/12;
+
+        Image imgEscalada1 = img1.getScaledInstance(anchoCartaGrande, altoCartaGrande, Image.SCALE_SMOOTH);
+        Image imgEscalada2 = img2.getScaledInstance(anchoCartaGrande, altoCartaGrande, Image.SCALE_SMOOTH);
+
+        // Funete
+        Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
+        Font fuenteTexto = fuente.deriveFont(Font.BOLD, 35f);
+
         // Panel principal:
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(25, 25, 25));
+        ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoIntermedio.png");
+        panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
 
         // === Título resultado ===
         JLabel lblResultado = new JLabel("<html>" + resultado.replace("\n", "<br>") + "</html>", SwingConstants.CENTER);
-        lblResultado.setFont(new Font("Arial", Font.BOLD, 26));
+        lblResultado.setFont(fuenteTexto);
         lblResultado.setForeground(Color.WHITE);
         lblResultado.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
         // === Cartas ===
         JPanel panelCartas = new JPanel(new GridLayout(1, 2, 25, 0));
         panelCartas.setOpaque(false);
-        panelCartas.add(new JLabel(new ImageIcon(img1)));
-        panelCartas.add(new JLabel(new ImageIcon(img2)));
+        panelCartas.add(new JLabel(new ImageIcon(imgEscalada1)));
+        panelCartas.add(new JLabel(new ImageIcon(imgEscalada2)));
 
 
 
@@ -109,7 +126,7 @@ public class PantallaResultadosMano extends JDialog {
 
         // Resultado (card "resultado")
         lblResultado = new JLabel("<html>" + resultado.replace("\n", "<br>") + "</html>", SwingConstants.CENTER);
-        lblResultado.setFont(new Font("Arial", Font.BOLD, 26));
+        lblResultado.setFont(fuenteTexto);
         lblResultado.setForeground(Color.WHITE);
         lblResultado.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         header.add(lblResultado, "resultado");
