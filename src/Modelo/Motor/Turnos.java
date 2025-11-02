@@ -12,20 +12,21 @@ import java.util.ArrayList;
 /**
  *  — Controla la lógica de turnos, jugadas y estado de la partida.
  *
- * <p>Coordina las acciones de los jugadores, el manejo del mazo y la resolución
- * de los efectos de las cartas (daño, curación y energía/mana).</p>
+ * Coordina las acciones de los jugadores, el manejo del mazo y la resolución
+ * de los efectos de las cartas (daño, curación y energía/mana).
  *
- * <p>Responsabilidades principales:</p>
- *   <li>Gestionar el turno activo entre los jugadores.</li>
- *   <li>Procesar jugadas individuales y enfrentamientos entre cartas.</li>
- *   <li>Evaluar condiciones de finalización de la partida.</li>
- *   <li>Resolver el resultado del "envido" y calcular ganador general.</li>
+ * Responsabilidades principales:
+ *   Gestionar el turno activo entre los jugadores.
+ *   Procesar jugadas individuales y enfrentamientos entre cartas.
+ *   Evaluar condiciones de finalización de la partida.
+ *   Resolver el resultado del "envido" y calcular ganador general.
  */
 
 public class Turnos {
-    static Mazo mazo; // --- Mazo del juego.
-    ArrayList<Carta> doscartas; // --- Lista auxiliar para almacenar las dos cartas jugadas por turno.
-    // --- Jugadores.
+    // === Atributos ===
+    static Mazo mazo;
+    ArrayList<Carta> doscartas;
+
     static Jugador jugador1;
     static Jugador jugador2;
     private boolean envidodisponible = true;
@@ -40,6 +41,9 @@ public class Turnos {
 
     Bot bot;
 
+
+
+    // === Constructores ===
     /**
      * Constructor que inicializa los jugadores, el mazo y mezcla las cartas.
      */
@@ -51,14 +55,50 @@ public class Turnos {
         jugador2 = new Jugador();
         jugador1.setMano(true);
     }
+
+
+    /**
+     * Constructor alternativo (modo Jugador vs Bot).
+     *
+     * Parámetro: dificultad Nivel de dificultad del bot (1 = medio, 0 = fácil).
+     */
+    public Turnos(int dificultad) {
+        mazo = new Mazo();
+        mazo.mezclarMazo();
+        doscartas = new ArrayList<Carta>();
+        jugador1 = new Jugador();
+        bot = new Bot(dificultad);
+        jugador2 = bot; //Para no cambiar en partida
+        jugador1.setMano(true);
+    }
+
+
+
+    // === Getters y Setters ===
     public Carta getUltimaCartaJugadaJ1() { return ultimaCartaJugadaJ1; }
     public Carta getUltimaCartaJugadaJ2() { return ultimaCartaJugadaJ2; }
     public String getUltimoResultado() { return ultimoResultado; }
 
+    public Bot getBot() {return bot;}
+
+    public Jugador getJugador1() {return jugador1;}
+    public Jugador getJugador2() {return jugador2;}
+    public Mazo getMazo() {return mazo;}
+
+    /**
+     * Determina quién tiene actualmente el turno.
+     */
+    public Jugador getJugadorMano() {
+        if (jugador1.getMano()) {
+            return jugador1;
+        } else {
+            return jugador2;
+        }
+    }
+
     public boolean envidoDisponible() { return envidodisponible; }
     public void bloquearEnvido() { envidodisponible = false; }
     public void resetearEnvido() { envidodisponible = true; }
-
 
     public boolean trucoDisponible() {return trucodisponible;}
     public void bloquearTruco() {trucodisponible = false;}
@@ -70,45 +110,43 @@ public class Turnos {
         return x;
     }
 
+
+
+    // === Métodos auxiliares internos ===
     private void resetDanoReciente() {
-
         danoReciente1 = 0;
-
         danoReciente2=0;
     }
 
-    public Turnos(int dificultad) {
-        mazo = new Mazo();
-        mazo.mezclarMazo();
-        doscartas = new ArrayList<Carta>();
-        jugador1 = new Jugador();
-        bot = new Bot(dificultad);
-        jugador2 = bot; //Para no cambiar en partida
-        jugador1.setMano(true);
-    }
 
     private void infligirDanioA1(int danodetruco) {
         if (danodetruco <= 0) return;
         jugador1.actualizarSalud(-danodetruco);
     }
 
+
     private void infligirDanioA2(int danodetruco) {
         if (danodetruco <= 0) return;
         jugador2.actualizarSalud(-danodetruco);
     }
 
-    // -- Se fija si la carta jugada es de espada o basto (Hecha para el truco)
+
+    /**
+     * Determina si una carta es de tipo ofensivo (Espada o Basto).
+     */
     public boolean esOfensiva(Carta c) {
         String p = c.getPalo();
         return "Espada".equals(p) || "Basto".equals(p);
     }
 
+
+
+    // === Lógica principal ===
     /**
      * Resuelve el enfrentamiento entre dos cartas jugadas en una mano.
-     * Aplica efectos según el tipo de palo (curación, mana o daño).
+     * Aplica efectos de curación, mana o daño según el palo.
      */
     public void jugarMano(Carta carta1, Carta carta2) {
-        // --- Resetea en 0 los daños.
         resetDanoReciente();
 
         danoReciente1 = jugador1.getSalud();
@@ -197,14 +235,15 @@ public class Turnos {
             }
         }
 
-        if (!trucoDisponible()) { // Truco activo esta mano
+        // --- Efectos del truco.
+        if (!trucoDisponible()) {
             boolean of1 = esOfensiva(carta1);
             boolean of2 = esOfensiva(carta2);
 
             if (of1 && of2) {
                 int n1 = carta1.getNumero();
                 int n2 = carta2.getNumero();
-                if (n1 < n2) { //-- Ambas son ofensivas
+                if (n1 < n2) {
                     infligirDanioA1(15);   // J1 tiro la más baja
                 } else if (n2 < n1) {
                     infligirDanioA2(15);   // J2 tiro la más baja
@@ -215,13 +254,12 @@ public class Turnos {
             else if (!of1 && of2) {
                 infligirDanioA1(15);  // J2 atacó, J1 no
             }
-            //-- Si no nadie tiro de ataque
 
-            mostrarBannerTruco = true; // si querés mostrarlo siempre que hubo Truco
+            mostrarBannerTruco = true;
             resetearTruco();
         }
 
-        // --- Efecto de sangrado
+        // --- Efecto de sangrado.
         if (jugador1.getDesangrado()) {
             jugador1.actualizarSalud(-5);
             descripcion.append("Jugador 1 pierde 5 de vida por desangrarse.\n");
@@ -230,12 +268,12 @@ public class Turnos {
             descripcion.append("Jugador 2 pierde 5 de vida por desangrarse.\n");
         }
 
-        // -- Indica si el Truco esta activo
+       // -- Indica si el Truco esta activo
         if (!trucoDisponible()) {
             descripcion.append("El Truco esta ACTIVADO");
         }
 
-        //* --- Resultado final
+        // --- Resultado parcial.
         descripcion.append("\n⚔️ Resultado intermedio de la mano:\n");
         if (jugador1.getSalud() > 0 & jugador2.getSalud() > 0) {
             descripcion.append("Jugador 1 → Vida: ").append(jugador1.getSalud()).append("\n");
@@ -266,6 +304,7 @@ public class Turnos {
         }
     }
 
+
     /**
      * Calcula el daño entre dos cartas de tipo ofensivo (Basto/Espada).
      */
@@ -288,37 +327,17 @@ public class Turnos {
         }
     }
 
-    /**
-     * Determina el ganador de la partida al finalizar o si uno de los jugadores se queda sin salud.
-     */
-    public String partidaTerminada() {
-
-        if (jugador1.getSalud() <= 0 && jugador2.getSalud() <= 0)
-            return "Empate: ambos llegaron a 0 de vida";
-        if (jugador1.getSalud() <= 0)
-            return "Gano jugador 2";
-        if (jugador2.getSalud() <= 0)
-            return "Gano jugador 1";
-        if (jugador1.getSalud() > jugador2.getSalud()) return "Gano jugador 1";
-        if (jugador2.getSalud() > jugador1.getSalud()) return "Gano jugador 2";
-        if (jugador1.getMana() > jugador2.getMana()) return "Gano jugador 1 (por mana)";
-        if (jugador2.getMana() > jugador1.getMana()) return "Gano jugador 2 (por mana)";
-        return "Empate total";
-    }
-
 
     /**
      * Evalúa si la partida debe finalizar (por salud, cartas o mazo vacío).
      *
-     * @return true si se cumple alguna condición de fin de partida.
+     * Retorna true si se cumple alguna condición de fin de partida.
      */
     public static boolean condicionFinalizacion() {
-
         if (jugador1.getSalud() <= 0 || jugador2.getSalud() <= 0)
             return true;
 
         boolean mazoVacio = (mazo == null || mazo.cartasRestantes() == 0);
-
         boolean sinCartas1 = true;
         for (Carta c : jugador1.getTresCartas()) {
             if (c != null) sinCartas1 = false;
@@ -333,17 +352,12 @@ public class Turnos {
             return true;
 
         return false;
-}
-    // --- Devuelve el jugador que tiene actualmente la mano (turno activo). */
-    public Jugador getJugadorMano() {
-        if (jugador1.getMano()) {
-            return jugador1;
-        } else {
-            return jugador2;
-        }
     }
 
-    // ---  Alterna el turno entre los dos jugadores.
+
+    /**
+     * Alterna el turno activo entre los jugadores.
+     */
     public void alternarTurno() {
         if (jugador1.getMano()) {
             jugador1.setMano(false);
@@ -353,6 +367,8 @@ public class Turnos {
             jugador1.setMano(true);
         }
     }
+
+
     /**
      * Reparte tres cartas del mazo al jugador indicado.
      */
@@ -372,14 +388,9 @@ public class Turnos {
         bot.setTresCartas(cartas);
     }
 
-    // --- Getters.
-    public Jugador getJugador1() {return jugador1;}
-    public Jugador getJugador2() {return jugador2;}
-    public Mazo getMazo() {return mazo;}
 
     /**
-     * Permite al jugador activo jugar una carta seleccionada por índice.
-     * @param i índice de la carta jugada (0-2)
+     * Ejecuta la lógica de jugada para jugador vs jugador.
      */
     public void jugarCarta(int i, ArrayList<Carta> cartasjugadas) throws MazoVacioException, PosicionInvalidaException {
         if (i < 0 || i >= getJugadorMano().getTresCartas().size()) {
@@ -390,10 +401,8 @@ public class Turnos {
         if (carta == null) {
             throw new PosicionInvalidaException("No hay carta en esa posición.");
         }
-        // --- Quita mano jugada.
         getJugadorMano().setCarta(i, null);
 
-        // --- Si ya hay carta jugada, se resuelve la mano.
         if (!cartasjugadas.isEmpty()) {
             cartasjugadas.add(carta);
             jugarMano(cartasjugadas.get(0), cartasjugadas.get(1));
@@ -402,7 +411,6 @@ public class Turnos {
         } else {
             cartasjugadas.add(carta);
         }
-        // --- Repone carta del mazo, en caso que haya disponibles.
         if (mazo.cartasRestantes() != 0){
             getJugadorMano().setCarta(i, getMazo().getCarta());
         }
@@ -410,6 +418,10 @@ public class Turnos {
         alternarTurno();
     }
 
+
+    /**
+     * Ejecuta la lógica de jugada para jugador vs bot.
+     */
     public void jugarCartaVsBot(int i, ArrayList<Carta> cartasjugadas, boolean esJugador) throws MazoVacioException, PosicionInvalidaException {
          if (esJugador)
             if (i < 0 || i >= getJugador1().getTresCartas().size()) {
@@ -429,13 +441,11 @@ public class Turnos {
         if (carta == null) {
             throw new PosicionInvalidaException("No hay carta en esa posición.");
         }
-        // --- Quita mano jugada.
         if (esJugador)
             getJugador1().setCarta(i, null);
         else
             getBot().setCarta(i, null);
 
-        // --- Si ya hay carta jugada, se resuelve la mano.
         if (!cartasjugadas.isEmpty()) {
             cartasjugadas.add(carta);
             jugarMano(cartasjugadas.get(0), cartasjugadas.get(1));
@@ -444,7 +454,6 @@ public class Turnos {
         } else {
             cartasjugadas.add(carta);
         }
-        // --- Repone carta del mazo, en caso que haya disponibles.
         if (mazo.cartasRestantes() != 0){
             if (esJugador)
                 getJugador1().setCarta(i, getMazo().getCarta());
@@ -457,9 +466,9 @@ public class Turnos {
     /**
      * Resuelve el enfrentamiento de "Envido" entre los dos jugadores.
      *
-     * @param envidoJ1 puntos de envido del jugador 1
-     * @param envidoJ2 puntos de envido del jugador 2
-     * @return mensaje con el resultado del envido y cambios de salud aplicados.
+     * Parámetro: envidoJ1 puntos de envido del jugador 1
+     * Parámetro: envidoJ2 puntos de envido del jugador 2
+     * Retorna: mensaje con el resultado del envido y cambios de salud aplicados.
      */
     public String jugarEnvido(int envidoJ1, int envidoJ2) {
         StringBuilder mensaje = new StringBuilder();
@@ -478,7 +487,21 @@ public class Turnos {
         return mensaje.toString();
     }
 
-    public Bot getBot() {
-        return bot;
+
+    /**
+     * Determina el ganador de la partida al finalizar o si uno de los jugadores se queda sin salud.
+     */
+    public String partidaTerminada() {
+        if (jugador1.getSalud() <= 0 && jugador2.getSalud() <= 0)
+            return "Empate: ambos llegaron a 0 de vida";
+        if (jugador1.getSalud() <= 0)
+            return "Gano jugador 2";
+        if (jugador2.getSalud() <= 0)
+            return "Gano jugador 1";
+        if (jugador1.getSalud() > jugador2.getSalud()) return "Gano jugador 1";
+        if (jugador2.getSalud() > jugador1.getSalud()) return "Gano jugador 2";
+        if (jugador1.getMana() > jugador2.getMana()) return "Gano jugador 1 (por mana)";
+        if (jugador2.getMana() > jugador1.getMana()) return "Gano jugador 2 (por mana)";
+        return "Empate total";
     }
 }

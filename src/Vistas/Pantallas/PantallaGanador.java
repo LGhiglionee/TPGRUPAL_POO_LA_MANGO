@@ -9,44 +9,57 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * — Pantalla final del juego que muestra el mensaje de victoria o empate.
+ *
+ * Presenta un fondo temático, el texto central con fuente personalizada,
+ * y dos botones: uno para volver al menú principal y otro para salir del juego.
+ *
+ * Características principales:
+ *     Hereda la configuración general de ConfigurPantallas.
+ *     Usa fuentes y botones personalizados mediante GestorRecursos.
+ *     Diseño centrado con distribución proporcional adaptable a cualquier resolución.
+ */
 public class PantallaGanador extends ConfigurPantallas implements ActionListener {
 
-    // --- Botones principales de la pantalla.
+    // === Botones principales ===
     private JButton btnMenu;
     private JButton btnSalir;
 
 
     /**
      * Constructor que crea la ventana de resultado con un mensaje central.
+     *
+     * Parámetro: mensaje Texto principal a mostrar en el centro de la pantalla.
      */
     public PantallaGanador(String mensaje) {
         super("Resultado del Juego", "src/Recursos/Imagenes/Fondos/FondoIntermedio.png");
 
-        // --- Imagen
+        // === Configuración base ===
         Toolkit mipantalla =  Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
+
+        // === Carga de recursos ===
         ImageIcon imagenBotonnes = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBoton.png", anchura / 7, altura / 12);
 
-        // --- Panel principal
-        ConfigurPanelConFondo panelPrincipal = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoIntermedio.png");
-        panelPrincipal.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        // --- Fuente personalizada.
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
         Font fuenteBoton = fuente.deriveFont(Font.BOLD, 30f);
 
+        // === Panel principal con fondo ===
+        ConfigurPanelConFondo panelPrincipal = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoIntermedio.png");
+        panelPrincipal.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        // --- Mensaje principal
+        // === Etiqueta de mensaje central ===
         JLabel lbl = new JLabel(mensaje, SwingConstants.CENTER);
         lbl.setFont(fuenteTitulo);
         lbl.setOpaque(false);
         lbl.setForeground(Color.WHITE);
 
-        // --- Botones inferiores
+        // === Botones inferiores ===
         btnMenu = new JButton("Volver al menu");
         configurarBotonConImagen(btnMenu, imagenBotonnes);
         btnMenu.setFont(fuenteBoton);
@@ -58,12 +71,13 @@ public class PantallaGanador extends ConfigurPantallas implements ActionListener
         btnSalir.setFont(fuenteBoton);
         btnSalir.addActionListener(this);
 
-        // --- Panel de botones con separación uniforme.
+        // === Panel contenedor de botones ===
         JPanel panelBtns = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelBtns.add(btnMenu);
         panelBtns.add(btnSalir);
         panelBtns.setOpaque(false);
 
+        // === Posicionamiento en pantalla ===
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weighty = 0.9;
@@ -75,10 +89,19 @@ public class PantallaGanador extends ConfigurPantallas implements ActionListener
         gbc.anchor = GridBagConstraints.NORTH;
         panelPrincipal.add(panelBtns, gbc);
 
+        // === Ensamblado final ===
         add(panelPrincipal);
-        setVisible(true);
     }
 
+
+    // === Métodos ===
+    /**
+     * Configura un botón con una imagen de fondo y estilo unificado.
+     *
+     * Parámetro: boton  Botón a configurar.
+     * Parámetro: imagen Imagen de fondo para el botón.
+     * Parámetro: fuente Fuente a aplicar al texto del botón.
+     */
     private void configurarBotonConImagen(JButton boton, ImageIcon imagen) {
         boton.setHorizontalTextPosition(SwingConstants.CENTER);
         boton.setVerticalTextPosition(SwingConstants.CENTER);
@@ -86,6 +109,8 @@ public class PantallaGanador extends ConfigurPantallas implements ActionListener
         boton.setBorderPainted(false);
         boton.setContentAreaFilled(false);
     }
+
+
     /**
      * Maneja las acciones de los botones "Volver al menú" y "Salir".
      */

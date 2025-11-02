@@ -8,17 +8,45 @@ import Modelo.Motor.Turnos;
 import Modelo.Recursos.GestorRecursos;
 import Vistas.Configuraciones.ConfigurPanelConFondo;
 
+/**
+ * — Ventana modal que muestra el resultado de una mano del juego "Truco a 2 Lucas".
+ *
+ * Esta pantalla aparece entre jugadas para informar el resultado de la mano actual,
+ * mostrar las cartas enfrentadas y ofrecer opciones para continuar, abandonar o finalizar
+ * la partida.
+ *
+ * Características principales:
+ *   Muestra las dos cartas jugadas y el texto del resultado.
+ *   Permite continuar la partida o abandonar.
+ *   Si el truco fue activado, despliega una animación temporal de aviso.
+ *   Es una ventana modal sobre la partida principal.
+ */
 public class PantallaResultadosMano extends JDialog {
+    // === Atributos principales ===
     public boolean continuarJuego = false;
     private int jugadorAbandono = 0;   // 0 ninguno, 1 o 2 si alguno abandona
     private Turnos turno;
     private final JFrame padre;
 
 
+
+    // === Constructores ===
+    /**
+     * Constructor principal.
+     *
+     * Parámetro: padre         ventana principal (partida activa)
+     * Parámetro: turno         instancia actual de Turnos
+     * Parámetro: img1          imagen de la carta del jugador 1
+     * Parámetro: img2          imagen de la carta del jugador 2
+     * Parámetro: resultado     texto con el resultado de la mano
+     * Parámetro: mostrarTruco  indica si debe mostrarse el cartel de "TRUCO ACTIVADO"
+     */
     public PantallaResultadosMano(JFrame padre, Turnos turno,  Image img1, Image img2, String resultado, boolean mostrarTruco) {
         super(padre, true); // modal
         this.padre = padre;
         this.turno = turno;
+
+        // === Configuración general ===
         setTitle("Resultado de la Mano");
         setUndecorated(true);
         padre.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -26,7 +54,7 @@ public class PantallaResultadosMano extends JDialog {
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
 
-        // Imagen cartas
+        // === Dimensiones pantalla ===
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
@@ -34,14 +62,15 @@ public class PantallaResultadosMano extends JDialog {
         int altoCartaGrande = altura/6;
         int anchoCartaGrande = anchura/12;
 
+        // === Escalado de imágenes ===
         Image imgEscalada1 = img1.getScaledInstance(anchoCartaGrande, altoCartaGrande, Image.SCALE_SMOOTH);
         Image imgEscalada2 = img2.getScaledInstance(anchoCartaGrande, altoCartaGrande, Image.SCALE_SMOOTH);
 
-        // Funete
+        // === Fuente personalizada ===
         Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
         Font fuenteTexto = fuente.deriveFont(Font.BOLD, 35f);
 
-        // Panel principal:
+        // === Panel principal ===
         ConfigurPanelConFondo panel = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoIntermedio.png");
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
@@ -58,8 +87,6 @@ public class PantallaResultadosMano extends JDialog {
         panelCartas.add(new JLabel(new ImageIcon(imgEscalada1)));
         panelCartas.add(new JLabel(new ImageIcon(imgEscalada2)));
 
-
-
         // === Botones ===
         JButton btnContinuar = new JButton("Continuar jugando");
         JButton btnAbandonar = new JButton("Abandonar partida");
@@ -72,6 +99,7 @@ public class PantallaResultadosMano extends JDialog {
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
         panelBotones.setOpaque(false);
 
+        // --- Mostrar botones según estado de partida ---
         if (!Turnos.condicionFinalizacion()) {
             panelBotones.add(btnContinuar);
             panelBotones.add(btnAbandonar);
@@ -79,7 +107,7 @@ public class PantallaResultadosMano extends JDialog {
             panelBotones.add(btnFinalizar);
         }
 
-        // === Acciones ===
+        // === Acciones de botones ===
         btnContinuar.addActionListener(e -> {
             continuarJuego = true;
             dispose();
@@ -177,6 +205,12 @@ public class PantallaResultadosMano extends JDialog {
         add(panel);
     }
 
+
+
+    // === Métodos auxiliares ===
+    /**
+     * Crea y estiliza un botón con fondo personalizado.
+     */
     private void estilizarBoton(JButton btn, Color colorFondo) {
         btn.setBackground(colorFondo);
         btn.setForeground(Color.WHITE);
@@ -185,6 +219,10 @@ public class PantallaResultadosMano extends JDialog {
         btn.setPreferredSize(new Dimension(220, 40));
     }
 
+
+    /**
+     * Abre la pantalla de ganador y cierra la ventana padre (partida).
+     */
     private void mostrarPantallaGanador(String mensaje) {
         new PantallaGanador(mensaje);
         if (padre != null) {
@@ -192,11 +230,4 @@ public class PantallaResultadosMano extends JDialog {
         }
     }
 
-    public boolean continuarJuego() {
-        return continuarJuego;
-    }
-
-    public int getJugadorAbandono() {
-        return jugadorAbandono;
-    }
 }

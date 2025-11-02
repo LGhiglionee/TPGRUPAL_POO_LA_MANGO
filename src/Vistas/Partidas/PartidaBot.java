@@ -12,11 +12,36 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * — Implementa la partida contra la computadora (modo PvC) del juego "Truco a 2 Lucas".
+ *
+ * Extiende de PartidaBase y define el comportamiento del bot en función
+ * de su dificultad. El jugador humano juega de manera normal y el bot responde
+ * automáticamente según la lógica implementada en Bot.
+ *
+ * Características principales:
+ *    Inicializa un jugador humano y un bot con dificultad seleccionada.
+ *    El bot toma decisiones automáticas según sus cartas y el estado del mazo.
+ *    Gestiona acciones especiales como Truco o Envido.
+ *    Muestra el resultado de cada mano en PantallaResultadosMano.
+ *
+ */
 public class PartidaBot extends PartidaBase {
+    /**
+     * Constructor principal.
+     *
+     * Parámetro: dificultad nivel del bot (0 = fácil, 1 = medio)
+     */
     public PartidaBot(int dificultad) {
         super("Truco a 2 Lucas (vs Bot)", "src/Recursos/Imagenes/Fondos/FondoJuego.png", dificultad);
     }
 
+
+
+    // === Métodos ===
+    /**
+     * Inicializa el juego con un jugador humano y un bot según la dificultad seleccionada.
+     */
     protected void inicializarJuego(int dificultad) {
         try {
             turno = new Turnos(1);
@@ -29,6 +54,13 @@ public class PartidaBot extends PartidaBase {
         }
     }
 
+
+    /**
+     * Procesa la carta jugada por el jugador humano y, si corresponde, ejecuta
+     * la respuesta del bot.
+     *
+     * Parámetro: indice índice de la carta jugada (0–2).
+     */
     protected void procesarCartaJugada(int indice)
             throws MazoVacioException, PosicionInvalidaException, JugadorSinCartasException {
         // Juega humano
@@ -52,6 +84,10 @@ public class PartidaBot extends PartidaBase {
     }
 
 
+    /**
+     * Ejecuta el turno del bot. Toma decisiones automáticas de ataque o defensa,
+     * y puede activar eventos especiales como Truco o Envido.
+     */
     private void jugarTurnoBot() throws MazoVacioException, PosicionInvalidaException, JugadorSinCartasException {
         Bot bot = turno.getBot();
         Carta eleccion = bot.decision(turno.getMazo());

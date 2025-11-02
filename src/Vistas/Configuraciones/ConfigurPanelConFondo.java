@@ -8,9 +8,9 @@ import java.awt.*;
  *— Panel genérico que muestra una imagen de fondo.
  *
  * El fondo se ajusta automáticamente al tamaño actual del panel, evitando
- * la distorsión o los bordes en blanco.</p>
+ * la distorsión o los bordes en blanco.
  *
- * Ejemplo de uso:</p>
+ * Ejemplo de uso:
  *     ConfigurPanelConFondo menu = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoMenu.png");
  *     ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/FondoJuego.png");
  */
