@@ -17,29 +17,51 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * — Clase base abstracta que define la estructura general de una partida en
+ * el juego "Truco a 2 Lucas".
+ *
+ * Contiene la interfaz gráfica principal (jugadores, cartas, botones y paneles)
+ * y la lógica común de interacción para todas las variantes de partida.
+ *
+ * Las subclases deben implementar:
+ *     #inicializarJuego(int) — Inicializa el estado del juego y los jugadores.
+ *     #procesarCartaJugada(int) — Define cómo se juega una carta según el modo.
+ */
 public abstract class PartidaBase extends ConfigurPantallas implements ActionListener {
-    // --- Botones de cartas y acciones ---
+    // === Atributos ===
+    // === Botones de cartas y acciones ===
     private JButton botoncarta1, botoncarta2, botoncarta3, envido, truco;
 
-    // --- Información de jugadores ---
+    // === Información de jugadores ===
     private JProgressBar j1salud, j2salud;
     private JLabel j1mana, j2mana, j1nombre, j2nombre, jturno;
 
-    // --- Paneles principales ---
+    // === Paneles principales ===
     private JPanel j1Info, j2Info, manoCartas, infoTurno, infoEnvido, infoTruco;
 
-    // --- Fuentes ---
+    // === Fuentes ===
     private Font fuente = GestorRecursos.cargarFuente("src/Recursos/Fuentes/ka1.ttf");
     private Font fuenteTitulo = fuente.deriveFont(Font.BOLD, 70f);
     private Font fuenteTexto = fuente.deriveFont(Font.BOLD, 20f);
 
-    // --- Parámetros generales ---
+    // === Parámetros generales ===
     private int altoBotonAccion,anchoBotonAccion, anchura,anchocarta, altocarta, anchobarra,altobarra;
 
-    // --- Lógica de juego ---
+    // === Lógica de juego ===
     protected Turnos turno;
     protected ArrayList<Carta> cartasjugadas;
 
+
+
+    // === Constructores ===
+    /**
+     * Constructor principal que configura la ventana y la interfaz de partida.
+     *
+     * Parámetro: titulo      título de la ventana
+     * Parámetro: fondo       ruta del fondo de pantalla
+     * Parámetro: dificultad  nivel de dificultad (para subclases con IA)
+     */
     public PartidaBase(String titulo, String fondo, int dificultad) {
         super(titulo, fondo);
         inicializarJuego(dificultad); // lo define cada subclase
@@ -47,43 +69,51 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         configurarPanelPrincipal();
     }
 
-    protected void inicializarJuego(int i) {
 
-    }
+    /**
+     * Inicializa el estado del juego (jugadores, cartas, turnos, etc.).
+     * Debe ser implementado por cada subclase según su modo de juego.
+     *
+     * Parámetro: dificultad nivel de dificultad o modo (0 = PvP, 1 = PvC)
+     */
+    protected void inicializarJuego(int dificultad) {}
 
 
+    // === Inicialización de componentes gráficos ===
+    /**
+     * Crea todos los componentes gráficos de la partida:
+     * etiquetas, botones, barras y fuentes personalizadas.
+     */
     private void inicializarComponentesGraficos () {
         Toolkit mipantalla = Toolkit.getDefaultToolkit();
         Dimension tamanio = mipantalla.getScreenSize();
         int altura = tamanio.height;
         int anchura = tamanio.width;
 
+        // === Escalado base ===
         anchocarta = anchura / 12;
         altocarta = altura / 6;
-
         anchobarra = anchura / 10;
         altobarra = altura / 30;
-
         anchoBotonAccion = anchura / 10;
         altoBotonAccion = altura / 18;
-        // --- Crear nombre jugador
+
+        // === Elementos del HUD ===
         j1nombre = crearNombreJugador("Jugador 1", turno.getJugador1());
         j2nombre = crearNombreJugador("Jugador 2", turno.getJugador2());
 
-        // --- BARRAS DE SALUD ---
         j1salud = crearBarraSalud(turno.getJugador1());
         j2salud = crearBarraSalud(turno.getJugador2());
 
-        // --- Maná
         j1mana = crearEtiquetaMana("Mana Jugador 1: " + turno.getJugador1().getMana());
         j2mana = crearEtiquetaMana("Mana Jugador 2: ##");
 
-        // --- Turno
+        // === Texto turno ===
         jturno = new JLabel("Turno de Jugador 1", SwingConstants.CENTER);
         jturno.setFont(fuenteTitulo);
         jturno.setForeground(Color.WHITE);
 
-        //Obtener cartas
+        // === Cartas iniciales ===
         Carta carta1 = turno.getJugadorMano().getTresCartas().get(0);
         Carta carta2 = turno.getJugadorMano().getTresCartas().get(1);
         Carta carta3 = turno.getJugadorMano().getTresCartas().get(2);
@@ -96,12 +126,19 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         botoncarta2.addActionListener(this);
         botoncarta3.addActionListener(this);
 
-        // --- Botones de acción
+        // === Botones especiales ===
         envido = crearBotonAccion("Envido");
         truco = crearBotonAccion("Truco");
     }
 
 
+    /**
+     * Crea una etiqueta con el nombre del jugador.
+     *
+     * Parámetro: nombreJugador texto a mostrar
+     * Parámetro: jugador instancia del jugador
+     * Retorna: JLabel configurado
+     */
     private JLabel crearNombreJugador(String nombreJugador, Jugador jugador) {
         JLabel nombre = new JLabel(nombreJugador);
         nombre.setFont(fuenteTexto);
@@ -109,6 +146,14 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
         return nombre;
     }
+
+
+    /**
+     * Crea una barra de salud que muestra la vida del jugador.
+     *
+     * Parámetro: jugador instancia del jugador
+     * Retorna: JProgressBar configurada
+     */
     private JProgressBar crearBarraSalud(Jugador jugador) {
         Dimension tamanoBarra = new Dimension(anchobarra, altobarra);
         JProgressBar barra = new JProgressBar(0, 100);
@@ -122,6 +167,13 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         return barra;
     }
 
+
+    /**
+     * Crea una etiqueta que muestra el nivel de maná actual.
+     *
+     * Parámetro: texto contenido de la etiqueta
+     * Retorna: JLabel configurado
+     */
     private JLabel crearEtiquetaMana(String texto) {
         JLabel lbl = new JLabel(texto);
         lbl.setForeground(Color.WHITE);
@@ -130,6 +182,13 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         return lbl;
     }
 
+
+    /**
+     * Crea un botón que representa una carta de la mano.
+     *
+     * @param carta carta que mostrará el botón
+     * @return JButton con la imagen de la carta
+     */
     private JButton crearBotonCarta(Carta carta) {
         JButton boton = new JButton();
         if (carta != null) {
@@ -143,6 +202,14 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         return boton;
     }
 
+
+    /**
+     * Crea un botón con fondo gráfico para acciones de juego
+     * (por ejemplo, "Truco" o "Envido").
+     *
+     * Parámetro: texto texto del botón
+     * Retorna: JButton configurado
+     */
     private JButton crearBotonAccion(String texto) {
         ImageIcon imgFondo = GestorRecursos.cargarImagenEscalada("src/Recursos/Imagenes/Fondos/FondoBotonJuego.png", anchoBotonAccion, altoBotonAccion);
 
@@ -163,8 +230,17 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         return boton;
     }
 
-    private void configurarPanelPrincipal() {
 
+    /**
+     *  — Configura la interfaz principal de la partida.
+     *
+     *  Este método se encarga de construir la disposición visual completa de la ventana de juego:
+     *      Define el fondo principal con imagen personalizada.
+     *      Crea y organiza los paneles de información de los jugadores.
+     *      Agrega el panel inferior con las cartas y los botones de acción (Envido / Truco).
+     *      Utiliza un GridBagLayout para distribuir los componentes con precisión.
+     */
+    private void configurarPanelPrincipal() {
         // ===== 1️⃣ Panel de fondo general =====
         ConfigurPanelConFondo juego = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoJuego.png");
         juego.setLayout(new GridBagLayout());
@@ -178,17 +254,25 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         configurarPanelJugadores ();
         infoTurno.add(jturno);
 
-        // --- Panel inferior (ENVIDO + CARTAS + TRUCO)
+        // === Panel inferior (ENVIDO + CARTAS + TRUCO)
         JPanel panelInferior = crearPanelInferior();
 
-        // --- Ubicar paneles en el layout principal.
+        // === Ubicar paneles en el layout principal.
         ubicarPanelesEnLayout(juego, panelInferior, gbc);
 
         add(juego);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    // Ubica todos los subpaneles en el GridBagLayout
+
+
+    /**
+     * Posiciona los subpaneles dentro del GridBagLayout principal.
+     *
+     * Parámetro: juego panel de fondo principal
+     * Parámetro: panelInferior panel inferior con las cartas
+     * Parámetro: gbc constraints de diseño
+     */
     private void ubicarPanelesEnLayout(ConfigurPanelConFondo juego, JPanel panelInferior, GridBagConstraints gbc){
         //Panel jugador 1 (Arriba - izquierda)
         gbc.insets = new Insets(50, 50, 50, 50);
@@ -223,7 +307,13 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         juego.add(panelInferior, gbc);
     }
 
-    // Crea el panel inferior con cartas + botones
+
+    /**
+     * Crea el panel inferior con las cartas del jugador y
+     * los botones de Envido y Truco.
+     *
+     * Retorna: JPanel inferior completo
+     */
     private JPanel crearPanelInferior() {
         JPanel panelInferior = new JPanel(new GridLayout(1, 3));
         panelInferior.setOpaque(false);
@@ -248,6 +338,10 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         return panelInferior;
     }
 
+
+    /**
+     * Organiza los elementos de los paneles de jugadores.
+     */
     private void configurarPanelJugadores() {
         j1Info.setLayout(new BoxLayout(j1Info, BoxLayout.Y_AXIS));
         j1Info.add(Box.createRigidArea(new Dimension(0, 35)));
@@ -269,6 +363,10 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
 
     }
 
+
+    /**
+     * Crea todos los subpaneles de estadísticas, turno y mano.
+     */
     private void crearSubPaneles() {
         j1Info = new ConfigurPanelConFondo("src/Recursos/Imagenes/Fondos/FondoEstadisticas.png");
         j1Info.setPreferredSize(new Dimension(340,190));
@@ -286,6 +384,11 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         infoTruco.setOpaque(false);
     }
 
+
+    /**
+     * Actualiza todos los elementos de la interfaz:
+     * cartas, salud, maná, visibilidad de botones y turno actual.
+     */
     private void actualizarInterfaz() throws MazoVacioException {
         jturno.setText(turno.getJugadorMano() == turno.getJugador1() ? "Turno de Jugador 1" : "Turno de Jugador 2");
 
@@ -309,6 +412,13 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         truco.setVisible(turno.trucoDisponible());
     }
 
+
+    /**
+     * Refresca la imagen y el estado de un botón de carta.
+     *
+     * Parámetro: boton botón correspondiente a la carta
+     * Parámetro: carta carta asociada (puede ser null)
+     */
     private void actualizarBotonCarta(JButton boton, Carta carta, int ancho, int alto) {
         if (carta == null) {
             boton.setIcon(null);
@@ -325,15 +435,24 @@ public abstract class PartidaBase extends ConfigurPantallas implements ActionLis
         boton.setIcon(new ImageIcon(img));
     }
 
+
     /**
-     * Método abstracto — se redefine según cómo se juega el turno
+     * Método abstracto que procesa la carta seleccionada por el jugador.
+     * Debe ser redefinido por cada modo de juego (humano o bot).
+     *
+     * Parámetro: indice posición de la carta jugada (0–2)
      */
     protected void procesarCartaJugada(int indice)
             throws MazoVacioException, PosicionInvalidaException, JugadorSinCartasException {
 
     }
 
-    // --- Acción general ---
+
+    /**
+     * Maneja todos los eventos de interacción (clicks en cartas o botones de acción).
+     *
+     * Parámetro: el evento disparado por el componente
+     */
     public void actionPerformed(ActionEvent e) {
         try {
             if (e.getSource() == botoncarta1 || e.getSource() == botoncarta2 || e.getSource() == botoncarta3) {

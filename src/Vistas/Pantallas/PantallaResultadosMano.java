@@ -42,6 +42,7 @@ public class PantallaResultadosMano extends JDialog {
      * Parámetro: mostrarTruco  indica si debe mostrarse el cartel de "TRUCO ACTIVADO"
      */
     public PantallaResultadosMano(JFrame padre, Turnos turno,  Image img1, Image img2, String resultado, boolean mostrarTruco) {
+
         super(padre, true); // modal
         this.padre = padre;
         this.turno = turno;
@@ -93,7 +94,7 @@ public class PantallaResultadosMano extends JDialog {
         JButton btnAbandonar = new JButton("Abandonar partida");
         JButton btnFinalizar = new JButton("Partida finalizada");
 
-        estilizarBoton(btnContinuar, new Color(40, 140, 40));
+        estilizarBoton(btnContinuar, new Color(29, 186, 29));
         estilizarBoton(btnAbandonar, new Color(160, 50, 50));
         estilizarBoton(btnFinalizar, new Color(40, 140, 40));
 
@@ -215,6 +216,12 @@ public class PantallaResultadosMano extends JDialog {
         btn.setFocusPainted(false);
         btn.setFont(new Font("Arial", Font.BOLD, 16));
         btn.setPreferredSize(new Dimension(220, 40));
+
+        // 🔹 Claves para que Swing pinte el color real
+        btn.setOpaque(true);
+        btn.setContentAreaFilled(true);
+        btn.setBorderPainted(false);
+        btn.setEnabled(true);
     }
 
 
